@@ -4,8 +4,9 @@ class Controller_Checkout extends Controller{
     
     protected static $data;
     protected static $order_pr;
-    protected static $price = null;
-    public    static $errors = null;
+    protected static $price     = null;
+    protected static $pre_price = null;
+    public    static $errors    = null;
     public    static $shippers;
     
     public function type()
@@ -32,13 +33,29 @@ class Controller_Checkout extends Controller{
             }
 
             self::$errors = Controller::GetModel()->ValidateStep1();
+            
             if(!self::$errors) {
                 Request::SetSession('step1', true);
                 return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
             }
-            return self::$errors;
+            $errors = self::$errors;
 
         }
+        
+        if(Request::GetSession('user_is_logged'))
+        {
+            $id  = Request::GetSession('user_id');
+            $sql = "SELECT * FROM user_addresses a "
+                 . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_handle "
+                 . "RIGHT OUTER JOIN region r ON a.address_region = r.region_handle "
+                 . "WHERE address_user=?";
+            $addresses = Getter::GetFreeData($sql, [$id], false);
+        }
+        
+        return [
+            'errors' => $errors,
+            'addresses' => $addresses
+        ];
     }
     
     public function step2()
@@ -60,8 +77,8 @@ class Controller_Checkout extends Controller{
             Request::SetSession('shipper_price', $array['shipper_price']);
             
             // Full Price
-                $full = self::GetCheckoutPrice();
-                Request::SetSession('full_price', $full + $array['shipper_price']);
+            $full = self::GetCheckoutPrice();
+            Request::SetSession('full_price', $full + $array['shipper_price']);
             //
             
             Request::SetSession('step2', true);
@@ -85,6 +102,10 @@ class Controller_Checkout extends Controller{
             return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
         }
         
+        $price = self::GetPreFinalPrice();
+        $shipp = Request::GetSession('shipper_price');
+        Request::SetSession('full_price', $price + $shipp);
+        
         if(Request::Post('checkout_step3'))
         {
             $csrf = Request::Post('csrf');
@@ -99,7 +120,6 @@ class Controller_Checkout extends Controller{
                 $price = Self::GetCheckoutPrice();
                 if($key = Controller::GetModel()->FinishCheckout($price))
                 {   
-                    
                     //Mailer returns strings
                     return ShopEngine::Help()->StrongRedirect('checkout', 'thank_you?orderid='.$key); 
                 }
@@ -204,6 +224,20 @@ class Controller_Checkout extends Controller{
         return 'checkout';
     }
     
+    public static function GetPreFinalPrice()
+    {
+        if(Self::$pre_price === null) {
+            $array = self::GetData();
+            foreach ($array as $cur) {
+                Self::$pre_price = Self::$pre_price + $cur['orders_price'];
+            }
+            if(Request::GetSession('checkout_points_enabled')) { 
+                Self::$pre_price = ShopEngine::Business()->UsePoints(Self::$pre_price);
+            }
+        }
+        return Self::$pre_price;
+    }
+    
     public static function GetCheckoutPrice()
     {
         if(Self::$price === null) {
@@ -221,6 +255,9 @@ class Controller_Checkout extends Controller{
             $array = self::GetOrderProducts();
             foreach ($array as $cur) {
                 Self::$price = Self::$price + $cur['orders_price'];
+            }
+            if(Request::GetSession('checkout_points_enabled')) { 
+                Self::$price = ShopEngine::Business()->UsePoints(Self::$price);
             }
         }
         return Self::$price;

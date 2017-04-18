@@ -155,3 +155,9 @@
 ( 2017-04-12 18:26:23 (MSK) ) Выброшено исключение: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'category_handle' in 'field list'
 ( 2017-04-12 18:26:23 (MSK) ) Выброшено исключение: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'category_handle' in 'field list'
 ( 2017-04-13 17:13:09 (MSK) ) Выброшено исключение: Message body empty
+( 2017-04-18 18:36:10 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
+( 2017-04-18 18:53:41 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
+( 2017-04-18 18:54:34 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
+( 2017-04-18 19:00:40 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
+( 2017-04-18 19:01:38 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
+( 2017-04-18 19:08:23 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.

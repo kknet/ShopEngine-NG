@@ -42,7 +42,7 @@
                     <ul>
                         <li><a href="/user/orders">Мои заказы</a></li>
                         <li><a href="/user/addresses">Мои адреса</a></li>
-                        <li>Баллы: 3000</li>
+                        <li>Баллы: <?= $start['users_points']?></li>
                     </ul>
                 </div>
                 <div class="myaccount_first_left_select"></div>

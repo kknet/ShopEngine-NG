@@ -162,7 +162,8 @@ class Model_Checkout extends Model {
                 . "orders_billing_phone, "
                 . "orders_payment, "
                 . "orders_ip, "
-                . "orders_status "
+                . "orders_status,"
+                . "orders_date "
                 . " ) VALUES("
                 . ":price,"
                 . ":shipping,"
@@ -187,7 +188,8 @@ class Model_Checkout extends Model {
                 . ":bil_phone,"
                 . ":payment,"
                 . ":ip,"
-                . "1"
+                . "1,"
+                . "NOW()"
                 . ")";
         
                 $stmt = $db->prepare($sql);
@@ -242,9 +244,6 @@ class Model_Checkout extends Model {
 
                     ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body, $array);
                     
-                    //Erase session
-                    Request::EraseFullSession();
-                    
                     // Erase cart
                     $sql  = "DELETE FROM cart WHERE cart_ip=:ip";
                     $stmt = $db->prepare($sql);
@@ -256,6 +255,28 @@ class Model_Checkout extends Model {
                     $stmt->bindParam(":key", $key);
                     $stmt->bindParam(":id", $id);
                     $stmt->execute();
+                    
+                    //Update points
+                    
+                    if(Request::GetSession('checkout_points_enabled'))
+                    {
+                        $sql = "UPDATE users SET users_points=:points WHERE users_id=:id";
+                    
+                        $points = Request::GetSession('checkout_new_points');
+                        $points = (int)$points;
+                        $id     = Request::GetSession('user_id');
+
+                        $stmt = $db->prepare($sql);
+                        $stmt->bindParam(":points", $points);
+                        $stmt->bindParam(":id", $id);
+                        if(!$stmt->execute())
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    //Erase session
+                    Request::EraseFullSession();
                     
                     return $key;
                 }

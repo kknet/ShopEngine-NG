@@ -359,7 +359,7 @@ class Model_User extends Model {
             return false;
         }
         
-        if(!$post['address_address'] OR !$post['address_city'] OR !$post['address_index'] OR !is_int($post['address_new_index']) OR !$post['address_phone'])
+        if(!$post['address_address'] OR !$post['address_city'] OR !$post['address_index'] OR !is_int((int)$post['address_new_index']) OR !$post['address_phone'])
         {
             return false;
         }
@@ -395,7 +395,7 @@ class Model_User extends Model {
             return false;
         }
         
-        if(!$post['address_new_address'] OR !$post['address_new_city'] OR !$post['address_new_index'] OR !is_int($post['address_new_index']) OR !$post['address_new_phone'])
+        if(!$post['address_new_address'] OR !$post['address_new_city'] OR !$post['address_new_index'] OR !is_int((int)$post['address_new_index']) OR !$post['address_new_phone'])
         {
             return false;
         }

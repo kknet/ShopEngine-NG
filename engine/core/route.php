@@ -24,6 +24,7 @@ class Route
         $controller_name = ShopEngine::GetController();
         $model_name = ShopEngine::GetModel();
         $action = ShopEngine::GetAction();
+        $option = ShopEngine::GetOption();
         
         // Это не очень изящное решение, но я придумаю позже что-нибудь
         if($controller_name === 'Controller_Ajax') {
@@ -52,6 +53,20 @@ class Route
                 else {
                     return Route::ErrorPage404();
                 }
+            }
+            elseif($controller->type() === 'act+') {
+                if(method_exists($controller, $option)) {
+                    $start = $controller->$option();
+                }
+                else {
+                    if(method_exists($controller, $action)) {
+                        $start = $controller->$action();
+                    }
+                    else {
+                        return Route::ErrorPage404();
+                    }
+                }
+                        
             }
             
         }

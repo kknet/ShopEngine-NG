@@ -20,7 +20,7 @@
         <svg width="11" height="7" xmlns="http://www.w3.org/2000/svg" class="order-summary-toggle__dropdown" fill="#000"><path d="M6.138.876L5.642.438l-.496.438L.504 4.972l.992 1.124L6.138 2l-.496.436 3.862 3.408.992-1.122L6.138.876z" /></svg>
       </div>
       <div class="order-summary-toggle__total-recap total-recap" data-order-summary-section="toggle-total-recap">
-          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= GetCheckoutPrice()?></span>
+          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= GetPreFinalPrice()?></span>
       </div>
     </div>
   </div>
@@ -133,7 +133,7 @@
         <td class="total-line__price payment-due">
           <span class="payment-due__currency">RUB</span>
           <span class="payment-due__price" data-checkout-payment-due-target="">
-            <?= GetCheckoutPrice()?>
+            <?= GetPreFinalPrice()?>
           </span>
         </td>
       </tr>

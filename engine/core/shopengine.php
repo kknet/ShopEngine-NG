@@ -17,6 +17,7 @@ class ShopEngine {
     protected static $act        = NULL;
     protected static $opt        = NULL;
     protected static $ip         = NULL;
+    protected static $business   = NULL;
     
     protected static $query      = NULL;
     protected static $sort       = NULL;
@@ -196,6 +197,17 @@ class ShopEngine {
             Self::$help = new Help();
         }
         return Self::$help;
+    }
+    
+    // Бизнес-логика
+    public static function Business()
+    {
+        if(Self::$business === NULL)
+        {
+            require_once 'engine/components/business.php';
+            Self::$business = new Business();
+        }
+        return Self::$business;
     }
     
     public static function AllowControllers() {

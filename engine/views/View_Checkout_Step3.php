@@ -116,6 +116,19 @@
               </span>
             </td>
           </tr>
+          
+          <?php if(Request::GetSession('checkout_points_enabled')){ ?>
+          
+            <tr class="total-line total-line--shipping">
+              <td class="total-line__name">Баллы после покупки: </td>
+              <td class="total-line__price">
+                <span class="order-summary__emphasis" data-checkout-total-shipping-target="0">
+                 <?= Request::GetSession('checkout_new_points') ?>
+                </span>
+              </td>
+            </tr>
+          
+          <?php } ?>
 
           <tr class="total-line total-line--taxes hidden" data-checkout-taxes="">
             <td class="total-line__name">Налоги</td>
@@ -304,10 +317,22 @@
          
       </div>
         
-        <div class="points_payment">
-            <input style="width:15px;height:15px;opacity:1;" type="checkbox" name="points" id="point_payment_input" />
-            <label for="point_payment_input">Использовать баллы (60% от покупки)</label>
-          </div>
+        <?php if(Request::GetSession('user_is_logged')) { ?>
+        
+        <div class="section section--half-spacing-top section--optional section--fade-in" data-buyer-accepts-marketing="">
+            <div class="section__content">
+                <div class="checkbox-wrapper">
+                    <div class="checkbox__input">
+                        <input <?=Request::GetSession('checkout_points_enabled') ? 'checked="checked"' : ''?>data-csrf="<?=ShopEngine::Help()->generateToken()?>" class="input-checkbox" data-backup="buyer_accepts_marketing" type="checkbox" value="1" name="checkout_pontez" id="checkout_buyer_accepts_marketing">
+                    </div>
+                    <label class="checkbox__label" for="checkout_buyer_accepts_marketing">
+                        Использовать баллы (60% от покупки)
+                    </label>            
+                </div>
+            </div>
+        </div>
+        
+        <?php } ?>
         
     </div> 
 

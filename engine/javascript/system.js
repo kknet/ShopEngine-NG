@@ -11,17 +11,53 @@ window.onload = function() {
         quant_ac =  document.getElementById("Quantity"),
         quant    =  document.querySelectorAll(".cart_update"),
         search   =  document.querySelector(".site-header__search-input"),
-        add_del  =  document.querySelectorAll(".delete_address");
+        add_del  =  document.querySelectorAll(".delete_address"),
+        add_sel  =  document.getElementById("checkout_shipping_address_id"),
+        point_ch =  document.getElementById("checkout_buyer_accepts_marketing");
+
+    if(point_ch) {
+        var data = {
+            csrf : point_ch.getAttribute('data-csrf')
+        };
+        
+        point_ch.prototype = data;
+        
+        point_ch.addEventListener("change", function(e){
+            
+            if(point_ch.checked) 
+            {
+                StartPoint(point_ch.prototype.csrf);
+            }
+            else 
+            {
+                ErasePoint(point_ch.prototype.csrf);
+            }
+            
+        });
+    }
+
+    if(add_sel) {
+        
+        var data = {
+            csrf : add_sel.getAttribute('data-csrf')
+        };
+        
+        add_sel.prototype = data;
+        
+        add_sel.addEventListener("change", function(e){
+            
+            AddressChange(this.value, add_sel.prototype.csrf);
+            
+        });
+    }
 
     if(add_del) {
-        
-        console.log(add_del);
         
         for(var i = 0; i < add_del.length; i++) { 
             var data = {
                 add_id : add_del[i].getAttribute('data-id'),
                 csrf   : add_del[i].getAttribute('data-csrf')
-            }
+            };
 
             add_del[i].prototype = data;
 
@@ -46,7 +82,7 @@ window.onload = function() {
     if(search) {
         search.oninput = function(){
             console.log(search.value);
-        }
+        };
     }
     
     for(var i = 0; i < quant.length; i++) {
@@ -151,9 +187,15 @@ function addToCart(csrf) {
 };
 
 function cartload() {
-    
-    var csrf = document.getElementById("cartIndicatorAjax").getAttribute("data-csrf");
-    var indi = document.querySelector(".site-header__cart-indicator");
+
+    var cart_el = document.getElementById("cartIndicatorAjax");
+    if(cart_el) {
+         var csrf = cart_el.getAttribute("data-csrf");
+         var indi = document.querySelector(".site-header__cart-indicator");
+    }
+    else {
+        return false;
+    }
     
     $.ajax({
         type: 'POST',
@@ -362,5 +404,117 @@ function DeleteAddress(id, csrf) {
                 }
             }
         });
+        
     /* End of jQuery */
 }
+
+function AddressChange(id, csrf) {
+    
+    var nodeName     = document.getElementById("checkout_shipping_address_first_name"),
+        nodeLastName = document.getElementById("checkout_shipping_address_last_name"),
+        nodeCompany  = document.getElementById("checkout_shipping_address_company"),
+        nodeAddress  = document.getElementById("checkout_shipping_address_address1"),
+        nodeFlat     = document.getElementById("checkout_shipping_address_address2"),
+        nodeCity     = document.getElementById("checkout_shipping_address_city"),
+        nodeIndex    = document.getElementById("checkout_shipping_address_zip"),
+        nodePhone    = document.getElementById("checkout_shipping_address_phone");
+    
+    if(id === '0')
+    {
+        nodeName.value = "";
+        nodeLastName.value = "";
+        nodeCompany.value = "";
+        nodeAddress.value = "";
+        nodeFlat.value = "";
+        nodeCity.value = "";
+        nodeIndex.value = "";
+        nodePhone.value = "";
+        
+        return;
+        
+    }
+    
+    $.ajax({
+        type:'POST',
+        url:'/ajax/addresschange',
+        data:{
+            'id':id,
+            'csrf':csrf
+        },
+        dataType: 'html',
+        cache:false,
+        beforeSend: function () {
+            //$('#pre_loading').fadeIn(50);
+        },
+        success: function(data) {
+            if(data !== null) {
+                try {
+                    decoded =JSON.parse(data);
+                    
+                    if(decoded.address_name) nodeName.value = decoded.address_name;
+                    if(decoded.address_last_name) nodeLastName.value = decoded.address_last_name;
+                    if(decoded.address_company) nodeCompany.value = decoded.address_company;
+                    if(decoded.address) nodeAddress.value = decoded.address;
+                    if(decoded.address_flat) nodeFlat.value = decoded.address_flat;
+                    if(decoded.address_city) nodeCity.value = decoded.address_city;
+                    if(decoded.address_index) nodeIndex.value = decoded.address_index;
+                    if(decoded.address_phone) nodePhone.value = decoded.address_phone;
+   
+                } catch(e) {
+                    throw Error(e);
+                }
+            }
+            else {
+                throw Error("Произошла неизвестная ошибка в функции AddressChange");
+            }
+        }
+    });
+}
+
+function StartPoint(csrf) {
+    $.ajax({
+        type:'POST',
+        url:'/ajax/buybypoints',
+        data:{
+            'csrf':csrf
+        },
+        dataType: 'html',
+        cache:false,
+        beforeSend: function () {
+            //$('#pre_loading').fadeIn(50);
+        },
+        success: function(data) {
+            if(data === '1') {
+                window.location.reload();
+            }
+            else {
+                throw Error("Произошла ошибка " + data);
+            }
+        }
+    });
+}
+
+function ErasePoint(csrf) {
+    $.ajax({
+        type:'POST',
+        url:'/ajax/buybyown',
+        data:{
+            'csrf':csrf
+        },
+        dataType: 'html',
+        cache:false,
+        beforeSend: function () {
+            //$('#pre_loading').fadeIn(50);
+        },
+        success: function(data) {
+            if(data === '1') {
+                window.location.reload();
+            }
+            else {
+                throw Error("Произошла ошибка " + data);
+            }
+        }
+    });
+}
+
+

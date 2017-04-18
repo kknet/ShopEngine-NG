@@ -3,7 +3,7 @@
   <div class="grid__item medium-up--two-thirds">
       <?php if($start['new']) { ?>
     <div id="AddressNewForm" class="content-block content-block--large form-vertical">
-      <form method="post" action="/user/addresses/new" id="address_form_new" accept-charset="UTF-8"><input type="hidden" value="customer_address" name="form_type"><input type="hidden" name="utf8" value="✓">
+      <form method="post" action="/user/addresses/add" id="address_form_new" accept-charset="UTF-8"><input type="hidden" value="customer_address" name="form_type"><input type="hidden" name="utf8" value="✓">
         <h2 class="h3">Добавьте Новый Адрес</h2>
 
         <div class="grid">
@@ -272,7 +272,7 @@
   </div>
   <div class="grid__item medium-up--one-third">
     <div class="content-block text-center">
-      <p><a href="/user/addresses/new" class="btn address-new-toggle">Добавьте Новый Адрес</a></p>
+      <p><a href="/user/addresses/add" class="btn address-new-toggle">Добавьте Новый Адрес</a></p>
     </div>
   </div>
 </div>

@@ -81,7 +81,7 @@ class Request extends ShopEngine{
         return $_SESSION[$name] = ShopEngine::Help()->Clear($value);
     }
     
-    public static function GetSession($name) 
+    public static function GetSession($name = null) 
     {
         if($name) {
             return ShopEngine::Help()->Clear($_SESSION[$name]);

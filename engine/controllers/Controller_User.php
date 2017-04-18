@@ -5,7 +5,7 @@ class Controller_User extends Controller{
     //Make this controller actionable
     public function type()
     {
-        return 'act';
+        return 'act+';
     }
     
     //Actions
@@ -126,6 +126,10 @@ class Controller_User extends Controller{
                 return ShopEngine::Help()->StrongRedirect("user", 'account');
             }
         }
+        
+        $id  = Request::GetSession('user_id');
+        $sql = "SELECT * FROM users WHERE users_id=?";
+        return Getter::GetFreeData($sql, [$id]);
     }
     
     public function Orders()
@@ -145,8 +149,8 @@ class Controller_User extends Controller{
         }
         
         $sql       = "SELECT * FROM user_addresses a "
-                . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_id "
-                . "RIGHT OUTER JOIN region r ON a.address_region = r.region_id "
+                . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_handle "
+                . "RIGHT OUTER JOIN region r ON a.address_region = r.region_handle "
                 . "WHERE address_user=?";
         $addresses = Getter::GetFreeData($sql, [$id], false);
         
@@ -209,31 +213,6 @@ class Controller_User extends Controller{
             $new = false;
         }
         
-        //Option
-        if($opt === 'red')
-        {
-            
-            $red_id = Request::Get('addid');
-            
-            if(!$red_id)
-            {
-                $red = false;
-            }
-            
-            $red = Controller::GetModel()->GetAddress($red_id);
-            
-            if(count($red) < 1)
-            {
-                $red = false;
-            }
-            
-        }
-        
-        if($opt === 'new')
-        {
-            $new = true;
-        }
-        
         $sql    = "SELECT * FROM user_addresses a "
                 . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_handle "
                 . "RIGHT OUTER JOIN region r ON a.address_region = r.region_handle "
@@ -244,9 +223,42 @@ class Controller_User extends Controller{
             'addresses' => $addresses,
             'red'       => $red,
             'change'    => $change,
-            'new'       => $new
         ];
         
+    }
+    
+    public function Red()
+    {
+        $red_id = Request::Get('addid');
+            
+        if(!$red_id)
+        {
+            $red = false;
+        }
+
+        $red = Controller::GetModel()->GetAddress($red_id);
+
+        if(count($red) < 1)
+        {
+            $red = false;
+        }
+        
+        $return = $this->Addresses();
+        
+        $return['red'] = $red;
+        
+        return $return;
+    }
+    
+    public function Add()
+    {
+        $new = true;
+        
+        $return = $this->Addresses();
+        
+        $return['new'] = $new;
+        
+        return $return;
     }
     
     public function logout()

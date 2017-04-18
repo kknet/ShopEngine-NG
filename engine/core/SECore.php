@@ -367,6 +367,10 @@ function GetCheckoutPrice() {
     $price = ShopEngine::GetController()::GetCheckoutPrice();
     return ShopEngine::Help()->AsPrice($price);
 }
+function GetPreFinalPrice() {
+    $price = ShopEngine::GetController()::GetPreFinalPrice();
+    return ShopEngine::Help()->AsPrice($price);
+}
 function GetFinalPrice() {
     $price = ShopEngine::GetController()::GetFinalPrice();
     return ShopEngine::Help()->AsPrice($price);

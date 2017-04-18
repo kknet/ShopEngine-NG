@@ -18,6 +18,7 @@
 <!--[if gte IE 9]><!-->
 <link rel="stylesheet" media="all" href="/style/assets/checkout.css" />
 <link rel="stylesheet" media="all" href="/style/assets/input.css" />
+<link href="/style/_full_/custom.css" rel="stylesheet" type="text/css" media="all">
 
 <!--<![endif]-->
 
@@ -39,6 +40,8 @@
   </script>-->
 
 <script src="/style/assets/checkout.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/engine/javascript/system.js"></script>
 
 
   

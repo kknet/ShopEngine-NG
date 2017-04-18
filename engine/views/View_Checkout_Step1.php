@@ -1,8 +1,7 @@
 <?php 
     $array = GetOrderProducts();
-    $error = $start;
+    $error = $start['errors'];
 ?>
-
 <button class="order-summary-toggle order-summary-toggle--show" data-drawer-toggle="[data-order-summary]">
   <div class="wrap">
     <div class="order-summary-toggle__inner">
@@ -191,11 +190,12 @@
       <h2 class="section__title layout-flex__item layout-flex__item--stretch">Информация о покупателе</h2>
 
         <p class="layout-flex__item">
-          <span aria-hidden="true">Уже есть аккаунт?</span>
-          <a href="https://poterpite.ru/account/login?checkout_url=https%3A%2F%2Fcheckout.shopify.com%2F13390281%2Fcheckouts%2F38f5d2d8c2aae7887ee77a15a7f2b688%3Fstep%3Dcontact_information">
-            <span class="visually-hidden">Уже есть аккаунт?</span>
-            Войти
-</a>        </p>
+            <?php if(Request::GetSession('user_is_logged')) { ?>
+                <a href="/user/logout" id="customer_logout_link">Выйти</a> 
+            <?php } else { ?>
+                <a href="/user/login" id="customer_logout_link">Войти</a> 
+            <?php } ?>
+        </p>
     </div>
   </div>
   <div class="section__content">
@@ -203,7 +203,7 @@
           <div class="field field--required <?=$error['email']['class']?>">
             
             <div class="field__input-wrapper field__input-wrapper--with-loader"><label class="field__label" for="checkout_email">Email</label>
-                <input value="<?= Request::GetSession('checkout_email')?>" placeholder="Email" autocapitalize="off" spellcheck="false" autocomplete="shipping email" data-autofocus="true" data-email-input="true" data-backup="customer_email" class="field__input" size="30" type="email" name="checkout_email" id="checkout_email">
+                <input value="<?= Request::GetSession('user_is_logged') ?  Request::GetSession('user_email') : Request::GetSession('checkout_email')?>" placeholder="Email" autocapitalize="off" spellcheck="false" autocomplete="shipping email" data-autofocus="true" data-email-input="true" data-backup="customer_email" class="field__input" size="30" type="email" name="checkout_email" id="checkout_email">
             </div>
               <?=$error['email']['message']?>
 </div>        </div> 
@@ -230,8 +230,12 @@
           Адрес доставки
       </h2>
     </div>
+      
+  </div>
 
     <div class="section__content">
+        <div class="section section--shipping-method">
+      
       <div class="fieldset" data-address-fields="">
 
         
@@ -255,6 +259,23 @@
 
   <input class="visually-hidden" autocomplete="shipping tel" tabindex="-1" data-autocomplete-field="phone" size="30" type="text" name="checkout[shipping_address][phone]">
   -->
+  
+  <?php if(Request::GetSession('user_is_logged')) { ?>
+  
+    <div class="field field--required field--show-floating-label">
+        <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_id">Адрес магазина</label>
+            <select data-csrf="<?= ShopEngine::Help()->generateToken()?>" class="field__input field__input--select" name="checkout_address_id" id="checkout_shipping_address_id">
+                <option value="0">Новый адрес</option>
+                <?php if($start['addresses']) { ?>
+                    <?php foreach ($start['addresses'] as $cur) { ?>
+                        <option data-properties="" value="<?= $cur['address_id']?>"><?=$cur['address']?>, <?=$cur['address_city']?>, <?=$cur['address_index']?></option>
+                    <?php } ?>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+  
+  <?php } ?>
 
       <div class="field field--optional field--half" data-address-field="first_name">
   
@@ -297,7 +318,7 @@
 </div><div data-address-field="province" class="field field--required field--three-eights field--show-floating-label">
   
   <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_province">Регион</label>
-    <select placeholder="Регион" autocomplete="shipping address-level1" data-backup="province" data-google-places="administrative_area_level_1" class="field__input field__input--select" name="checkout_region" id="checkout_shipping_address_province"><option value="" disabled="">Регион</option><option data-code="AD" value="Republic of Adygeya">Адыгея (респ)</option><option data-code="AL" value="Altai Republic">Алтай (респ)</option><option data-code="ALT" value="Altai Krai">Алтайский (край)</option><option data-code="AMU" value="Amur Oblast">Амурская (обл)</option><option data-code="ARK" value="Arkhangelsk Oblast">Архангельская (обл)</option><option data-code="AST" value="Astrakhan Oblast">Астраханская (обл)</option><option data-code="BA" value="Republic of Bashkortostan">Башкортостан (респ)</option><option data-code="BEL" value="Belgorod Oblast">Белгородская (обл)</option><option data-code="BRY" value="Bryansk Oblast">Брянская (обл)</option><option data-code="BU" value="Republic of Buryatia">Бурятия (респ)</option><option data-code="VLA" value="Vladimir Oblast">Владимирская (обл)</option><option data-code="VGG" value="Volgograd Oblast">Волгоградская (обл)</option><option data-code="VLG" value="Vologda Oblast">Вологодская (обл)</option><option data-code="VOR" value="Voronezh Oblast">Воронежская (обл)</option><option data-code="DA" value="Republic of Dagestan">Дагестан (респ)</option><option data-code="YEV" value="Jewish Autonomous Oblast">Еврeйская (Аобл)</option><option data-code="ZAB" value="Zabaykalsky Krai">Забайкальский край</option><option data-code="IVA" value="Ivanovo Oblast">Ивановская (обл)</option><option data-code="IN" value="Republic of Ingushetia">Ингушетия (респ)</option><option data-code="IRK" value="Irkutsk Oblast">Иркутская (обл)</option><option data-code="KB" value="Kabardino-Balkarian Republic">Кабардино-Балкарская (респ)</option><option data-code="KGD" value="Kaliningrad Oblast">Калининградская (обл)</option><option data-code="KL" value="Republic of Kalmykia">Калмыкия (респ)</option><option data-code="KLU" value="Kaluga Oblast">Калужская (обл)</option><option data-code="KAM" value="Kamchatka Krai">Камчатский (край)</option><option data-code="KC" data-alternate-values="[&quot;Karachay?Cherkess Republic&quot;]" value="Karachay–Cherkess Republic">Карачаево-Черкесская (респ)</option><option data-code="KR" value="Republic of Karelia">Карелия (респ)</option><option data-code="KEM" value="Kemerovo Oblast">Кемеровская (обл)</option><option data-code="KIR" value="Kirov Oblast">Кировская (обл)</option><option data-code="KO" value="Komi Republic">Коми (респ)</option><option data-code="KOS" value="Kostroma Oblast">Костромская (обл)</option><option data-code="KDA" value="Krasnodar Krai">Краснодарский (край)</option><option data-code="KYA" value="Krasnoyarsk Krai">Красноярский (край)</option><option data-code="KGN" value="Kurgan Oblast">Курганская (обл)</option><option data-code="KRS" value="Kursk Oblast">Курская (обл)</option><option data-code="LEN" value="Leningrad Oblast">Ленинградская (обл)</option><option data-code="LIP" value="Lipetsk Oblast">Липецкая (обл)</option><option data-code="MAG" value="Magadan Oblast">Магаданская (обл)</option><option data-code="ME" value="Mari El Republic">Марий Эл (респ)</option><option data-code="MO" value="Republic of Mordovia">Мордовия (респ)</option><option data-code="MOW" value="Moscow">Москва (г)</option><option data-code="MOS" value="Moscow Oblast">Московская (обл)</option><option data-code="MUR" value="Murmansk Oblast">Мурманская (обл)</option><option data-code="NIZ" value="Nizhny Novgorod Oblast">Нижегородская (обл)</option><option data-code="NGR" value="Novgorod Oblast">Новгородская (обл)</option><option data-code="NVS" value="Novosibirsk Oblast">Новосибирская (обл)</option><option data-code="OMS" value="Omsk Oblast">Омская (обл)</option><option data-code="ORE" value="Orenburg Oblast">Оренбургская (обл)</option><option data-code="ORL" value="Oryol Oblast">Орловская (обл)</option><option data-code="PNZ" value="Penza Oblast">Пензенская (обл)</option><option data-code="PER" value="Perm Krai">Пермский (край)</option><option data-code="PRI" value="Primorsky Krai">Приморский (край)</option><option data-code="PSK" value="Pskov Oblast">Псковская (обл)</option><option data-code="ROS" value="Rostov Oblast">Ростовская (обл)</option><option data-code="RYA" value="Ryazan Oblast">Рязанская (обл)</option><option data-code="SAM" value="Samara Oblast">Самарская (обл)</option><option data-code="SPE" value="Saint Petersburg">Санкт-Петербург (г)</option><option data-code="SAR" value="Saratov Oblast">Саратовская (обл)</option><option data-code="SA" value="Sakha Republic (Yakutia)">Саха (респ)</option><option data-code="SAK" value="Sakhalin Oblast">Сахалинская (обл)</option><option data-code="SVE" value="Sverdlovsk Oblast">Свердловская (обл)</option><option data-code="SE" data-alternate-values="[&quot;Republic of North Ossetia?Alania&quot;]" value="Republic of North Ossetia–Alania">Северная Осетия (респ)</option><option data-code="SMO" value="Smolensk Oblast">Смоленская (обл)</option><option data-code="STA" value="Stavropol Krai">Ставропольский (край)</option><option data-code="TAM" value="Tambov Oblast">Тамбовская (обл)</option><option data-code="TA" value="Republic of Tatarstan">Татарстан (респ)</option><option data-code="TVE" value="Tver Oblast">Тверская (обл)</option><option data-code="TOM" value="Tomsk Oblast">Томская (обл)</option><option data-code="TUL" value="Tula Oblast">Тульская (обл)</option><option data-code="TY" value="Tyva Republic">Тыва (респ)</option><option data-code="TYU" value="Tyumen Oblast">Тюменская (обл)</option><option data-code="UD" value="Udmurtia">Удмуртская (респ)</option><option data-code="ULY" value="Ulyanovsk Oblast">Ульяновская (обл)</option><option data-code="KHA" value="Khabarovsk Krai">Хабаровский (край)</option><option data-code="KK" value="Republic of Khakassia">Хакасия (респ)</option><option data-code="KHM" value="Khanty-Mansi Autonomous Okrug">Ханты-Мансийский (АО)</option><option data-code="CHE" value="Chelyabinsk Oblast">Челябинская (обл)</option><option data-code="CE" value="Chechen Republic">Чеченская (респ)</option><option data-code="CU" value="Chuvash Republic">Чувашская (респ)</option><option data-code="CHU" value="Chukotka Autonomous Okrug">Чукотский (АО)</option><option data-code="YAN" value="Yamalo-Nenets Autonomous Okrug">Ямaло-Нeнецкий (АО)</option><option data-code="YAR" value="Yaroslavl Oblast">Ярослaвская (обл)</option></select>
+    <select placeholder="Регион" autocomplete="shipping address-level1" data-backup="province" data-google-places="administrative_area_level_1" class="field__input field__input--select" name="checkout_region" id="checkout_shipping_address_province"><option value="" disabled="">Регион</option><option data-code="MOW" value="Moscow">Москва (г)</option></select>
   </div>
 </div><div data-address-field="zip" class="field field--required field--quarter <?=$error['index']['class']?>">
   
