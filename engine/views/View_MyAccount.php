@@ -37,9 +37,13 @@
                 </ul>
             </div>
             <div class="myaccount_first_right right">
-                <h4>Аватар</h4>
+                <h4>Информация</h4>
                 <div class="myaccount_first_left_image">
-                    <p>Функция добавится в дальнейшем</p>
+                    <ul>
+                        <li><a href="/user/orders">Мои заказы</a></li>
+                        <li><a href="/user/addresses">Мои адреса</a></li>
+                        <li>Баллы: 3000</li>
+                    </ul>
                 </div>
                 <div class="myaccount_first_left_select"></div>
             </div>

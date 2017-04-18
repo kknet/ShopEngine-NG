@@ -51,19 +51,19 @@ class YandexYML extends ShopEngine{
             
             $offer .= '<offer available="'.$pickup.'" type="vendor.model" id="'.$cur['products_id'].'">
                             <price>'. ShopEngine::Help()->AsSimplePrice($cur['price']).'</price>
-                            <url>'.ShopEngine::GetHost().'/products/'.$cur['handle'].'</url>
+                            <url>'.ShopEngine::Help()->ReplaceASCII(ShopEngine::GetHost().'/products/'.$cur['handle']).'</url>
                             <currencyId>RUR</currencyId>
                             <pickup>true</pickup>
                             <delivery>true</delivery>
                             <picture>
-                                '.ShopEngine::GetHost().'/'.$cur['image'].'
+                                '.ShopEngine::Help()->ReplaceASCII(ShopEngine::GetHost().'/'.$cur['image']).'
                             </picture>
-                            <typePrefix>'.$cur['name'].'</typePrefix>
-                            <vendor>'.$cur['brand'].'</vendor>
-                            <model>'.$cur['title'].'</model>
+                            <typePrefix>'.ShopEngine::Help()->ReplaceASCII($cur['name']).'</typePrefix>
+                            <vendor>'.ShopEngine::Help()->ReplaceASCII($cur['brand']).'</vendor>
+                            <model>'.ShopEngine::Help()->ReplaceASCII($cur['title']).'</model>
                             <categoryId>'.$cur['category_id'].'</categoryId>
                             <description>
-                            '. ShopEngine::Help()->Clear($cur['name']).'
+                            '. ShopEngine::Help()->ReplaceASCII(ShopEngine::Help()->Clear($cur['description'])).'
                             </description>
                             <vendorCode/>
                             <sales_notes>Скидка 30% на профессиональное отбеливание</sales_notes>
@@ -110,7 +110,7 @@ class YandexYML extends ShopEngine{
         
         foreach($array as $cur)
         {
-            $categories .= '<category id="'.$cur['category_id'].'">'.$cur['name'].'</category>
+            $categories .= '<category id="'.$cur['category_id'].'">'.ShopEngine::Help()->ReplaceASCII($cur['name']).'</category>
                             ';
         }
         
@@ -121,7 +121,7 @@ class YandexYML extends ShopEngine{
     {
         
         $this->date       = date('Y-m-d H:s:m');
-        $this->name       = 'Потерпите, пожалуйста';
+        $this->name       = 'Потерпите, пожалуйста!';
         $this->comp_name  = 'YardCapital';
         $this->comp_url   = 'https://poterpite.ru';
         $this->categories = $this->GetCategories();
@@ -129,7 +129,7 @@ class YandexYML extends ShopEngine{
         $this->offers     = $this->GetOffers();
         
         
-        $this->body = ' <?xml version="1.0" encoding="windows-1251"?>
+        $this->body = '<?xml version="1.0" encoding="windows-1251"?>
                         <yml_catalog date="'.$this->date.'">
                         <shop>
                         <name>'.$this->name.'</name>

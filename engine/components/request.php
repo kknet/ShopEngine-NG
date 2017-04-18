@@ -45,15 +45,14 @@ class Request extends ShopEngine{
         return self::$get[$name];  
     }
     
-    public static function EraseFullSession()
+    public static function EraseFullSession($word = 'checkout')
     {
         $session = $_SESSION;
         foreach ($session as $key => $value) {
-            if($key === 'ok' OR $key === 'shipper_price' OR $key === 'full_price' OR $key === 'last_order_id' OR strpos($key, 'user') === 0) 
+            if(strpos($key, $word) === 0)
             {
-                continue;
+                unset($_SESSION[$key]);
             }
-            unset($_SESSION[$key]);
         }
     }
 

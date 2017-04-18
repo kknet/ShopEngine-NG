@@ -4,7 +4,7 @@ class Controller_Catalog extends Controller
 {   
     public static function GetData()
     {    
-        ShopEngine::Help()->MakeYML();
+        //ShopEngine::Help()->MakeYML();
         
         $category = ShopEngine::GetAction();
         

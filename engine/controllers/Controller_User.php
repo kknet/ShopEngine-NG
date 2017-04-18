@@ -145,7 +145,6 @@ class Controller_User extends Controller{
         }
         
         $sql       = "SELECT * FROM user_addresses a "
-                . "RIGHT OUTER JOIN cities c ON a.address_city = c.city_id "
                 . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_id "
                 . "RIGHT OUTER JOIN region r ON a.address_region = r.region_id "
                 . "WHERE address_user=?";
@@ -164,21 +163,89 @@ class Controller_User extends Controller{
     
     public function Addresses()
     {
-        $id = Request::GetSession('user_id');
+        $id  = Request::GetSession('user_id');
+        $opt = ShopEngine::GetOption();
         
         if(!Request::GetSession('user_is_logged'))
         {
             ShopEngine::Help()->StrongRedirect('user', 'login');
         }
         
-        $sql       = "SELECT * FROM user_addresses a "
-                . "RIGHT OUTER JOIN cities c ON a.address_city = c.city_id "
-                . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_id "
-                . "RIGHT OUTER JOIN region r ON a.address_region = r.region_id "
+        //If sended form "address_chenge"
+        if(Request::Post('address_change'))
+        {
+            $csrf = Request::Post('csrf');
+            
+            if(!ShopEngine::Help()->ValidateToken($csrf))
+            {
+                return ShopEngine::GoHome();
+            }
+            
+            $addid = Request::Post('address_change');
+            
+            if(Controller::GetModel()->ChangeAddress($addid))
+            {
+                return ShopEngine::Help()->RegularRedirect('user', 'addresses');
+            }
+            
+            $red = false;
+            
+        }
+        
+        if(Request::Post('address_new'))
+        {
+            $csrf = Request::Post('csrf');
+            
+            if(!ShopEngine::Help()->ValidateToken($csrf))
+            {
+                return ShopEngine::GoHome();
+            }
+            
+            if(Controller::GetModel()->NewAddress())
+            {
+                return ShopEngine::Help()->RegularRedirect('user', 'addresses');
+            }
+            
+            $new = false;
+        }
+        
+        //Option
+        if($opt === 'red')
+        {
+            
+            $red_id = Request::Get('addid');
+            
+            if(!$red_id)
+            {
+                $red = false;
+            }
+            
+            $red = Controller::GetModel()->GetAddress($red_id);
+            
+            if(count($red) < 1)
+            {
+                $red = false;
+            }
+            
+        }
+        
+        if($opt === 'new')
+        {
+            $new = true;
+        }
+        
+        $sql    = "SELECT * FROM user_addresses a "
+                . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_handle "
+                . "RIGHT OUTER JOIN region r ON a.address_region = r.region_handle "
                 . "WHERE address_user=?";
         $addresses = Getter::GetFreeData($sql, [$id], false);
         
-        return $addresses;
+        return [
+            'addresses' => $addresses,
+            'red'       => $red,
+            'change'    => $change,
+            'new'       => $new
+        ];
         
     }
     

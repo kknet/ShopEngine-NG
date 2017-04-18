@@ -265,6 +265,11 @@ class Help
         }
     }
     
+    public function RegularRedirect($controller, $action)
+    {
+        header( "Location: /$controller/$action", true, 301 );
+    }
+    
     public function IndexRedirect()
     {
         $route = ShopEngine::GetRoute();
@@ -506,6 +511,13 @@ class Help
             'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
         );
         return strtr($string, $converter);
+    }
+    
+    public function ReplaceASCII($str)
+    {   
+        $find = ['\"', '&', '>', '<', '\''];
+        $repl = ['&quot;', '&amp;', '&gt;', '&lt;', '&apos;'];
+        return str_replace($find, $repl, $str);
     }
 
 }

@@ -9,8 +9,27 @@ window.onload = function() {
         min_ac   =  document.querySelector(".add_to_cart_minus"), 
         pls_ac   =  document.querySelector(".add_to_cart_plus"),
         quant_ac =  document.getElementById("Quantity"),
-        quant    =  document.querySelectorAll(".cart_update");
-        search   =  document.querySelector(".site-header__search-input");
+        quant    =  document.querySelectorAll(".cart_update"),
+        search   =  document.querySelector(".site-header__search-input"),
+        add_del  =  document.querySelectorAll(".delete_address");
+
+    if(add_del) {
+        
+        console.log(add_del);
+        
+        for(var i = 0; i < add_del.length; i++) { 
+            var data = {
+                add_id : add_del[i].getAttribute('data-id'),
+                csrf   : add_del[i].getAttribute('data-csrf')
+            }
+
+            add_del[i].prototype = data;
+
+            add_del[i].addEventListener("click", function(e) {
+                DeleteAddress(this.prototype.add_id, this.prototype.csrf);
+            });
+         }   
+    }
 
     if(min_ac) {
         min_ac.addEventListener("click", function(e){
@@ -311,3 +330,37 @@ function Plus_ac(e) {
         e.value = 99;
     }
 };
+
+function DeleteAddress(id, csrf) {
+    var status = confirm("Вы уверены, что хотите удалить этот адрес?");
+    
+    if(!status)
+    {
+        return false;
+    }
+    
+    /* jQuery */
+    
+        $.ajax({
+            type:'POST',
+            url:'/ajax/addressdelete',
+            data:{
+                'id':id,
+                'csrf':csrf
+            },
+            dataType: 'html',
+            cache:false,
+            beforeSend: function () {
+                //$('#pre_loading').fadeIn(50);
+            },
+            success: function(data) {
+                if(data === '1') {
+                    window.location.reload();
+                }
+                else {
+                    throw Error("Произошла ошибка " + data);
+                }
+            }
+        });
+    /* End of jQuery */
+}

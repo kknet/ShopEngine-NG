@@ -69,16 +69,16 @@
       
       
         <p>
-          <?=$start['addresses'][0]['city_name']?><br>
+          <?=$start['addresses'][0]['address']?><br>
 
+          
+
+          
+            <?=$start['addresses'][0]['address_city']?><br>
           
 
           
             <?=$start['addresses'][0]['region_name']?><br>
-          
-
-          
-            YEV<br>
           
 
           
@@ -97,7 +97,7 @@
       <?php }  ?>
       
 
-      <p><a href="/user/addresses">Просмотреть Адреса (2)</a></p>
+      <p><a href="/user/addresses">Просмотреть Адреса</a></p>
     </div>
   </div>
 </div>

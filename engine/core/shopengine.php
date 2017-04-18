@@ -15,6 +15,7 @@ class ShopEngine {
     protected static $help       = NULL;
     protected static $route      = NULL;
     protected static $act        = NULL;
+    protected static $opt        = NULL;
     protected static $ip         = NULL;
     
     protected static $query      = NULL;
@@ -25,6 +26,12 @@ class ShopEngine {
     protected static $total;
     public static $sql;
     public static $params;
+    
+    public static function GoHome()
+    {
+        //Temp
+        return ShopEngine::Help()->StrongRedirect('catalog', 'all');
+    }
     
     // Получить информацию
     public static function GetInformation()
@@ -137,6 +144,29 @@ class ShopEngine {
             }
         }
         return Self::$act;
+    }
+    
+    public static function GetOption()
+    {
+        if(Self::$opt === NULL)
+        {
+            $routes = ShopEngine::GetRoute();
+
+            if(!empty($routes[3])) 
+            {
+                $get = strpos($routes[3], '?');
+                if(!$get) {
+                    Self::$opt = ShopEngine::Help()->Clear($routes[3]);
+                } else {
+                    Self::$opt = ShopEngine::Help()->Clear(substr($routes[3], 0, $get));
+                }
+            }
+            else 
+            {
+                Self::$opt = NULL;
+            }
+        }
+        return Self::$opt;
     }
     
     public static function GetUserIp()

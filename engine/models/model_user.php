@@ -340,4 +340,107 @@ class Model_User extends Model {
         
     }
     
+    public function GetAddress($id)
+    {
+        $sql =    "SELECT * FROM user_addresses a "
+                . "RIGHT OUTER JOIN countries co ON a.address_country = co.country_handle "
+                . "RIGHT OUTER JOIN region r ON a.address_region = r.region_handle "
+                . "WHERE address_id=?";
+        return  Getter::GetFreeData($sql, [$id]);
+    }
+    
+    public function ChangeAddress($id)
+    {
+        $db   = database::getInstance();
+        $post = Request::Post();
+        
+        if(!$post)
+        {
+            return false;
+        }
+        
+        if(!$post['address_address'] OR !$post['address_city'] OR !$post['address_index'] OR !is_int($post['address_new_index']) OR !$post['address_phone'])
+        {
+            return false;
+        }
+        
+        $sql  = "UPDATE user_addresses SET address_name=:name, address_last_name=:last_name, address_company=:company, address_optional=:optional, address=:address, address_city=:city, address_country=:country, address_region=:region, address_phone=:phone WHERE address_id=:id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":name", $post['address_first_name']);
+        $stmt->bindParam(":last_name", $post['address_last_name']);
+        $stmt->bindParam(":company", $post['address_company']);
+        $stmt->bindParam(":optional", $post['address_optional']);
+        $stmt->bindParam(":address", $post['address_address']);
+        $stmt->bindParam(":city", $post['address_city']);
+        $stmt->bindParam(":country", $post['address_country']);
+        $stmt->bindParam(":region", $post['address_region']);
+        $stmt->bindParam(":phone", $post['address_phone']);
+        $stmt->bindParam(":id", $id);
+        
+        if($stmt->execute())
+        {
+            return true;
+        }
+        
+    }
+    
+    public function NewAddress()
+    {
+        $db      = database::getInstance();
+        $post    = Request::Post();
+        $user_id = Request::GetSession('user_id');
+        
+        if(!$post)
+        {
+            return false;
+        }
+        
+        if(!$post['address_new_address'] OR !$post['address_new_city'] OR !$post['address_new_index'] OR !is_int($post['address_new_index']) OR !$post['address_new_phone'])
+        {
+            return false;
+        }
+        
+        $sql = "INSERT INTO user_addresses ("
+                . "address_user, "
+                . "address_name, "
+                . "address_last_name, "
+                . "address_company, "
+                . "address_optional, "
+                . "address, "
+                . "address_country, "
+                . "address_region, "
+                . "address_index, "
+                . "address_phone) "
+                . "VALUES("
+                . ":user,"
+                . ":name,"
+                . ":last,"
+                . ":company,"
+                . ":optional,"
+                . ":address,"
+                . ":country,"
+                . ":region,"
+                . ":index,"
+                . ":phone"
+                . ")";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":user", $user_id);
+        $stmt->bindParam(":name", $post['address_new_first_name']);
+        $stmt->bindParam(":last", $post['address_new_last_name']);
+        $stmt->bindParam(":company", $post['address_new_company']);
+        $stmt->bindParam(":optional", $post['address_new_optional']);
+        $stmt->bindParam(":address", $post['address_new_address']);
+        $stmt->bindParam(":country", $post['address_new_country']);
+        $stmt->bindParam(":region", $post['address_new_region']);
+        $stmt->bindParam(":index", $post['address_new_index']);
+        $stmt->bindParam(":phone", $post['address_new_phone']);
+        
+        if($stmt->execute())
+        {
+            Request::EraseFullSession('address');
+            return true;
+        }
+    }
+    
 }

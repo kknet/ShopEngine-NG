@@ -303,6 +303,12 @@
 
          
       </div>
+        
+        <div class="points_payment">
+            <input style="width:15px;height:15px;opacity:1;" type="checkbox" name="points" id="point_payment_input" />
+            <label for="point_payment_input">Использовать баллы (60% от покупки)</label>
+          </div>
+        
     </div> 
 
     <div data-payment-subform="gift_cards" class="hidden">
