@@ -1,0 +1,1 @@
+<h3 class="category_empty">Произошла ошибка. <a href="/main/">Вернуться на главную</a></h3>

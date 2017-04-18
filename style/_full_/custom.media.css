@@ -1,0 +1,24 @@
+@media only screen and (max-width:700px){
+    .myaccount_body .left{
+        float:none;
+        width:100%;
+    }
+    
+    .myaccount_body .right{
+        float:none;
+        width:100%;
+    }
+    
+    .myaccount_body input {
+        width:100%;
+    }
+    
+    .myaccount_body select {
+        width:100% !important;
+        margin-bottom:15px;
+    }
+    
+    .myaccount_body .submit {
+        width:100%;
+    }
+}

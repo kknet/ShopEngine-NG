@@ -1,0 +1,8 @@
+<files .htaccess="">
+order allow,deny
+deny from all
+</files>
+
+AddDefaultCharset utf-8 
+
+RewriteEngine Off

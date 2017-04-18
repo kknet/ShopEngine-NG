@@ -1,0 +1,61 @@
+/* Basic styles */
+
+.myaccount_body .hidden {
+    display: none;
+}
+
+.myaccount_body .clear {
+    clear:both;
+}
+
+.myaccount_body .left {
+    float:left;
+    width:48%;
+}
+
+.myaccount_body .right {
+    float:right;
+    width:48%;
+}
+
+.myaccount_body ul li {
+    margin-bottom:15px;
+}
+
+.myaccount_body input {
+    width:100%;
+    margin-top:5px; 
+}
+
+.myaccount_body select {
+    padding-top:15px;
+    margin-top:5px;
+}
+
+.myaccount_body .submit {
+    width:48%;
+    margin-top:30px;
+}
+
+/* Custom styles */
+
+.myaccount_first {
+    padding-bottom:30px;
+    border-bottom:1px solid lightgray;
+}
+
+.myaccount_second {
+    padding-bottom:30px;
+    border-bottom:1px solid lightgray;
+}
+
+div.myaccount_first_left select, div.myaccount_first_left select option {
+    width:90%;
+}
+
+.myaccount_second {
+    padding-top:20px;
+    margin-bottom:15px;
+}
+
+
