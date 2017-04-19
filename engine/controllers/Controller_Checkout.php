@@ -1,4 +1,12 @@
 <?php
+/*
+ * This is Checkout Controller. 
+ * At this step we need to:
+ * 1. Get products from cart;
+ * 2. Get contact information and payment method from user;
+ * 3. Calculate full price;
+ * 4. Set all information to database and generate page with information;
+ */
 
 class Controller_Checkout extends Controller{
     
@@ -16,8 +24,17 @@ class Controller_Checkout extends Controller{
 
     public function step1()
     {
+        /*
+         * 
+         *    First step
+         * 1. Getting information about products in cart;
+         * 2. Getting information from user (address, phone etc.);
+         * 3. Entering all information into session;
+         */
+        
         $ip = ShopEngine::GetUserIp();
         $sql = "SELECT * FROM order_products WHERE orders_ip=? AND orders_status='0'";
+        //If we have no products in cart
         if(!Getter::GetFreeData($sql, [$ip]))
         {
             Route::ErrorPage404();   
@@ -42,6 +59,7 @@ class Controller_Checkout extends Controller{
 
         }
         
+        //If user is logged we have to get all contact information about him
         if(Request::GetSession('user_is_logged'))
         {
             $id  = Request::GetSession('user_id');
@@ -60,6 +78,13 @@ class Controller_Checkout extends Controller{
     
     public function step2()
     {
+        /* 
+         * Second step
+         * 1. Get information about delivery method in selected place;
+         * 2. Show this information to user;
+         * 3. Get new information from user;
+         * 4. Recalculate price;
+         */
         if(Request::Post('checkout_step2')) 
         {
             $csrf = Request::Post('csrf');
@@ -70,11 +95,7 @@ class Controller_Checkout extends Controller{
             
             // Shipping price and type
             
-            $ship_id = Request::Post('checkout_ship_id');
-            $sql = "SELECT shipper_type, shipper_price FROM shipper WHERE shipper_id=?";
-            $array = Getter::GetFreeData($sql, [$ship_id]);
-            Request::SetSession('shipper_name', $array['shipper_type']);
-            Request::SetSession('shipper_price', $array['shipper_price']);
+            Controller::GetModel()->SetShipper();
             
             // Full Price
             $full = self::GetCheckoutPrice();
@@ -97,12 +118,24 @@ class Controller_Checkout extends Controller{
     
     public function step3()
     {
+        /*
+         * 
+         * Pre final step
+         * 1. Show information about payment methods;
+         * 2. Get method from user;
+         * 3. If user wants to use his poits to pay, recalculate full price and amount of points;
+         */
+        
         if(!Request::GetSession('step2')) 
         {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
         }
         
         $price = self::GetPreFinalPrice();
+        if(is_array($price))
+        {   
+            $price = $price['final'];
+        } 
         $shipp = Request::GetSession('shipper_price');
         Request::SetSession('full_price', $price + $shipp);
         
@@ -131,6 +164,13 @@ class Controller_Checkout extends Controller{
     
     public function thank_you()
     {
+        /*
+         * 
+         * Final step
+         * 1. Show full information about purchase;
+         * 2. Generate link to this page;
+         * 3. Generate bill for payment;
+         */
         $key = ShopEngine::Help()->Clear($_GET['orderid']);
         if(!$key) {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step3'); 

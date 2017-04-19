@@ -161,3 +161,8 @@
 ( 2017-04-18 19:00:40 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
 ( 2017-04-18 19:01:38 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
 ( 2017-04-18 19:08:23 (MSK) ) Выброшено исключение: You must provide at least one recipient email address.
+( 2017-04-19 14:47:07 (MSK) ) Выброшено исключение: SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+( 2017-04-19 14:49:51 (MSK) ) Выброшено исключение: SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+( 2017-04-19 14:53:48 (MSK) ) Выброшено исключение: SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+( 2017-04-19 15:58:38 (MSK) ) Выброшено исключение: SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+( 2017-04-19 17:38:58 (MSK) ) Выброшено исключение: SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting

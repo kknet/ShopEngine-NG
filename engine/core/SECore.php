@@ -369,6 +369,10 @@ function GetCheckoutPrice() {
 }
 function GetPreFinalPrice() {
     $price = ShopEngine::GetController()::GetPreFinalPrice();
+    if(is_array($price))
+    {
+        $price = $price['final'];
+    }
     return ShopEngine::Help()->AsPrice($price);
 }
 function GetFinalPrice() {
@@ -380,6 +384,10 @@ function GetFinalPrice() {
 
 function GetProfileCount() {
         $GLOBALS['controller']->GetCount();
+}
+
+function GetUserInfo() {
+    return Controller_User::GetUserInfo();
 }
 
 /* Функции для вывода истории заказов */

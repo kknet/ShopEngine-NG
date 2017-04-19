@@ -74,6 +74,11 @@ class Route
                 Route::ErrorPage404();
         }
         
+//        if($start === false)
+//        {
+//            ShopEngine::Help()->Refresh();
+//        }
+        
         // Include view 
         $view_name = ShopEngine::GetController()::SetView();
         //

@@ -32,7 +32,10 @@ class Business {
         
         Request::SetSession('checkout_new_points', $points);
         
-        return $final;
+        return [
+            'final'  => $final,
+            'points' => $points
+        ];
         
     }
     

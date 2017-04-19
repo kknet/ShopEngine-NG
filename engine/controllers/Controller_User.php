@@ -1,4 +1,8 @@
 <?php
+/*
+ * 
+ * This is User Controller
+ */
 
 class Controller_User extends Controller{
    
@@ -8,12 +12,34 @@ class Controller_User extends Controller{
         return 'act+';
     }
     
+    //Displaying user information
+    public static function GetUserInfo()
+    {
+        /*
+         * 
+         * In some cases, it is more appropriate to create a separate methods for manipulating data and displaying this data to the user
+         */
+        if(!Request::GetSession('user_is_logged'))
+        {
+            ShopEngine::Help()->RegularRedirect('user', 'login');
+        }
+        
+        if(!ShopEngine::Help()->ValidateUser())
+        {
+            return ShopEngine::Help()->RegularRedirect("user", 'logout');
+        }
+        
+        $id   = Request::GetSession('user_id');
+        $sql  = "SELECT * FROM users WHERE users_id=?";
+        return Getter::GetFreeData($sql, [$id]);
+    }
+    
     //Actions
     public function LogIn()
     {
         if(Request::GetSession('user_is_logged'))
         {
-            ShopEngine::Help()->StrongRedirect('user', 'account');
+            ShopEngine::Help()->RegularRedirect('user', 'account');
         }
         
         if(Request::Post('login'))
@@ -27,7 +53,7 @@ class Controller_User extends Controller{
             
             if(controller::GetModel()->Login())
             {
-                return ShopEngine::Help()->StrongRedirect("user", 'account');
+                return ShopEngine::Help()->RegularRedirect("user", 'account');
             }
             else {
                 Request::SetSession('error_login_message', 'error');
@@ -86,7 +112,7 @@ class Controller_User extends Controller{
 
                         if(Controller::getModel()->Finish($post))
                         {
-                            return ShopEngine::Help()->StrongRedirect("user", 'login');
+                            return ShopEngine::Help()->RegularRedirect("user", 'login');
                         }
                     } 
                     return true;
@@ -101,7 +127,12 @@ class Controller_User extends Controller{
     {
         if(!Request::GetSession('user_is_logged'))
         {
-            ShopEngine::Help()->StrongRedirect('user', 'login');
+            ShopEngine::Help()->RegularRedirect('user', 'login');
+        }
+        
+        if(!ShopEngine::Help()->ValidateUser())
+        {
+            return ShopEngine::Help()->RegularRedirect("user", 'logout');
         }
         
         if(Request::Post('user_account_change'))
@@ -110,9 +141,9 @@ class Controller_User extends Controller{
             
             if(!ShopEngine::Help()->ValidateToken($csrf))
             {
-                return false;
+                return ShopEngine::Help()->RegularRedirect("user", 'logout');
             }
-            
+        
             if(Request::Post('myaccount_new_password') OR Request::Post('myaccount_old_password') OR Request::Post('myaccount_new_repassword'))
             {
                 if(!Controller::GetModel()->PasswordChange())
@@ -121,22 +152,26 @@ class Controller_User extends Controller{
                 }
             }
             
-            if(Controller::GetModel()->UserChange())
+            if(!Controller::GetModel()->UserChange())
             {
-                return ShopEngine::Help()->StrongRedirect("user", 'account');
+                return false;
             }
+            
+            return ShopEngine::Help()->RegularRedirect('user', 'account');
         }
         
-        $id  = Request::GetSession('user_id');
-        $sql = "SELECT * FROM users WHERE users_id=?";
-        return Getter::GetFreeData($sql, [$id]);
     }
     
     public function Orders()
     {
         if(!Request::GetSession('user_is_logged'))
         {
-            ShopEngine::Help()->StrongRedirect('user', 'login');
+            ShopEngine::Help()->RegularRedirect('user', 'login');
+        }
+        
+        if(!ShopEngine::Help()->ValidateUser())
+        {
+            return false;
         }
         
         $id     = Request::GetSession('user_id');
@@ -167,12 +202,17 @@ class Controller_User extends Controller{
     
     public function Addresses()
     {
+        if(!ShopEngine::Help()->ValidateUser())
+        {
+            return false;
+        }
+        
         $id  = Request::GetSession('user_id');
         $opt = ShopEngine::GetOption();
         
         if(!Request::GetSession('user_is_logged'))
         {
-            ShopEngine::Help()->StrongRedirect('user', 'login');
+            ShopEngine::Help()->RegularRedirect('user', 'login');
         }
         
         //If sended form "address_chenge"
@@ -265,15 +305,19 @@ class Controller_User extends Controller{
     {
         if(!Request::GetSession('user_is_logged'))
         {
-            return ShopEngine::Help()->StrongRedirect('user', 'login');
+            return ShopEngine::Help()->RegularRedirect('user', 'login');
         }
+        
+        Request::EraseUserSession();
+        
+        var_dump($_SESSION);
         
         if(Request::EraseUserSession())
         {
-            return ShopEngine::Help()->StrongRedirect('user', 'login');
+            return ShopEngine::Help()->RegularRedirect('user', 'login');
         }
         
-        return ShopEngine::Help()->StrongRedirect('user', 'login');
+        return ShopEngine::Help()->RegularRedirect('user', 'login');
     }
 
     //Set view name
@@ -292,7 +336,7 @@ class Controller_User extends Controller{
             case 'account':
                 return 'View_MyAccount';
             case 'logout':
-                return 'View_MyAccount';
+                return 'View_Login';
             case 'orders':
                 return 'View_Orders';
             case 'addresses':

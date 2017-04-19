@@ -270,6 +270,12 @@ class Help
         header( "Location: /$controller/$action", true, 301 );
     }
     
+    public function Refresh()
+    {
+        $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        header("location: $actual_link", true, 301);
+    }
+    
     public function IndexRedirect()
     {
         $route = ShopEngine::GetRoute();
@@ -519,5 +525,20 @@ class Help
         $repl = ['&quot;', '&amp;', '&gt;', '&lt;', '&apos;'];
         return str_replace($find, $repl, $str);
     }
+    
+    public function ValidateUser()
+    {
+        $id = Request::GetSession('user_id');
+        $sql  = "SELECT * FROM users WHERE users_id=?";
+        $user = Getter::GetFreeData($sql, [$id]);
+        
+        if($user['users_temp_token'] !== Request::GetSession('user_token'))
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
 
 }

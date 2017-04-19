@@ -134,11 +134,22 @@ class Model_Checkout extends Model {
         
     }
     
+    public function SetShipper()
+    {
+        $ship_id = Request::Post('checkout_ship_id');
+        $sql = "SELECT shipper_id, shipper_type, shipper_price FROM shipper WHERE shipper_id=?";
+        $array = Getter::GetFreeData($sql, [$ship_id]);
+        Request::SetSession('shipper_name', $array['shipper_type']);
+        Request::SetSession('shipper_price', $array['shipper_price']);
+        Request::SetSession('shipper_id', $array['shipper_id']);
+    }
+    
     public function FinishCheckout()
     {
         $db = database::getInstance();
         
         $sql = "INSERT INTO orders ("
+                . "orders_users_id, "
                 . "orders_price, "
                 . "orders_shipping,"
                 . "orders_name, "
@@ -165,6 +176,7 @@ class Model_Checkout extends Model {
                 . "orders_status,"
                 . "orders_date "
                 . " ) VALUES("
+                . ":user,"
                 . ":price,"
                 . ":shipping,"
                 . ":name,"
@@ -192,9 +204,28 @@ class Model_Checkout extends Model {
                 . "NOW()"
                 . ")";
         
+                
+                //calculating full checkout price
+                $shipper_id    = Request::GetSession('shipper_id');
+                $sql_temp      = "SELECT shipper_type, shipper_price FROM shipper WHERE shipper_id=?";
+                $temp          = Getter::GetFreeData($sql_temp, [$shipper_id]);
+                $shipper_name  = $temp['shipper_type'];
+                $shipper_price = $temp['shipper_price'];
+                $final = Controller_Checkout::GetPreFinalPrice();
+                if(is_array($final))
+                {
+                    $final = $final['final'];
+                }
+                $full          = $final + $shipper_price;
+                $user_id = Request::GetSession("user_id");
+        
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam(":price", Request::GetSession('full_price'));
-                $stmt->bindParam(":shipping", Request::GetSession('shipper_name'));
+                if(!$user_id) {
+                    $user_id = 0;
+                }
+                $stmt->bindParam(":price", $full);
+                $stmt->bindParam(":shipping", $shipper_name);
+                $stmt->bindParam(":user", $user_id);
                 $stmt->bindParam(":name", Request::GetSession('checkout_name'));
                 $stmt->bindParam(":last_name", Request::GetSession('checkout_last_name'));
                 $stmt->bindParam(":company", Request::GetSession('checkout_company'));
@@ -235,6 +266,8 @@ class Model_Checkout extends Model {
                     // Add order key
                     $key = sha1($id).uniqid(20);
                     
+                    
+                    // Send Email
                     $mailfrom = 'info@poterpite.ru';
                     $mailto   = Request::GetSession('checkout_email');
                     $subject  = 'Спасибо за заказ!';
@@ -262,7 +295,7 @@ class Model_Checkout extends Model {
                     {
                         $sql = "UPDATE users SET users_points=:points WHERE users_id=:id";
                     
-                        $points = Request::GetSession('checkout_new_points');
+                        $points = Controller_Checkout::GetPreFinalPrice()['points'];
                         $points = (int)$points;
                         $id     = Request::GetSession('user_id');
 

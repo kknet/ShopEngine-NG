@@ -37,7 +37,7 @@
                     	<?= $status ?>
                     
                   </td>
-                  <td data-label="Всего"><?=ShopEngine::Help()->AsPrice($order['orders_date'])?></td>
+                  <td data-label="Всего"><?=ShopEngine::Help()->AsPrice($order['orders_price'])?></td>
                   <td>
                     <a target="_blank" href="http://order.blackberryrussia.com/pdf/index.php?id=4802676291&amp;site=poterpite">Cчет</a>
                     &nbsp;/&nbsp;

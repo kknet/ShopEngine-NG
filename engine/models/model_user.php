@@ -151,23 +151,31 @@ class Model_User extends Model {
             return false;
         }
         
-        $sql  = "SELECT * FROM users WHERE users_email=?";
+        $sql  = "SELECT * FROM users WHERE users_email=? AND users_active='1'";
         $user = Getter::GetFreeData($sql, [$post['login_email']], true);
+        
+        $token = sha1(uniqid(rand(), true).md5($user['users_email']));
+        
         if(count($user) > 0)
         {
+            
             if(password_verify($post['login_password'], $user['users_password']))
             {   
                 Request::SetSession('user_id', $user['users_id']);
+                Request::SetSession('user_email', $user['users_email']);
+                Request::SetSession('user_token', $token);
+                
+                $sql  = "UPDATE users SET users_temp_token=:token WHERE users_id=:id";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam(":token", $token);
+                $stmt->bindParam(":id", $user['users_id']);
+                
+                if(!$stmt->execute())
+                {
+                    return false;
+                }
+                
                 Request::SetSession('user_is_logged', true);
-                Request::SetSession('user_email', $user['users_email']);
-                Request::SetSession('user_name', $user['users_name']);
-                Request::SetSession('user_last_name', $user['users_last_name']);
-                Request::SetSession('user_patronymic', $user['users_patronymic']);
-                Request::SetSession('user_gender', $user['users_gender']);
-                Request::SetSession('user_date_of_birth', $user['users_date_of_birth']);
-                Request::SetSession('user_email', $user['users_email']);
-                Request::SetSession('user_phone', $user['users_phone']);
-                Request::SetSession('user_act_phone', $user['users_act_phone']);
                 return true;
             }
         }
@@ -247,27 +255,7 @@ class Model_User extends Model {
 
         if($stmt->execute())
         {
-            $sql   = "SELECT * FROM users WHERE users_id=?";
-            $user = Getter::GetFreeData($sql, [$id], true);
-
-            if(count($user) < 1)
-            {
-                return false;
-            }
-
-            Request::SetSession('user_is_logged', true);
-            Request::SetSession('user_email', $user['users_email']);
-            Request::SetSession('user_name', $user['users_name']);
-            Request::SetSession('user_last_name', $user['users_last_name']);
-            Request::SetSession('user_patronymic', $user['users_patronymic']);
-            Request::SetSession('user_gender', $user['users_gender']);
-            Request::SetSession('user_date_of_birth', $user['users_date_of_birth']);
-            Request::SetSession('user_email', $user['users_email']);
-            Request::SetSession('user_phone', $user['users_phone']);
-            Request::SetSession('user_act_phone', $user['users_act_phone']);
-
             Request::PostUnset();
-            
             return true;
         }
 
@@ -281,8 +269,6 @@ class Model_User extends Model {
         $op   = Config::Password();
         $post = Request::Post();
         
-        var_dump($post);
-        
         if(!$post['myaccount_old_password'])
         {
             Request::SetSession('error_account_old_password', 'Это поле не может быть пустым');
@@ -291,13 +277,13 @@ class Model_User extends Model {
         
         if(!$post['myaccount_new_password'] OR strlen($post['myaccount_new_password']) < 6)
         {
-            Request::SetSession('error_account_new_password', 'Это должно содержать минимум 6 символов');
+            Request::SetSession('error_account_new_password', 'Это поле должно содержать минимум 6 символов');
             return false;
         }
         
         if(!$post['myaccount_new_repassword'] OR strlen($post['myaccount_new_repassword']) < 6)
         {
-            Request::SetSession('error_account_new_repassword', 'Это должно содержать минимум 6 символов');
+            Request::SetSession('error_account_new_repassword', 'Это поле должно содержать минимум 6 символов');
             return false;
         }
         
@@ -409,6 +395,7 @@ class Model_User extends Model {
                 . "address, "
                 . "address_country, "
                 . "address_region, "
+                . "address_city, "
                 . "address_index, "
                 . "address_phone) "
                 . "VALUES("
@@ -420,6 +407,7 @@ class Model_User extends Model {
                 . ":address,"
                 . ":country,"
                 . ":region,"
+                . ":city,"
                 . ":index,"
                 . ":phone"
                 . ")";
@@ -433,6 +421,7 @@ class Model_User extends Model {
         $stmt->bindParam(":address", $post['address_new_address']);
         $stmt->bindParam(":country", $post['address_new_country']);
         $stmt->bindParam(":region", $post['address_new_region']);
+        $stmt->bindParam(":city", $post['address_new_city']);
         $stmt->bindParam(":index", $post['address_new_index']);
         $stmt->bindParam(":phone", $post['address_new_phone']);
         

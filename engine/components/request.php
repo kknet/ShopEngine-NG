@@ -110,7 +110,7 @@ class Request extends ShopEngine{
     
     public static function EraseUserSession()
     {
-        $session = $_SESSION;
+        $session = Request::GetSession();
         foreach ($session as $key => $value)
         {
             if(strpos($key, 'user') === 0)
@@ -118,6 +118,8 @@ class Request extends ShopEngine{
                 unset($_SESSION[$key]);
             }
         }
+        
+        return true;
     }
     
 }
