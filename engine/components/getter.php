@@ -2,13 +2,13 @@
 
 class Getter extends ShopEngine{
     
-    public static function GetFreeData($sql, $params = NULL, $type = true)
+    public static function GetFreeData($sql, array $params = NULL, $type = true)
     {
         $db = database::getInstance();
         
         if($params)
         {
-            $query = $db->prepare($sql);
+            $query  = $db->prepare($sql);
             $result = $query->execute($params);
             if($result) {
                 $array = $query->fetchAll();

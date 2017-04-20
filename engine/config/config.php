@@ -12,7 +12,8 @@ class Config {
             'pages',
             'section',
             'search',
-            'user'
+            'user',
+            'errorpage'
         ],
         'site_name' => 'Потерпите, пожалуйста!',
         'protocol'  => 'http://',

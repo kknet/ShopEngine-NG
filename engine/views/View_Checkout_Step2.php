@@ -218,24 +218,26 @@
 
 
             <div class="content-box" data-shipping-methods="">
-        <?php foreach($shipp as $shipper) { ?>
-            <div class="content-box__row">
-                <div class="radio-wrapper" data-shipping-method="<?= $shipper['shipper_id']?>">
-                    <div class="radio__input">
-                        <input class="input-radio" data-checkout-total-shipping="<?= $shipper['shipper_price']?>" data-checkout-total-shipping-cents="0" data-checkout-shipping-rate="Бесплатно" data-checkout-original-shipping-rate="Бесплатно" data-checkout-total-taxes="0.00 р." data-checkout-total-taxes-cents="0" data-checkout-total-price="<?= GetCheckoutPrice()?>" data-checkout-total-price-cents="" data-checkout-payment-due="<?= GetCheckoutPrice()?>" data-checkout-payment-due-cents="" data-checkout-payment-subform="required" data-checkout-subtotal-price="<?= GetCheckoutPrice()?>" data-checkout-subtotal-price-cents="" data-backup="shopify-%D0%A1%D0%B0%D0%BC%D0%BE%D0%B2%D1%8B%D0%B2%D0%BE%D0%B7%20%D0%B2%20%D0%B3.%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0-0.00" type="radio" value="<?= $shipper['shipper_id']?>" name="checkout_ship_id" id="checkout_shipping_rate_id_shopify-d0a1d0b0d0bcd0bed0b2d18bd0b2d0bed0b720d0b220d0b3d09cd0bed181d0bad0b2d0b0-000" checked="checked">
-                    </div>
-                    <label class="radio__label" for="checkout_shipping_rate_id_shopify-d0a1d0b0d0bcd0bed0b2d18bd0b2d0bed0b720d0b220d0b3d09cd0bed181d0bad0b2d0b0-000">
-                        <span class="radio__label__primary" data-shipping-method-label-title="<?= $shipper['shipper_type']?>">
-                            <?= $shipper['shipper_type']?>
+        <?php if($shipp) { ?>
+            <?php foreach($shipp as $shipper) { ?>
+                <div class="content-box__row">
+                    <div class="radio-wrapper" data-shipping-method="<?= $shipper['shipper_id']?>">
+                        <div class="radio__input">
+                            <input class="input-radio" data-checkout-total-shipping="<?= $shipper['shipper_price']?>" data-checkout-total-shipping-cents="0" data-checkout-shipping-rate="Бесплатно" data-checkout-original-shipping-rate="Бесплатно" data-checkout-total-taxes="0.00 р." data-checkout-total-taxes-cents="0" data-checkout-total-price="<?= GetCheckoutPrice()?>" data-checkout-total-price-cents="" data-checkout-payment-due="<?= GetCheckoutPrice()?>" data-checkout-payment-due-cents="" data-checkout-payment-subform="required" data-checkout-subtotal-price="<?= GetCheckoutPrice()?>" data-checkout-subtotal-price-cents="" data-backup="shopify-%D0%A1%D0%B0%D0%BC%D0%BE%D0%B2%D1%8B%D0%B2%D0%BE%D0%B7%20%D0%B2%20%D0%B3.%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0-0.00" type="radio" value="<?= $shipper['shipper_id']?>" name="checkout_ship_id" id="checkout_shipping_rate_id_shopify-d0a1d0b0d0bcd0bed0b2d18bd0b2d0bed0b720d0b220d0b3d09cd0bed181d0bad0b2d0b0-000" checked="checked">
+                        </div>
+                        <label class="radio__label" for="checkout_shipping_rate_id_shopify-d0a1d0b0d0bcd0bed0b2d18bd0b2d0bed0b720d0b220d0b3d09cd0bed181d0bad0b2d0b0-000">
+                            <span class="radio__label__primary" data-shipping-method-label-title="<?= $shipper['shipper_type']?>">
+                                <?= $shipper['shipper_type']?>
+                            </span>
+                        <span class="radio__label__accessory">
+                            <span class="content-box__emphasis">
+                                <?= $shipper['shipper_price']?>
+                            </span>
                         </span>
-                    <span class="radio__label__accessory">
-                        <span class="content-box__emphasis">
-                            <?= $shipper['shipper_price']?>
-                        </span>
-                    </span>
-                    </label>            
-                </div> <!-- /radio-wrapper-->
-         </div>
+                        </label>            
+                    </div> <!-- /radio-wrapper-->
+             </div>
+            <?php } ?>
         <?php } ?>
 
       </div> 

@@ -10,7 +10,7 @@
         <th>Всего</th>
       </thead>
       <tbody id="CartProducts">
-          
+        <?php if($array) { ?>
           <?php foreach ($array as $cur) { ?>
             <tr class="cart__row responsive-table__row">
             <td class="cart__cell--image text-center">
@@ -47,7 +47,8 @@
             </td>
           </tr>
           <?php } ?>
-        
+        <?php } ?>
+          
       </tbody>
     </table>
     <div class="grid cart__row">

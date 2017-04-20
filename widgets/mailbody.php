@@ -50,7 +50,7 @@ $body = '
           <tbody><tr>
             <td style="font-family:-apple-system,BlinkMacSystemFont,\''.'Segoe UI'.'\',\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif">
               
-            <h2 style="font-size:24px;font-weight:normal;margin:0 0 10px">Спасибо, '.$session['checkout_name'].' '.$session['checkout_last_ame'].', за Ваш заказ! </h2>
+            <h2 style="font-size:24px;font-weight:normal;margin:0 0 10px">Спасибо, '.$session['checkout_name'].' '.$session['checkout_last_name'].', за Ваш заказ! </h2>
             <p style="color:#777;font-size:16px;line-height:150%;margin:0">Здравствуйте, '.$session['checkout_name'].' '.$session['checkout_last_name'].', мы получили Ваш заказ и готовим его к отгрузке. Мы сообщим Вам, когда заказ будет отправлен.</p>
             
               <table class="m_-1216999618458073902row m_-1216999618458073902actions" style="border-collapse:collapse;border-spacing:0;margin-top:20px;width:100%">
@@ -217,7 +217,7 @@ $body .= '
   
   <br>
   
-  <br>'.$session['checkout_city'].', '.$session['checkout_region'].' '.$session['checkout_inder'].'
+  <br>'.$session['checkout_city'].', '.$session['checkout_region'].' '.$session['checkout_index'].'
   <br>Россия
 </p>
 
@@ -242,7 +242,7 @@ else {
             . ''.$session['checkout_billing_first_name'].' '.$session['checkout_billing_last_name'].'<br>'
             . ''.$session['checkout_billing_address'].''
             . '<br>
-            <br>'.$session['checkout_billing_city'].', '.$session['checkout_billing_region'].' '.$session['checkout_billing_inder'].'
+            <br>'.$session['checkout_billing_city'].', '.$session['checkout_billing_country'].' '.$session['checkout_billing_index'].'
             <br>Россия
             </p>
             </td>';

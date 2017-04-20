@@ -11,16 +11,15 @@ class Route
     private static $controller = NULL;
     
     static function start() 
-    {
-        
+    {   
         if(!ShopEngine::AllowControllers()) {
             ShopEngine::Help()->StrongRedirect('catalog', 'all');
         }
-        // Редиректим со старых адресов
+        // Redirect
             ShopEngine::Help()->IndexRedirect();
         //
         
-        // Получаем названия контроллера, модели
+        // Getting names of model, controller, action
         $controller_name = ShopEngine::GetController();
         $model_name = ShopEngine::GetModel();
         $action = ShopEngine::GetAction();
@@ -103,7 +102,7 @@ class Route
     {
         // Ошибка 404, пока не работает
         //$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        header( 'Location: /main/', true, 301 );
+        header( 'Location: /catalog/all', true, 301 );
     }
     
 }

@@ -16,10 +16,11 @@ class database {
         public static function getInstance()
         {
             if (self::$_db === null) {
-                self::$_db = new \PDO(self::$dsn, 'root', '', self::$opt);
-                if (self::$_db->connect_error) {
-                        die('Connect Error (' . self::$_db->connect_errno . ') ' . self::$_db->connect_error);
-                    }
+                try { 
+                    self::$_db = new \PDO(self::$dsn, 'root', '', self::$opt);
+                } catch(Exception $e) {
+                    die('Connect Error (' . self::$_db->connect_errno . ') ' . self::$_db->connect_error);
+                }
             }
 
             return self::$_db;

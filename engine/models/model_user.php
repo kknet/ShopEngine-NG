@@ -43,17 +43,19 @@ class Model_User extends Model {
         $ip   = ShopEngine::GetUserIp();
         $op   = Config::Password();
         $this->token = sha1(uniqid(rand(), true).md5($post['customer_email']));
-        
+        $referer_key = sha1(uniqid(rand(), true).md5($post['customer_email'].$ip));
+                
         $password = password_hash($post['customer_password'], PASSWORD_BCRYPT, $op);
         
-        $sql = "INSERT INTO users (users_name, users_last_name, users_email, users_password, users_datetime, users_ip, users_token) VALUES ("
+        $sql = "INSERT INTO users (users_name, users_last_name, users_email, users_password, users_datetime, users_ip, users_token, users_referer_key) VALUES ("
                 . ":name,"
                 . ":last_name,"
                 . ":email,"
                 . ":password,"
                 . "NOW(),"
                 . ":ip,"
-                . ":token"
+                . ":token,"
+                . ":referer"
                 . ")";
         
         $stmt = $db->prepare($sql);
@@ -63,6 +65,7 @@ class Model_User extends Model {
         $stmt->bindParam(":password", $password);
         $stmt->bindParam(":ip", $ip);
         $stmt->bindParam(":token", $this->token);
+         $stmt->bindParam(":referer", $referer_key);
         
         if($stmt->execute())
         {
@@ -345,7 +348,7 @@ class Model_User extends Model {
             return false;
         }
         
-        if(!$post['address_address'] OR !$post['address_city'] OR !$post['address_index'] OR !is_int((int)$post['address_new_index']) OR !$post['address_phone'])
+        if(!$post['address_address'] OR !$post['address_city'] OR !$post['address_index'] OR !$post['address_phone'])
         {
             return false;
         }
@@ -381,7 +384,7 @@ class Model_User extends Model {
             return false;
         }
         
-        if(!$post['address_new_address'] OR !$post['address_new_city'] OR !$post['address_new_index'] OR !is_int((int)$post['address_new_index']) OR !$post['address_new_phone'])
+        if(!$post['address_new_address'] OR !$post['address_new_city'] OR !$post['address_new_index'] OR !$post['address_new_phone'])
         {
             return false;
         }
@@ -430,6 +433,34 @@ class Model_User extends Model {
             Request::EraseFullSession('address');
             return true;
         }
+    }
+    
+    public function SendInvite()
+    {
+        $post = Request::Post();
+        
+        if(!$post)
+        {
+            return false;
+        }
+        
+        if(!$post['invite_email'])
+        {
+            return false;
+        }
+        
+        $id   = Request::GetSession('user_id');
+        $sql  = "SELECT * FROM users WHERE users_id=?";
+        $user = Getter::GetFreeData($sql, [$id]);
+        
+        $mailfrom = 'info@poterpite.ru';
+        $mailto   = $post['invite_email'];
+        $subject  = 'Приглашение на сайт "Потерпите, пожалуйста!"';
+        $body     = 'Добрый день, пользователь '.$user['users_name'].' '.$user['users_last_name'].' только что пригласил вас зарегистрироватьс на нашем сайте. Для регистрации перейдите по <a href="'.ShopEngine::GetHost().'/user/signup?ref='.$user['users_referer_key'].'">ссылке</a>';
+
+        ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body);
+        
+        return true;
     }
     
 }

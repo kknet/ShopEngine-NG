@@ -216,12 +216,40 @@ class ShopEngine {
         return in_array($con, $cons);
     }
     
+    public static function FatalException($e)
+    {
+        $text = "( ".date('Y-m-d H:i:s (T)')." ) Сбой в работе сайта. Информация доступна здесь: ".serialize($e)."\r\n";
+        if(file_exists('engine/errlog.txt'))
+        {
+            $err = fopen('engine/errlog.txt', 'a');
+            fwrite($err, $text);
+            fclose($err);
+        } 
+        else {
+            
+        }
+    }
+    
+    public static function SetException($e, $f, $l)
+    {
+        $text = "( ".date('Y-m-d H:i:s (T)')." ) Сбой в работе сайта. Информация доступна здесь: ".serialize($e).serialize($f).serialize($l)."\r\n";
+        if(file_exists('engine/errlog.txt'))
+        {
+            $err = fopen('engine/errlog.txt', 'a');
+            fwrite($err, $text);
+            fclose($err);
+        } 
+        else {
+            
+        }
+    }
+    
     public static function ExceptionToFile($ex)
     {
         if(is_string($ex)) {
             $text = "( ".date('Y-m-d H:i:s (T)')." ) Выброшено исключение: ".$ex."\r\n";
         } else {
-            $text = "( ".date('Y-m-d H:i:s (T)')." ) Выброшено исключение: ".$ex->getMessage()."\r\n";
+            $text = "( ".date('Y-m-d H:i:s (T)')." ) Выброшено исключение: ".serialize($ex->getMessage())."\r\n";
         }
         $err = fopen('engine/errlog.txt', 'a');
         fwrite($err, $text);

@@ -20,6 +20,5 @@ class Seo extends ShopEngine {
                 echo ' <meta '.$meta.'="'.$prop.'" content="'.$valu.'">'."\r\n";
             }
         }
-        return $seo;
     }
 }

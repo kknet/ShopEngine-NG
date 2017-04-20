@@ -25,9 +25,13 @@ class Controller_Catalog extends Controller
     public static function GetCategoryName()
     {
         $category = ShopEngine::GetAction();
-        $name = Getter::GetFreeData("SELECT name FROM category WHERE category_handle=?", [$category])['name'];
-        if($name) return $name;
-        else return 'Для красивой улыбки';
+        $array = Getter::GetFreeData("SELECT name FROM category WHERE category_handle=?", [$category]);
+        if(array_key_exists('name', $array)) { 
+            return $array['name'];
+        }
+        else { 
+            return 'Для красивой улыбки';
+        }
     }
 
     

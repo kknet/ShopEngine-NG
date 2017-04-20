@@ -4,7 +4,6 @@ class AjaxRouter {
     
     public static function start() 
     {
-        session_start();
         $routes = ShopEngine::GetRoute();
 
         if(!empty($routes[2])) 

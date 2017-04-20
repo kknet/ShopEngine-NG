@@ -35,6 +35,7 @@
 </header>
 <div class="grid grid--no-gutters grid--uniform">
     <?php $array = GetProducts();
+    if($array) { 
         foreach ($array as $cur) { ?>
         <div class="grid__item small--one-half medium-up--one-fifth">
             <!-- /snippets/product-card.liquid -->
@@ -57,6 +58,9 @@
             </div>
         </a>
     </div>
+    <?php } 
+    } else { ?>
+    <p>По данному запросу товары не найдены</p>
     <?php } ?>
 </div>
 <div class="pagination">

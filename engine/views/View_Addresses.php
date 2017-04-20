@@ -1,7 +1,7 @@
 <h1>Просмотр адресов</h1>
 <div class="grid">
   <div class="grid__item medium-up--two-thirds">
-      <?php if($start['new']) { ?>
+      <?php if(isset($start["new"])) { ?>
     <div id="AddressNewForm" class="content-block content-block--large form-vertical">
       <form method="post" action="/user/addresses/add" id="address_form_new" accept-charset="UTF-8"><input type="hidden" value="customer_address" name="form_type"><input type="hidden" name="utf8" value="✓">
         <h2 class="h3">Добавьте Новый Адрес</h2>
@@ -77,7 +77,7 @@
     </div>
     <?php } ?>
 
-    <?php if($start['red']) { ?>
+   <?php if(isset($start["red"])) { ?>
     <div id="AddressNewForm" class="content-block content-block--large form-vertical">
       <form method="post" action="/user/addresses" id="address_form_new" accept-charset="UTF-8"><input type="hidden" value="customer_address" name="form_type"><input type="hidden" name="utf8" value="✓">
         <h2 class="h3">Редактировать адрес</h2>
@@ -161,7 +161,7 @@
 
         <p><?= Request::GetSession('user_last_name')?> <?= Request::GetSession('user_name')?> <?= Request::GetSession('user_patronymic')?></p>
         
-        <?php if($start['addresses']) { ?>
+        <?php if(isset($start['addresses'])) { ?>
         
         <?php foreach($start['addresses'] as $address) { ?>
 

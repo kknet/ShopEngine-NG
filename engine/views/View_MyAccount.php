@@ -24,8 +24,8 @@
                         <div class="myaccount_first_left_left left">
                             <label for="myaccount_gender">Ваш пол</label>
                             <select id="myaccount_gender" name="myaccount_gender">
-                                <?php if($user['users_gender'] === 'm') $male   = "selected" ?>
-                                <?php if($user['users_gender'] === 'w') $female = "selected" ?>
+                                <?php $male   = $user['users_gender'] === 'm' ? "selected" : "" ?>
+                                <?php $female = $user['users_gender'] === 'w' ? "selected" : "" ?>
                                 <option <?=$male?> value="m">Мужской</option>
                                 <option <?=$female?> value="w">Женский</option>
                             </select>
@@ -43,6 +43,7 @@
                     <ul>
                         <li><a href="/user/orders">Мои заказы</a></li>
                         <li><a href="/user/addresses">Мои адреса</a></li>
+                        <li><a href="/user/invite">Пригласить пользователя</a></li>
                         <li>Баллы: <?= $user['users_points']?></li>
                     </ul>
                 </div>

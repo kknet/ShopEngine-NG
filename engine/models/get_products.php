@@ -62,15 +62,17 @@ Class Products
                 }
                     $image = ShopEngine::Help()->ImageResize($row["image"], 177.2, 255, $row['title'], 'px');
 
-                    if ($row['availability'] == 1) {
-                    $availability_vari = "Есть в наличии";
-                    }
-                    else {
-                    $availability_vari = "Нет в наличии";
-                    }
+//                    if ($row['availability'] == 1) {
+//                    $availability_vari = "Есть в наличии";
+//                    }
+//                    else {
+//                    $availability_vari = "Нет в наличии";
+//                    }
                     // Изм!
                     if($row["old_price"] != 0.00) {
                         $old_price = ShopEngine::Help()->AsPrice($row['old_price']);
+                    } else {
+                        $old_price = null;
                     }
                     //
                 // Это не помешало бы сделать внутри запроса в контроллере. Но, увы, тогда придется писать много лишнего
@@ -111,9 +113,9 @@ Class Products
                 $sales_news_popular = NULL;
                 
             }
+         
+            return $grid;
         }
-        
-        return $grid;
         
     }
 }

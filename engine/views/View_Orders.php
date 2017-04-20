@@ -43,7 +43,7 @@
                     &nbsp;/&nbsp;
                     <a target="_blank" href="http://order.blackberryrussia.com/pdf/index.php?id=4802676291&amp;site=poterpite&amp;ur=1">Cчет юр.лиц</a>
                     
-                    <span class="paymentLink_old" data-id="<?=$orders['orders_id']?>"></span>
+                    <span class="paymentLink_old" data-id="<?=$order['orders_id']?>"></span>
                   </td>
                 </tr>
                 

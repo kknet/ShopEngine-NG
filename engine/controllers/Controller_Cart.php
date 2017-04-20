@@ -5,7 +5,7 @@ class Controller_Cart extends Controller
     
     public function start() 
     {
-                
+        
         if(Request::Post('checkout')) {
             
             $csrf = Request::Post('csrf');
@@ -43,6 +43,7 @@ class Controller_Cart extends Controller
         $ip = ShopEngine::GetUserIp();
         $sql = "SELECT cart_count, cart_price FROM cart WHERE cart_ip=?";
         $array = Getter::GetFreeData($sql, [$ip], false);
+        $sum = 0;
         foreach ($array as $cur) {
             $sum = $sum + $cur['cart_price'];
         }

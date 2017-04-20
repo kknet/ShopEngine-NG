@@ -58,5 +58,21 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
     margin-bottom:15px;
 }
 
+.invite_body {
+    width:100%;
+}
+
+.invite_block {
+    max-width:400px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.invite_block input, .invite_block textarea {
+    width:100%;
+    margin-top:5px;
+    margin-bottom:15px;
+}
+
 
 

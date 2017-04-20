@@ -55,8 +55,6 @@ class Controller_Checkout extends Controller{
                 Request::SetSession('step1', true);
                 return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
             }
-            $errors = self::$errors;
-
         }
         
         //If user is logged we have to get all contact information about him
@@ -68,10 +66,12 @@ class Controller_Checkout extends Controller{
                  . "RIGHT OUTER JOIN region r ON a.address_region = r.region_handle "
                  . "WHERE address_user=?";
             $addresses = Getter::GetFreeData($sql, [$id], false);
+        } else {
+            $addresses = null;
         }
         
         return [
-            'errors' => $errors,
+            'errors' => self::$errors,
             'addresses' => $addresses
         ];
     }
@@ -99,7 +99,7 @@ class Controller_Checkout extends Controller{
             
             // Full Price
             $full = self::GetCheckoutPrice();
-            Request::SetSession('full_price', $full + $array['shipper_price']);
+            Request::SetSession('full_price', $full + Request::GetSession('shipper_price'));
             //
             
             Request::SetSession('step2', true);
@@ -155,6 +155,10 @@ class Controller_Checkout extends Controller{
                 {   
                     //Mailer returns strings
                     return ShopEngine::Help()->StrongRedirect('checkout', 'thank_you?orderid='.$key); 
+                }
+                else {
+                    $post = Request::Post();
+                    return ShopEngine::Help()->StrongRedirect('errorpage', 'checkout?checkoutip='.ShopEngine::GetUserIp()); 
                 }
             }
             return self::$errors;

@@ -130,7 +130,12 @@ class Help
         $uri = $this->Clear($_SERVER['REQUEST_URI']);
         $uri  = '/'.substr($uri, 1);
 
-        $sorting = $this->Clear($_GET["sort"]);
+        if(array_key_exists("sort", $_GET)) { 
+            $sorting = $this->Clear($_GET["sort"]);
+        } 
+        else {
+            $sorting = null;
+        }
 
         switch ($sorting) { 
             case 'price-asc';

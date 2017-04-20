@@ -9,7 +9,7 @@
 * Функции подключения левого сайдбара
 */
 
-include 'engine/models/get_left_sidebar.php';
+//include 'engine/models/get_left_sidebar.php';
 
 function GetLeftSidebar() {
     return LeftSidebar::GetLeftSidebar();
@@ -19,7 +19,7 @@ function GetLeftSidebar() {
 * Функции подключения правого сайдбара
 */
 
-include 'engine/models/get_right_sidebar.php';
+//include 'engine/models/get_right_sidebar.php';
 
 function GetTheMenu() {
     RightSidebar::GetTheMenu();
@@ -100,7 +100,7 @@ function GetCopy() {
 * Функции подключения слайдера 
 */
 
-include 'engine/models/get_slider.php';
+//include 'engine/models/get_slider.php';
 
 function GetSliderSettings() {
     $array = Slider::GetSliderSettings();
@@ -117,7 +117,7 @@ function GetSlider() {
 * Функции подключения футера
 */
 
-include 'engine/models/get_footer.php';
+//include 'engine/models/get_footer.php';
 
 function GetArticles() {
     Footer::GetArticles();

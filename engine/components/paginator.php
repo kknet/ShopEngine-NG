@@ -1,6 +1,7 @@
 <?php
 
 class Paginator extends ShopEngine {
+    
     public static function PreparePagination($sql, $params = NULL)
     {
         if(Self::$query === NULL OR Self::$sort === NULL)
@@ -12,7 +13,12 @@ class Paginator extends ShopEngine {
             Self::$sort = $array['sorting'];
 
             $num = 20;
-            $page = (int)$_GET["page"];
+            
+            if(array_key_exists("page", $_GET)) { 
+                $page = (int)$_GET["page"];
+            } else {
+                $page = 1;
+            }
             $count = ShopEngine::Help()->Count($sql, $params);
             
             if($count > 0) 
@@ -35,6 +41,8 @@ class Paginator extends ShopEngine {
                 $start = Self::$page * $num - $num;
 
                 Self::$query = " LIMIT $start, $num";
+                
+                $uri = null;
 
                 if (Self::$page < 10) 
                 {
@@ -45,9 +53,9 @@ class Paginator extends ShopEngine {
                 {
                     $uri = substr($uri,0,-8);
                 }
+                
+                parent::$total = $total;
             }
-            
-            Self::$total = $total;
         }
         
         return [Self::$sort, Self::$query, Self::$page, Self::$total, Self::$qsort];

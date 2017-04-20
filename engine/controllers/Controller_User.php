@@ -216,6 +216,7 @@ class Controller_User extends Controller{
         }
         
         //If sended form "address_chenge"
+        $red = null;
         if(Request::Post('address_change'))
         {
             $csrf = Request::Post('csrf');
@@ -262,7 +263,6 @@ class Controller_User extends Controller{
         return [
             'addresses' => $addresses,
             'red'       => $red,
-            'change'    => $change,
         ];
         
     }
@@ -319,6 +319,36 @@ class Controller_User extends Controller{
         
         return ShopEngine::Help()->RegularRedirect('user', 'login');
     }
+    
+    public function invite()
+    {
+        if(!Request::GetSession('user_is_logged'))
+        {
+            return ShopEngine::Help()->RegularRedirect('user', 'login');
+        }
+        
+        if(!ShopEngine::Help()->ValidateUser())
+        {
+            return false;
+        }
+        
+        if(Request::Post('invite'))
+        {
+            $csrf = Request::Post('csrf');
+            
+            if(!ShopEngine::Help()->ValidateToken($csrf))
+            {
+                return ShopEngine::GoHome();
+            }
+            
+            if(!Controller::GetModel()->SendInvite())
+            {
+                return false;
+            }
+            
+            return true;
+        }
+    }
 
     //Set view name
     public static function SetView()
@@ -341,6 +371,8 @@ class Controller_User extends Controller{
                 return 'View_Orders';
             case 'addresses':
                 return 'View_Addresses';
+            case 'invite':
+                return 'View_Invite';
             default:
                 return Route::ErrorPage404();
         }

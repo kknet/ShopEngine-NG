@@ -2,6 +2,8 @@
 
 class Model_Checkout extends Model {
     
+    public $errors = [];
+    
     public function ValidateStep1()
     {
         
@@ -13,7 +15,7 @@ class Model_Checkout extends Model {
              
         // Last name
         if(!$post['checkout_last_name']) {
-            $errors['last_name'] = [
+            $this->errors['last_name'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-last_name">Пожалуйста, введите Вашу фамилию</p>' 
             ];
@@ -21,7 +23,7 @@ class Model_Checkout extends Model {
         
         // Email
         if(!$post['checkout_email'] OR !preg_match("/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i", trim($post['checkout_email']))) {
-            $errors['email'] = [
+            $this->errors['email'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-email">Пожалуйста, введите адрес действующей электронной почты</p>' 
             ];
@@ -29,7 +31,7 @@ class Model_Checkout extends Model {
         
         // Address
         if(!$post['checkout_address']) {
-            $errors['address'] = [
+            $this->errors['address'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-address1">Пожалуйста, введите адрес</p>' 
             ];
@@ -37,7 +39,7 @@ class Model_Checkout extends Model {
         
         // City
         if(!$post['checkout_city']) {
-            $errors['city'] = [
+            $this->errors['city'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-city">Пожалуйста, введите Ваш город</p>' 
             ];
@@ -45,7 +47,7 @@ class Model_Checkout extends Model {
         
         // Index
         if(!$post['checkout_index']) {
-            $errors['index'] = [
+            $this->errors['index'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-zip">Пожалуйста, введите Ваш почтовый индекс</p>' 
             ];
@@ -53,7 +55,7 @@ class Model_Checkout extends Model {
         
         // Phone
         if(!$post['checkout_phone']) {
-            $errors['phone'] = [
+            $this->errors['phone'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-phone">Пожалуйста, введите действующий номер телефона</p>' 
             ];
@@ -63,8 +65,8 @@ class Model_Checkout extends Model {
             //...
         
         //final
-        if(count($errors) > 0) {
-            return $errors;
+        if(count($this->errors) > 0) {
+            return $this->errors;
         }
         else {
             return false;
@@ -86,7 +88,7 @@ class Model_Checkout extends Model {
         
         // Last name
         if(!$post['checkout_billing_last_name']) {
-            $errors['billing_last_name'] = [
+            $this->errors['billing_last_name'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-last_name">Пожалуйста, введите Вашу фамилию</p>' 
             ];
@@ -94,7 +96,7 @@ class Model_Checkout extends Model {
         
         // Address
         if(!$post['checkout_billing_address']) {
-            $errors['billing_address'] = [
+            $this->errors['billing_address'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-last_name">Пожалуйста, введите адрес</p>' 
             ];
@@ -102,7 +104,7 @@ class Model_Checkout extends Model {
         
         // City
         if(!$post['checkout_billing_city']) {
-            $errors['billing_city'] = [
+            $this->errors['billing_city'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-last_name">Пожалуйста, введите Ваш город</p>' 
             ];
@@ -110,7 +112,7 @@ class Model_Checkout extends Model {
         
         // Index
         if(!$post['checkout_billing_index']) {
-            $errors['billing_index'] = [
+            $this->errors['billing_index'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-last_name">Пожалуйста, введите Ваш индекс</p>' 
             ];
@@ -118,15 +120,15 @@ class Model_Checkout extends Model {
         
         // Phone
         if(!$post['checkout_billing_phone']) {
-            $errors['billing_phone'] = [
+            $this->errors['billing_phone'] = [
                 'class'   => 'field--error',
                 'message' =>  '<p class="field__message field__message--error" id="error-for-last_name">Пожалуйста, введите Ваш телефон</p>' 
             ];
         }
         
         //final
-        if(count($errors) > 0) {
-            return $errors;
+        if(count($this->errors) > 0) {
+            return $this->errors;
         }
         else {
             return false;
@@ -147,6 +149,7 @@ class Model_Checkout extends Model {
     public function FinishCheckout()
     {
         $db = database::getInstance();
+        $ip   = ShopEngine::GetUserIp();
         
         $sql = "INSERT INTO orders ("
                 . "orders_users_id, "
@@ -157,6 +160,7 @@ class Model_Checkout extends Model {
                 . "orders_company, "
                 . "orders_address, "
                 . "orders_region, "
+                . "orders_index, "
                 . "orders_city, "
                 . "orders_country, "
                 . "orders_flat, "
@@ -184,6 +188,7 @@ class Model_Checkout extends Model {
                 . ":company, "
                 . ":address,"
                 . ":region,"
+                . ":index,"
                 . ":city,"
                 . ":country,"
                 . ":flat,"
@@ -220,33 +225,59 @@ class Model_Checkout extends Model {
                 $user_id = Request::GetSession("user_id");
         
                 $stmt = $db->prepare($sql);
+                
+                // Cast
                 if(!$user_id) {
                     $user_id = 0;
                 }
+                
+                $checkont_name = Request::GetSession('checkout_name');
+                $checkout_last_name = Request::GetSession('checkout_last_name');
+                $checkout_company = Request::GetSession('checkout_company');
+                $checkout_address = Request::GetSession('checkout_address');
+                $checkout_region = Request::GetSession('checkout_region');
+                $checkout_index = Request::GetSession('checkout_index');
+                $checkout_city = Request::GetSession('checkout_city');
+                $checkout_country = Request::GetSession('checkout_country');
+                $checkout_flat = Request::GetSession('checkout_flat');
+                $checkout_email = Request::GetSession('checkout_email');
+                $checkout_phone = Request::GetSession('checkout_phone');
+                $checkout_note = Request::GetSession('checkout_note');
+                $checkout_billing_address_payment = Request::GetSession('checkout_billing_address_payment');
+                $checkout_billing_first_name = Request::GetSession('checkout_billing_first_name');
+                $checkout_billing_last_name = Request::GetSession('checkout_billing_last_name');
+                $checkout_billing_company = Request::GetSession('checkout_billing_company');
+                $checkout_billing_city = Request::GetSession('checkout_billing_city');
+                $checkout_billing_country = Request::GetSession('checkout_billing_country');
+                $checkout_billing_index = Request::GetSession('checkout_billing_index');
+                $checkout_billing_phone = Request::GetSession('checkout_billing_phone');
+                $checkout_payment_gateway = Request::GetSession('checkout_payment_gateway');
+                
                 $stmt->bindParam(":price", $full);
                 $stmt->bindParam(":shipping", $shipper_name);
                 $stmt->bindParam(":user", $user_id);
-                $stmt->bindParam(":name", Request::GetSession('checkout_name'));
-                $stmt->bindParam(":last_name", Request::GetSession('checkout_last_name'));
-                $stmt->bindParam(":company", Request::GetSession('checkout_company'));
-                $stmt->bindParam(":address", Request::GetSession('checkout_address'));
-                $stmt->bindParam(":region", Request::GetSession('checkout_region'));
-                $stmt->bindParam(":city", Request::GetSession('checkout_city'));
-                $stmt->bindParam(":country", Request::GetSession('checkout_country'));
-                $stmt->bindParam(":flat", Request::GetSession('checkout_flat'));
-                $stmt->bindParam(":email", Request::GetSession('checkout_email'));
-                $stmt->bindParam(":phone", Request::GetSession('checkout_phone'));
-                $stmt->bindParam(":note", Request::GetSession('checkout_note'));
-                $stmt->bindParam(":bil_status", Request::GetSession('checkout_billing_address_payment'));
-                $stmt->bindParam(":bil_name", Request::GetSession('checkout_billing_first_name'));
-                $stmt->bindParam(":bil_last_name", Request::GetSession('checkout_billing_last_name'));
-                $stmt->bindParam(":bil_company", Request::GetSession('checkout_billing_company'));
-                $stmt->bindParam(":bil_city", Request::GetSession('checkout_billing_city'));
-                $stmt->bindParam(":bil_country", Request::GetSession('checkout_billing_country'));
-                $stmt->bindParam(":bil_index", Request::GetSession('checkout_billing_index'));
-                $stmt->bindParam(":bil_phone", Request::GetSession('checkout_billing_phone'));
-                $stmt->bindParam(":payment", Request::GetSession('checkout_payment_gateway'));
-                $stmt->bindParam(":ip", ShopEngine::GetUserIp());
+                $stmt->bindParam(":name", $checkont_name);
+                $stmt->bindParam(":last_name", $checkout_last_name);
+                $stmt->bindParam(":company", $checkout_company);
+                $stmt->bindParam(":address", $checkout_address);
+                $stmt->bindParam(":region", $checkout_region);
+                $stmt->bindParam(":index", $checkout_index);
+                $stmt->bindParam(":city", $checkout_city);
+                $stmt->bindParam(":country", $checkout_country);
+                $stmt->bindParam(":flat", $checkout_flat);
+                $stmt->bindParam(":email", $checkout_email);
+                $stmt->bindParam(":phone", $checkout_phone);
+                $stmt->bindParam(":note", $checkout_note);
+                $stmt->bindParam(":bil_status", $checkout_billing_address_payment);
+                $stmt->bindParam(":bil_name", $checkout_billing_first_name);
+                $stmt->bindParam(":bil_last_name", $checkout_billing_last_name);
+                $stmt->bindParam(":bil_company", $checkout_billing_company);
+                $stmt->bindParam(":bil_city", $checkout_billing_city);
+                $stmt->bindParam(":bil_country", $checkout_billing_country);
+                $stmt->bindParam(":bil_index", $checkout_billing_index);
+                $stmt->bindParam(":bil_phone", $checkout_billing_phone);
+                $stmt->bindParam(":payment", $checkout_payment_gateway);
+                $stmt->bindParam(":ip", $ip);
                 
                 if(!$stmt->execute())
                 {
@@ -259,7 +290,7 @@ class Model_Checkout extends Model {
                 $sql = "UPDATE order_products SET orders_final_id=:id, orders_status='1' WHERE orders_ip=:ip AND orders_status='0'";
                 $stmt = $db->prepare($sql);
                 $stmt->bindParam(":id", $id);
-                $stmt->bindParam(":ip", ShopEngine::GetUserIp());
+                $stmt->bindParam(":ip", $ip);
                 if($stmt->execute())
                 {
                     
@@ -268,19 +299,15 @@ class Model_Checkout extends Model {
                     
                     
                     // Send Email
-                    $mailfrom = 'info@poterpite.ru';
-                    $mailto   = Request::GetSession('checkout_email');
-                    $subject  = 'Спасибо за заказ!';
-                    require_once 'widgets/mailbody.php';
-                    
-                    $array = Controller_Checkout::GetOrderProducts();
-
-                    ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body, $array);
+                    if(!$this->SendEmail($id, $key))
+                    {
+                        return false;
+                    }
                     
                     // Erase cart
                     $sql  = "DELETE FROM cart WHERE cart_ip=:ip";
                     $stmt = $db->prepare($sql);
-                    $stmt->bindParam(":ip", ShopEngine::GetUserIp());
+                    $stmt->bindParam(":ip", $ip);
                     $stmt->execute();
                     
                     $sql  = "UPDATE orders SET orders_key=:key WHERE orders_id=:id";
@@ -314,4 +341,24 @@ class Model_Checkout extends Model {
                     return $key;
                 }
     }
+    
+    public function SendEmail($id, $key)
+    {
+        try { 
+            $mailfrom = 'info@poterpite.ru';
+            $mailto   = Request::GetSession('checkout_email');
+            $subject  = 'Спасибо за заказ!';
+            require_once 'widgets/mailbody.php';
+
+            $array = Controller_Checkout::GetOrderProducts();
+
+            ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body, $array);
+            
+            return true;
+        } Catch(Exception $e) {
+            ShopEngine::ExceptionToFile($e);
+            return false;
+        }
+    }
+        
 }

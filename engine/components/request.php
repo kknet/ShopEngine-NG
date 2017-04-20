@@ -7,12 +7,13 @@ class Request extends ShopEngine{
 
     public static function Post($name = null)
     {
-        if(self::$post[$name] === null) {
+        if(!array_key_exists($name, self::$post)) {
             if($name !== null) {
-                if(isset($_POST[$name])) {
+                if(array_key_exists($name, $_POST)) {
                     self::$post[$name] = $_POST[$name];
+                    return self::$post[$name];
                 }
-                return self::$post[$name];
+                return false;
             }
             else {
                 // Return full post (add to session)
@@ -25,24 +26,28 @@ class Request extends ShopEngine{
                     return $_POST;
                 }
             }
+        } else {
+            return self::$post[$name];
         }
-        return self::$post[$name];
     }
     
     public static function Get($name = null)
     {
-        if(self::$get[$name] === null)
-        {
-            if($name) {
-                if(isset($_GET[$name])) {
+        if(!array_key_exists($name, self::$get)) {
+            if($name !== null) {
+                if(array_key_exists($name, $_GET)) {
                     self::$get[$name] = $_GET[$name];
+                    return self::$get[$name];
                 }
+                return false;
             }
             else {
+                // Return full post (add to session)
                 return $_GET;
             }
-        }
-        return self::$get[$name];  
+        } else {
+            return self::$get[$name];
+        } 
     }
     
     public static function EraseFullSession($word = 'checkout')
@@ -84,7 +89,11 @@ class Request extends ShopEngine{
     public static function GetSession($name = null) 
     {
         if($name) {
-            return ShopEngine::Help()->Clear($_SESSION[$name]);
+            if(array_key_exists($name, $_SESSION)) { 
+                return ShopEngine::Help()->Clear($_SESSION[$name]);
+            } else {
+                return null;
+            }
         }
         else {
             return $_SESSION;
