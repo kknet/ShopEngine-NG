@@ -179,8 +179,8 @@ class Controller_Checkout extends Controller{
         if(!$key) {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step3'); 
         }
-        $sql = "SELECT * FROM orders o RIGHT JOIN payment p ON o.orders_payment = p.payment_id WHERE orders_key=? AND orders_ip=? AND orders_status='1'";
-        $array = Getter::GetFreeData($sql, [$key, ShopEngine::GetUserIp()]);
+        $sql = "SELECT * FROM orders o RIGHT JOIN payment p ON o.orders_payment = p.payment_id WHERE orders_key=? AND orders_status='1'";
+        $array = Getter::GetFreeData($sql, [$key]);
         if(count($array) < 1)
         {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step3'); 

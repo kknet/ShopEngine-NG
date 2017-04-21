@@ -1,0 +1,6 @@
+<Files index_admin.php>
+	AuthType Basic
+	AuthName "Thats protected Area!"
+	AuthUserFile /usr/local/www/vhosts/bbrussia_com/data/pass/order/.htpasswd
+	Require valid-user
+</Files>

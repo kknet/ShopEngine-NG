@@ -5,7 +5,11 @@
       <h1>Создать Аккаунт</h1>
 
       <div class="form-vertical text-center">
-        <form method="post" action="/user/signup" id="create_customer" accept-charset="UTF-8">
+          <?php if(Request::Get('ref')) { ?>
+            <form method="post" action="/user/signup?ref=<?=Request::Get('ref')?>" id="create_customer" accept-charset="UTF-8">
+          <?php } else { ?>
+            <form method="post" action="/user/signup" id="create_customer" accept-charset="UTF-8">
+          <?php } ?>
             <input type="hidden" name="signup" value="1" />
             <input type="hidden" name="csrf" value="<?=ShopEngine::Help()->generateToken()?>" />
             <input type="hidden" name="utf8" value="✓">
@@ -14,7 +18,7 @@
                 <div class="form-success">
                     <ul>
                         <li>
-                            Мы отправили письмо по электронной почте alexandergrachyov@gmail.com, пожалуйста, перейдите по ссылке для подтверждения адреса электронной почты.
+                            Мы отправили Вам письмо по электронной почте, пожалуйста, перейдите по ссылке для подтверждения адреса электронной почты.
                         </li>
                     </ul>
                 </div>

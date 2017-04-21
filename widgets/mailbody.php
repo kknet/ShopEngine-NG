@@ -105,30 +105,30 @@ $body = '
   
   <tbody>';
 
-    $array = Controller_Checkout::GetOrderProducts();
-    
-    foreach ($array as $cur)
-    {
-        $body .= '<tr class="m_-1216999618458073902order-list__item m_-1216999618458073902order-list__item" style="width:100%">'
-                . '<td class="m_-1216999618458073902order-list__item__cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Segoe UI'.'\',\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif">
-            <table style="border-collapse:collapse;border-spacing:0">
-              <tbody><tr><td style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;">
+    if($this->array) { 
+        foreach ($this->array as $cur)
+        {
+            $body .= '<tr class="m_-1216999618458073902order-list__item m_-1216999618458073902order-list__item" style="width:100%">'
+                    . '<td class="m_-1216999618458073902order-list__item__cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Segoe UI'.'\',\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif">
+                <table style="border-collapse:collapse;border-spacing:0">
+                  <tbody><tr><td style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;">
 
-                <div style=" width:50px; height:50px; border:1px solid #e5e5e5;border-radius:8px;margin-right:15px;" >
-                  <img src="cid:'.$cur['handle'].'" align="left" width="60" height="60" class="m_-1216999618458073902order-list__product-image CToWUd" style="width:100%; height:auto; max-width:100%; max-height:100%">
-                </div>
-              </td>
-              <td class="m_-1216999618458073902order-list__product-description-cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;width:75%">
+                    <div style=" width:50px; height:50px; border:1px solid #e5e5e5;border-radius:8px;margin-right:15px;" >
+                      <img src="cid:'.$cur['handle'].'" align="left" width="60" height="60" class="m_-1216999618458073902order-list__product-image CToWUd" style="width:100%; height:auto; max-width:100%; max-height:100%">
+                    </div>
+                  </td>
+                  <td class="m_-1216999618458073902order-list__product-description-cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;width:75%">
 
-                <span class="m_-1216999618458073902order-list__item-title" style="color:#555;font-size:16px;font-weight:600;line-height:1.4">'.$cur['title'].'&nbsp;×&nbsp;'.$cur['orders_count'].'</span><br>
+                    <span class="m_-1216999618458073902order-list__item-title" style="color:#555;font-size:16px;font-weight:600;line-height:1.4">'.$cur['title'].'&nbsp;×&nbsp;'.$cur['orders_count'].'</span><br>
 
-              </td>
-                <td class="m_-1216999618458073902order-list__price-cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;white-space:nowrap">
+                  </td>
+                    <td class="m_-1216999618458073902order-list__price-cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;white-space:nowrap">
 
-                  <p class="m_-1216999618458073902order-list__item-price" style="color:#555;font-size:16px;font-weight:600;line-height:150%;margin:0 0 0 15px" align="right">'.ShopEngine::Help()->AsPrice($cur['orders_price']).'</p>
-                </td>
-            </tr></tbody></table>
-          </td></tr>';
+                      <p class="m_-1216999618458073902order-list__item-price" style="color:#555;font-size:16px;font-weight:600;line-height:150%;margin:0 0 0 15px" align="right">'.ShopEngine::Help()->AsPrice($cur['orders_price']).'</p>
+                    </td>
+                </tr></tbody></table>
+              </td></tr>';
+        }
     }
                   
 $body .= '

@@ -507,13 +507,13 @@
   <div class="field__input-wrapper"><label class="field__label" for="checkout_billing_address_zip">Почтовый индекс</label>
     <input placeholder="Индекс" autocomplete="billing postal-code" data-backup="zip" data-google-places="postal_code" class="field__input field__input--zip" size="30" type="text" name="checkout_billing_index" id="checkout_billing_address_zip">
   </div>
-    <?=//$error['billing_index']['message']?>
+    <?=$error['billing_index']['message']?>
 </div><div data-address-field="phone" class="field field--required <?=$error['billing_phone']['class']?>">
     
     <div class="field__input-wrapper"><label class="field__label" for="checkout_billing_address_phone">Тел.</label>
       <input placeholder="Тел." autocomplete="billing tel" data-backup="phone" data-phone-formatter="true" data-phone-formatter-country-select="[name='checkout[billing_address][country]']" class="field__input field__input--numeric" size="30" type="tel" name="checkout_billing_phone" id="checkout_billing_address_phone" data-phone-formatter-country-code="93">
     </div>
-    <?=//$error['billing_phone']['message']?>
+    <?=$error['billing_phone']['message']?>
 </div></div>
         </div>
       </div>

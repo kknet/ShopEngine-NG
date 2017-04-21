@@ -2,7 +2,7 @@
 
 // Мда...
 
-    if($_POST['submit']) {
+    if(isset($_POST['submit'])) {
         $rr = $_POST['pass'];
         if($rr === '1234') {
             $_SESSION['ok'] = true;

@@ -1,4 +1,7 @@
-<?php $user = GetUserInfo() ?>
+<?php //$user = GetUserInfo() 
+$user = Controller_User::GetUserInfo();
+
+?>
 <div class="myaccount_body">
     <h1>Профиль</h1>
     <form action="" method="post">
@@ -43,7 +46,7 @@
                     <ul>
                         <li><a href="/user/orders">Мои заказы</a></li>
                         <li><a href="/user/addresses">Мои адреса</a></li>
-                        <li><a href="/user/invite">Пригласить пользователя</a></li>
+                        <li><a href="/user/invite">Пригласить пользователя (пригласил <?=$user['users_invited']?>)</a></li>
                         <li>Баллы: <?= $user['users_points']?></li>
                     </ul>
                 </div>

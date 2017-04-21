@@ -4,7 +4,7 @@ class Help
 {
     public function GenerateToken()
     {
-        if(!$_SESSION['token']) {
+        if(!isset($_SESSION['token'])) {
             $_SESSION['token'] = sha1(uniqid(rand(), true));
         }
         return $_SESSION['token'];
@@ -451,7 +451,7 @@ class Help
     
     public function SendMaill($mailto, $mailfrom, $subject, $body, $data = null)
     {
-        require 'plugins/PHPMailer/PHPMailerAutoload.php';
+        include_once 'plugins/PHPMailer/PHPMailerAutoload.php';
 
         $mail = new PHPMailer(); // create a new object
         $mail->IsSMTP(); // enable SMTP
@@ -543,6 +543,11 @@ class Help
         }
         
         return true;
+    }
+    
+    public function createPDF()
+    {
+        include_once 'plugins/pdf/index.php';
     }
     
 

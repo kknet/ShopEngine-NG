@@ -2,6 +2,8 @@
 
 class Model_User extends Model {
     
+    public $invite_user;
+    
     public function ValidateSignUp()
     {
         $db   = database::getInstance();
@@ -37,6 +39,17 @@ class Model_User extends Model {
     
     public function SignUp()
     {    
+        //If ref
+        if(Request::Get('ref'))
+        {
+            $ref = Request::Get('ref');
+            $sql = "SELECT * FROM users WHERE users_referer_key=?";
+            $invite = Getter::GetFreeData($sql, [$ref]);
+            if(count($invite) > 0)
+            {
+                $this->invite_user = $invite['users_id'];
+            }
+        }
         
         $db   = database::getInstance();
         $post = Request::Post();
@@ -45,9 +58,9 @@ class Model_User extends Model {
         $this->token = sha1(uniqid(rand(), true).md5($post['customer_email']));
         $referer_key = sha1(uniqid(rand(), true).md5($post['customer_email'].$ip));
                 
-        $password = password_hash($post['customer_password'], PASSWORD_BCRYPT, $op);
+        $password = password_hash($post['customer_password'], PASSWORD_BCRYPT);
         
-        $sql = "INSERT INTO users (users_name, users_last_name, users_email, users_password, users_datetime, users_ip, users_token, users_referer_key) VALUES ("
+        $sql = "INSERT INTO users (users_name, users_last_name, users_email, users_password, users_datetime, users_ip, users_token, users_referer_key, users_invite_id) VALUES ("
                 . ":name,"
                 . ":last_name,"
                 . ":email,"
@@ -55,7 +68,8 @@ class Model_User extends Model {
                 . "NOW(),"
                 . ":ip,"
                 . ":token,"
-                . ":referer"
+                . ":referer,"
+                . ":invite"
                 . ")";
         
         $stmt = $db->prepare($sql);
@@ -65,7 +79,12 @@ class Model_User extends Model {
         $stmt->bindParam(":password", $password);
         $stmt->bindParam(":ip", $ip);
         $stmt->bindParam(":token", $this->token);
-         $stmt->bindParam(":referer", $referer_key);
+        $stmt->bindParam(":referer", $referer_key);
+        if(!$this->invite_user)
+        {
+            $this->invite_user = 0;
+        }
+        $stmt->bindParam(":invite", $this->invite_user);
         
         if($stmt->execute())
         {
@@ -73,7 +92,7 @@ class Model_User extends Model {
             
             if($this->SendMessage())
             {
-                Request::EraseFullSession();
+                Request::EraseFullSession('customer');
                 return true;
             }
         }
@@ -124,7 +143,7 @@ class Model_User extends Model {
         
         $op = Config::Password();
         
-        $password = password_hash($post['activate_password'], PASSWORD_BCRYPT, $op);
+        $password = password_hash($post['activate_password'], PASSWORD_BCRYPT);
         $token    = $post['token'];
         
         $db = database::getInstance();
@@ -135,6 +154,30 @@ class Model_User extends Model {
         
         if($stmt->execute())
         {
+            //If this user was invited by smth
+            $_sql = "SELECT users_id, users_invite_id FROM users WHERE users_token=?";
+            $_use = Getter::GetFreeData($_sql, [$token]);
+            if($_use['users_invite_id'] !== 0)
+            {
+                $sql  = "SELECT * FROM users WHERE users_id=?";
+                $user =  Getter::GetFreeData($sql, [$_use['users_invite_id']]);
+                $new_count  = $user['users_invited'] + 1;
+                $new_points = $user['users_points'] + Config::$config['points'];
+                
+                $sql = "UPDATE users SET users_invited=:count, users_points=:points WHERE users_id=:id";
+                
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam(":count", $new_count);
+                $stmt->bindParam(":points", $new_points);
+                $stmt->bindParam(":id", $user['users_id']);
+                
+                if(!$stmt->execute())
+                {
+                    return false;
+                }
+            }
+            //
+            
             Request::EraseFullSession();
             return true;
         }
@@ -218,6 +261,8 @@ class Model_User extends Model {
         }
         
         //Optional errors
+        
+        $opt = false;
         
         if($post['myaccount_email'] AND !preg_match("/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i", trim($post['myaccount_email'])))   
         {
@@ -444,8 +489,9 @@ class Model_User extends Model {
             return false;
         }
         
-        if(!$post['invite_email'])
+        if(!$post['invite_email'] OR !preg_match("/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i", trim($post['invite_email'])))
         {
+            Request::SetSession('error_email', 'E-Mail введён неверно');
             return false;
         }
         
@@ -458,7 +504,10 @@ class Model_User extends Model {
         $subject  = 'Приглашение на сайт "Потерпите, пожалуйста!"';
         $body     = 'Добрый день, пользователь '.$user['users_name'].' '.$user['users_last_name'].' только что пригласил вас зарегистрироватьс на нашем сайте. Для регистрации перейдите по <a href="'.ShopEngine::GetHost().'/user/signup?ref='.$user['users_referer_key'].'">ссылке</a>';
 
-        ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body);
+        if(ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body))
+        {
+            Request::SetSession('error_success_email', 'Мы отправили письмо по указанному адресу');
+        }
         
         return true;
     }

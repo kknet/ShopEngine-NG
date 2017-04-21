@@ -11,56 +11,56 @@ class Controller
     
     public function __construct() 
     {
-        //This method from Habrahabr.ru
-        
-        //Registering Errors
-        set_error_handler(array($this, 'ErrorCatcher'));
-        
-        //Catch fatal errors
-        register_shutdown_function(array($this, 'FatalErrorCatcher'));
-        
-        ob_start();
+//        //This method from Habrahabr.ru
+//        
+//        //Registering Errors
+//        set_error_handler(array($this, 'ErrorCatcher'));
+//        
+//        //Catch fatal errors
+//        register_shutdown_function(array($this, 'FatalErrorCatcher'));
+//        
+//        ob_start();
         
     }
     
-    public function ErrorCatcher($errno, $errstr, $errfile, $errline)
-    {
-        ShopEngine::SetException($errstr, $errfile, $errline);
-        return false;
-    }
-    
-    public function FatalErrorCatcher()
-    {
-        $error = error_get_last();
-        if ($error !== null)
-        { 
-            if($error['type'] == E_ERROR
-                    || $error['type'] == E_PARSE
-                    || $error['type'] == E_COMPILE_ERROR
-                    || $error['type'] == E_CORE_ERROR)
-            {
-                    ob_end_clean();	// сбросить буфер, завершить работу буфера
-
-                    // контроль критических ошибок:
-                    // - записать в лог
-                    // - вернуть заголовок 500
-                    // - вернуть после заголовка данные для пользователя
-                    
-                    //Temporary
-                    ShopEngine::FatalException($error);
-                    header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-                    return ShopEngine::Help()->Regularredirect('errorpage', 'site');
-            }
-            else
-            {
-                    ob_end_flush();	// вывод буфера, завершить работу буфера
-            }
-        }
-            else
-            {
-                    ob_end_flush();	// вывод буфера, завершить работу буфера
-            }
-    }
+//    public function ErrorCatcher($errno, $errstr, $errfile, $errline)
+//    {
+//        ShopEngine::SetException($errstr, $errfile, $errline);
+//        return false;
+//    }
+//    
+//    public function FatalErrorCatcher()
+//    {
+//        $error = error_get_last();
+//        if ($error !== null)
+//        { 
+//            if($error['type'] == E_ERROR
+//                    || $error['type'] == E_PARSE
+//                    || $error['type'] == E_COMPILE_ERROR
+//                    || $error['type'] == E_CORE_ERROR)
+//            {
+//                    ob_end_clean();	// сбросить буфер, завершить работу буфера
+//
+//                    // контроль критических ошибок:
+//                    // - записать в лог
+//                    // - вернуть заголовок 500
+//                    // - вернуть после заголовка данные для пользователя
+//                    
+//                    //Temporary
+//                    ShopEngine::FatalException($error);
+//                    header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+//                    return ShopEngine::Help()->Regularredirect('errorpage', 'site');
+//            }
+//            else
+//            {
+//                    ob_end_flush();	// вывод буфера, завершить работу буфера
+//            }
+//        }
+//            else
+//            {
+//                    ob_end_flush();	// вывод буфера, завершить работу буфера
+//            }
+//    }
     
     
     public function type()

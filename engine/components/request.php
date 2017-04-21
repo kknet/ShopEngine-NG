@@ -39,7 +39,7 @@ class Request extends ShopEngine{
                     self::$get[$name] = $_GET[$name];
                     return self::$get[$name];
                 }
-                return false;
+                return null;
             }
             else {
                 // Return full post (add to session)

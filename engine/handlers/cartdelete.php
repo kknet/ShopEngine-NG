@@ -3,7 +3,7 @@
     
         public function start() 
         {
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 
                 $db = database::getInstance();
             

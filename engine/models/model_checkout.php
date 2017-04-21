@@ -3,6 +3,7 @@
 class Model_Checkout extends Model {
     
     public $errors = [];
+    public $array  = [];
     
     public function ValidateStep1()
     {
@@ -155,6 +156,7 @@ class Model_Checkout extends Model {
                 . "orders_users_id, "
                 . "orders_price, "
                 . "orders_shipping,"
+                . "orders_shipping_price,"
                 . "orders_name, "
                 . "orders_last_name, "
                 . "orders_company, "
@@ -171,6 +173,7 @@ class Model_Checkout extends Model {
                 . "orders_billing_name, "
                 . "orders_billing_last_name, "
                 . "orders_billing_company, "
+                . "orders_billing_address, "
                 . "orders_billing_city, "
                 . "orders_billing_country, "
                 . "orders_billing_index, "
@@ -183,6 +186,7 @@ class Model_Checkout extends Model {
                 . ":user,"
                 . ":price,"
                 . ":shipping,"
+                . ":shipping_price,"
                 . ":name,"
                 . ":last_name,"
                 . ":company, "
@@ -199,6 +203,7 @@ class Model_Checkout extends Model {
                 . ":bil_name,"
                 . ":bil_last_name,"
                 . ":bil_company,"
+                . ":bil_address,"
                 . ":bil_city,"
                 . ":bil_country,"
                 . ":bil_index,"
@@ -247,6 +252,7 @@ class Model_Checkout extends Model {
                 $checkout_billing_first_name = Request::GetSession('checkout_billing_first_name');
                 $checkout_billing_last_name = Request::GetSession('checkout_billing_last_name');
                 $checkout_billing_company = Request::GetSession('checkout_billing_company');
+                $checkout_billing_address = Request::GetSession('checkout_billing_address');
                 $checkout_billing_city = Request::GetSession('checkout_billing_city');
                 $checkout_billing_country = Request::GetSession('checkout_billing_country');
                 $checkout_billing_index = Request::GetSession('checkout_billing_index');
@@ -255,6 +261,7 @@ class Model_Checkout extends Model {
                 
                 $stmt->bindParam(":price", $full);
                 $stmt->bindParam(":shipping", $shipper_name);
+                $stmt->bindParam(":shipping_price", $shipper_price);
                 $stmt->bindParam(":user", $user_id);
                 $stmt->bindParam(":name", $checkont_name);
                 $stmt->bindParam(":last_name", $checkout_last_name);
@@ -274,6 +281,7 @@ class Model_Checkout extends Model {
                 $stmt->bindParam(":bil_company", $checkout_billing_company);
                 $stmt->bindParam(":bil_city", $checkout_billing_city);
                 $stmt->bindParam(":bil_country", $checkout_billing_country);
+                $stmt->bindParam(":bil_address", $checkout_billing_address);
                 $stmt->bindParam(":bil_index", $checkout_billing_index);
                 $stmt->bindParam(":bil_phone", $checkout_billing_phone);
                 $stmt->bindParam(":payment", $checkout_payment_gateway);
@@ -302,7 +310,7 @@ class Model_Checkout extends Model {
                     if(!$this->SendEmail($id, $key))
                     {
                         return false;
-                    }
+                    }               
                     
                     // Erase cart
                     $sql  = "DELETE FROM cart WHERE cart_ip=:ip";
@@ -316,24 +324,11 @@ class Model_Checkout extends Model {
                     $stmt->bindParam(":id", $id);
                     $stmt->execute();
                     
-                    //Update points
+                    //CreatePDF
+                    ShopEngine::Help()->createPDF();
                     
-                    if(Request::GetSession('checkout_points_enabled'))
-                    {
-                        $sql = "UPDATE users SET users_points=:points WHERE users_id=:id";
-                    
-                        $points = Controller_Checkout::GetPreFinalPrice()['points'];
-                        $points = (int)$points;
-                        $id     = Request::GetSession('user_id');
-
-                        $stmt = $db->prepare($sql);
-                        $stmt->bindParam(":points", $points);
-                        $stmt->bindParam(":id", $id);
-                        if(!$stmt->execute())
-                        {
-                            return false;
-                        }
-                    }
+                    //Update Points
+                    $this->updatePoints();
                     
                     //Erase session
                     Request::EraseFullSession();
@@ -342,17 +337,44 @@ class Model_Checkout extends Model {
                 }
     }
     
+    public function updatePoints()
+    {
+        //Update points
+        if(Request::GetSession('checkout_points_enabled'))
+        {
+            $sql = "UPDATE users SET users_points=:points WHERE users_id=:id";
+
+            $points = Controller_Checkout::GetPreFinalPrice()['points'];
+            $points = (int)$points;
+            $id     = Request::GetSession('user_id');
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":points", $points);
+            $stmt->bindParam(":id", $id);
+            if(!$stmt->execute())
+            {
+                return false;
+            }
+        }
+    }
+    
     public function SendEmail($id, $key)
     {
         try { 
             $mailfrom = 'info@poterpite.ru';
             $mailto   = Request::GetSession('checkout_email');
             $subject  = 'Спасибо за заказ!';
+            
+            $mailto_ad  = 'alexandergrachyov@gmail.com';
+            $subject_ad = 'Был совершен заказ';
+            
+            $this->array = Controller_Checkout::GetOrderProducts();
+            
             require_once 'widgets/mailbody.php';
 
-            $array = Controller_Checkout::GetOrderProducts();
-
-            ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body, $array);
+            ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body, $this->array);
+            
+            ShopEngine::Help()->SendMaill($mailto_ad, $mailfrom, $subject_ad, $body, $this->array);
             
             return true;
         } Catch(Exception $e) {

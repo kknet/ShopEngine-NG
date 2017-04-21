@@ -19,16 +19,21 @@ class Controller_User extends Controller{
          * 
          * In some cases, it is more appropriate to create a separate methods for manipulating data and displaying this data to the user
          */
-        if(!Request::GetSession('user_is_logged'))
+//        if(!Request::GetSession('user_is_logged'))
+//        {
+//            ShopEngine::Help()->RegularRedirect('user', 'login');
+//        }
+//        
+//        if(!ShopEngine::Help()->ValidateUser())
+//        {
+//            return ShopEngine::Help()->RegularRedirect("user", 'logout');
+//        }
+//        
+      
+        if(!Request::GetSession('user_id'))
         {
-            ShopEngine::Help()->RegularRedirect('user', 'login');
+            return false;
         }
-        
-        if(!ShopEngine::Help()->ValidateUser())
-        {
-            return ShopEngine::Help()->RegularRedirect("user", 'logout');
-        }
-        
         $id   = Request::GetSession('user_id');
         $sql  = "SELECT * FROM users WHERE users_id=?";
         return Getter::GetFreeData($sql, [$id]);
@@ -63,6 +68,11 @@ class Controller_User extends Controller{
     
     public function SignUp()
     {
+        if(Request::GetSession('user_is_logged'))
+        {
+            ShopEngine::Help()->RegularRedirect('user', 'account');
+        }
+        
         if(Request::Post('signup'))
         {
             
@@ -88,7 +98,12 @@ class Controller_User extends Controller{
     
     // Проверить!
     public function Activate()
-    {      
+    {    
+        if(Request::GetSession('user_is_logged'))
+        {
+            ShopEngine::Help()->RegularRedirect('user', 'account');
+        }
+        
         if(Request::Get('token')) 
         {
             $token = Request::Get('token');
@@ -127,7 +142,7 @@ class Controller_User extends Controller{
     {
         if(!Request::GetSession('user_is_logged'))
         {
-            ShopEngine::Help()->RegularRedirect('user', 'login');
+            return ShopEngine::Help()->RegularRedirect('user', 'login');
         }
         
         if(!ShopEngine::Help()->ValidateUser())

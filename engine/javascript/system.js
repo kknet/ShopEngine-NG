@@ -113,6 +113,8 @@ window.onload = function() {
     
     for (var i = 0; i < minus.length; i++) {   
         
+        minus[i].style.display = 'none';
+        
         var data = {
             cart_id : minus[i].getAttribute("data-temp-id"),
             csrf: minus[i].getAttribute("data-csrf")
@@ -124,12 +126,15 @@ window.onload = function() {
             return Minus(this.prototype.cart_id, this.prototype.csrf);
         });
         minus[i].removeAttribute("data-temp-id");
+        minus[i].style.display = 'block';
     }
     
-    for (var i = 0; i < plus.length; i++) {   
+    for (var i = 0; i < plus.length; i++) {  
+        
+        plus[i].style.display = 'none';
         
         var data = {
-            cart_id : plus[i].getAttribute("data-temp-id"),
+            cart_id: plus[i].getAttribute("data-temp-id"),
             csrf: plus[i].getAttribute("data-csrf")
         };
         
@@ -139,6 +144,7 @@ window.onload = function() {
             return Plus(this.prototype.cart_id, this.prototype.csrf);
         });
         plus[i].removeAttribute("data-temp-id");
+        plus[i].style.display = 'block';
     }
     
     if(btn_ac !== null) {

@@ -330,7 +330,7 @@
     <div class="section__content">
           <div class="section__content__column section__content__column--half">
               <h3>Адрес доставки</h3>
-              <p><?= $start['orders_name']?> <?= $start['orders_last_name']?><br><?= $start['orders_address']?><br><?= $start['orders_city']?><br>YEV<br><?= $start['orders_index']?><br><?= $start['orders_country']?><br><?= $start['orders_phone']?></p>
+              <p><?= $start['orders_name']?> <?= $start['orders_last_name']?><br><?= $start['orders_address']?><br><?= $start['orders_city']?><br><?= $start['orders_region']?><br><?= $start['orders_index']?><br><?= $start['orders_country']?><br><?= $start['orders_phone']?></p>
               <h3>Способ доставки</h3>
               <p><?= $start['orders_shipping']?></p>
           </div>
@@ -338,9 +338,9 @@
               <h3>Платежный адрес</h3>
               <?php 
                 if($start['orders_billing_status'] === '0') { ?>
-              <p><?= $start['orders_name']?> <?= $start['orders_last_name']?><br><?= $start['orders_address']?><br><?= $start['orders_city']?><br>YEV<br><?= $start['orders_index']?><br><?= $start['orders_country']?><br><?= $start['orders_phone']?></p>
+              <p><?= $start['orders_name']?> <?= $start['orders_last_name']?><br><?= $start['orders_address']?><br><?= $start['orders_city']?><br><?= $start['orders_region']?><br><?= $start['orders_index']?><br><?= $start['orders_country']?><br><?= $start['orders_phone']?></p>
                 <?php } else { ?>
-                    <p><?= $start['orders_billing_name']?> <?= $start['orders_billing_last_name']?><br><?= $start['orders_billing_address']?><br><?= $start['orders_billing_city']?><br>YEV<br><?= $start['orders_billing_index']?><br><?= $start['orders_billing_country']?><br><?= $start['orders_billing_phone']?></p>
+                    <p><?= $start['orders_billing_name']?> <?= $start['orders_billing_last_name']?><br><?= $start['orders_billing_address']?><br><?= $start['orders_billing_city']?><br><?= $start['orders_region']?><br><?= $start['orders_billing_index']?><br><?= $start['orders_billing_country']?><br><?= $start['orders_billing_phone']?></p>
                <?php } ?>                        
                 <h3>Способ оплаты
               <ul class="payment-method-list">

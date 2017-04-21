@@ -256,4 +256,17 @@ class ShopEngine {
         fclose($err);
     }
     
+    public static function GetOrderData($id)
+    {
+        $sql = "SELECT * FROM orders WHERE orders_id=?";
+        $info = Getter::GetFreeData($sql, [$id]);
+        $sql = "SELECT * FROM order_products o RIGHT OUTER JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=?";
+        $products = Getter::GetFreeData($sql, [$id], false);
+        
+        return [
+            'info'     => $info,
+            'products' => $products
+        ];
+    }
+    
 }

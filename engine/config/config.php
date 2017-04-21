@@ -23,7 +23,8 @@ class Config {
             'paginator',
             'seo',
             'request'
-        ]
+        ],
+        'points' => 300
     ];
     
     public static function Password()
