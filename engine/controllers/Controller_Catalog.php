@@ -26,12 +26,12 @@ class Controller_Catalog extends Controller
     {
         $category = ShopEngine::GetAction();
         $array = Getter::GetFreeData("SELECT name FROM category WHERE category_handle=?", [$category]);
-        if(array_key_exists('name', $array)) { 
-            return $array['name'];
-        }
-        else { 
-            return 'Для красивой улыбки';
-        }
+        if($array) { 
+            if(array_key_exists('name', $array)) { 
+                return $array['name'];
+            }
+        } 
+        return 'Для красивой улыбки';
     }
 
     

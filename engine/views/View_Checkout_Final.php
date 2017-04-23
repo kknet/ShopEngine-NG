@@ -117,7 +117,7 @@
             <td class="total-line__name">Доставка</td>
             <td class="total-line__price">
               <span class="order-summary__emphasis" data-checkout-total-shipping-target="0">
-               <?= ShopEngine::Help()->AsPrice(Request::GetSession('shipper_price')) ?>
+               <?= ShopEngine::Help()->AsPrice($start['orders_shipping_price']) ?>
               </span>
             </td>
           </tr>
@@ -138,7 +138,7 @@
         <td class="total-line__price payment-due">
           <span class="payment-due__currency">RUB</span>
           <span class="payment-due__price" data-checkout-payment-due-target="">
-            <?= ShopEngine::Help()->AsPrice(Request::GetSession('full_price')) ?>
+            <?= ShopEngine::Help()->AsPrice($start['orders_price']) ?>
           </span>
         </td>
       </tr>
@@ -218,7 +218,7 @@
 </style>
 
 <div class="mainPayment">
-    <div class="blockPayment payMoscow">
+<!--    <div class="blockPayment payMoscow">
         <div class="imgPaument">
             <img src="//cdn.shopify.com/s/files/1/1339/0281/t/2/assets/pay.png?5300525480014731583" alt="">
         </div>
@@ -237,7 +237,7 @@
             Подтверждение оплаты и отправка товара произойдет на следующий рабочий день, при условии наличия товара на складе</p>
             <a class="button" target="_blank" href="http://order.blackberryrussia.com/pdf/index.php?id=4802676291&amp;site=poterpite">Скачать счет для физ.лиц</a>
         </div>    
-    </div>
+    </div>-->
     <!--<div class="blockPayment payCard">
         <div class="imgPaument">
             <img src="//cdn.shopify.com/s/files/1/1339/0281/t/2/assets/get_order.png?5300525480014731583" alt="">
@@ -254,10 +254,10 @@
             <img src="//cdn.shopify.com/s/files/1/1339/0281/t/2/assets/get_order_ur.png?5300525480014731583" alt="">
         </div>
         <div class="textPayment">
-            <p class="h1">Скачать счет (комиссия 5% для юр.лиц)</p>
+            <p class="h1">Скачать счет</p>
             <p>Вы можете заполнить реквизиты и скачать счет для оплаты<br>
             Подтверждение оплаты и отправка товара произойдет на следующий рабочий день, при условии наличия товара на складе</p>
-            <a class="button" target="_blank" href="http://order.blackberryrussia.com/pdf/index.php?id=4802676291&amp;site=poterpite&amp;ur=1">Скачать счет для юр.лиц</a>
+            <a class="button" target="_blank" href="<?=ShopEngine::GetHost().'/checkout/download?orderid='.$start['orders_key']?>">Скачать счет</a>
         </div>    
     </div>
 </div>

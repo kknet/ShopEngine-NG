@@ -1,5 +1,5 @@
 <?php
-    $array = GetProducts();
+    $array = $start;
 ?>
 <h1 class="small--text-center">Корзина покупателя</h1>
   <form action="/cart" method="post" novalidate class="cart">

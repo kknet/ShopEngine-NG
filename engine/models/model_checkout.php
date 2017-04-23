@@ -4,6 +4,10 @@ class Model_Checkout extends Model {
     
     public $errors = [];
     public $array  = [];
+    public $id;
+    public $key;
+    public $shipper_name;
+    public $shipper_price;
     
     public function ValidateStep1()
     {
@@ -214,19 +218,8 @@ class Model_Checkout extends Model {
                 . "NOW()"
                 . ")";
         
-                
-                //calculating full checkout price
-                $shipper_id    = Request::GetSession('shipper_id');
-                $sql_temp      = "SELECT shipper_type, shipper_price FROM shipper WHERE shipper_id=?";
-                $temp          = Getter::GetFreeData($sql_temp, [$shipper_id]);
-                $shipper_name  = $temp['shipper_type'];
-                $shipper_price = $temp['shipper_price'];
-                $final = Controller_Checkout::GetPreFinalPrice();
-                if(is_array($final))
-                {
-                    $final = $final['final'];
-                }
-                $full          = $final + $shipper_price;
+                //Calculate the price
+                $full    = $this->CalulateFullPrice();
                 $user_id = Request::GetSession("user_id");
         
                 $stmt = $db->prepare($sql);
@@ -260,8 +253,8 @@ class Model_Checkout extends Model {
                 $checkout_payment_gateway = Request::GetSession('checkout_payment_gateway');
                 
                 $stmt->bindParam(":price", $full);
-                $stmt->bindParam(":shipping", $shipper_name);
-                $stmt->bindParam(":shipping_price", $shipper_price);
+                $stmt->bindParam(":shipping", $this->shipper_name);
+                $stmt->bindParam(":shipping_price", $this->shipper_price);
                 $stmt->bindParam(":user", $user_id);
                 $stmt->bindParam(":name", $checkont_name);
                 $stmt->bindParam(":last_name", $checkout_last_name);
@@ -292,22 +285,22 @@ class Model_Checkout extends Model {
                     return false;
                 }
                 
-                $id = $db->lastInsertId();
-                Request::SetSession('last_order_id', $id);
+                $this->id = $db->lastInsertId();
+                Request::SetSession('last_order_id', $this->id);
                 
                 $sql = "UPDATE order_products SET orders_final_id=:id, orders_status='1' WHERE orders_ip=:ip AND orders_status='0'";
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam(":id", $id);
+                $stmt->bindParam(":id", $this->id);
                 $stmt->bindParam(":ip", $ip);
                 if($stmt->execute())
                 {
                     
                     // Add order key
-                    $key = sha1($id).uniqid(20);
+                    $this->key = sha1($this->id).uniqid(20);
                     
                     
                     // Send Email
-                    if(!$this->SendEmail($id, $key))
+                    if(!$this->SendEmail($this->id, $this->key))
                     {
                         return false;
                     }               
@@ -320,12 +313,12 @@ class Model_Checkout extends Model {
                     
                     $sql  = "UPDATE orders SET orders_key=:key WHERE orders_id=:id";
                     $stmt = $db->prepare($sql);
-                    $stmt->bindParam(":key", $key);
-                    $stmt->bindParam(":id", $id);
+                    $stmt->bindParam(":key", $this->key);
+                    $stmt->bindParam(":id", $this->id);
                     $stmt->execute();
                     
                     //CreatePDF
-                    ShopEngine::Help()->createPDF();
+                    $this->CreatePDF($this->id, $this->key);
                     
                     //Update Points
                     $this->updatePoints();
@@ -333,8 +326,43 @@ class Model_Checkout extends Model {
                     //Erase session
                     Request::EraseFullSession();
                     
-                    return $key;
+                    return $this->key;
                 }
+    }
+    
+    public function CreatePDF($id, $key)
+    {
+        //CreatePDF
+        ShopEngine::Help()->createPDF();
+        
+        //Create Link
+        $db  = database::getInstance();
+        $lnk = Config::$config['orders_location']."order{$id}.pdf";
+        $sql = "INSERT INTO orders_documents (orders_id, document_file, orders_key) VALUES (:id, :file, :key)";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":file", $lnk);
+        $stmt->bindParam(":key", $key);
+        if(!$stmt->execute())
+        {
+            return false;
+        }
+    }
+    
+    public function CalulateFullPrice()
+    {
+        $shipper_id    = Request::GetSession('shipper_id');
+        $sql_temp      = "SELECT shipper_type, shipper_price FROM shipper WHERE shipper_id=?";
+        $temp          = Getter::GetFreeData($sql_temp, [$shipper_id]);
+        $this->shipper_name  = $temp['shipper_type'];
+        $this->shipper_price = $temp['shipper_price'];
+        $final = Controller_Checkout::GetPreFinalPrice();
+        if(is_array($final))
+        {
+            $final = $final['final'];
+        }
+        return $final + $this->shipper_price;
     }
     
     public function updatePoints()
@@ -348,6 +376,7 @@ class Model_Checkout extends Model {
             $points = (int)$points;
             $id     = Request::GetSession('user_id');
 
+            $db = database::getInstance();
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":points", $points);
             $stmt->bindParam(":id", $id);

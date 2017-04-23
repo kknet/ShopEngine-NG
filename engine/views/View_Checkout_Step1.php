@@ -53,27 +53,29 @@
         </tr>
       </thead>
       <tbody data-order-summary-section="line-items">
-          <?php foreach ($array as $cur) { ?>
-                <tr class="product" data-product-id="" data-variant-id="" data-product-type="<?=$cur['name']?>">
-                    <td class="product__image">
-                        <div class="product-thumbnail">
-                            <div class="product-thumbnail__wrapper">
-                                <?= ShopEngine::Help()->ImageReSize($cur['image'], 95, 95, $cur['title'], '%', 'product-thumbnail__image')?>
-                    <!--    <img alt="6 Металлик" class="product-thumbnail__image" src="//cdn.shopify.com/s/files/1/1339/0281/products/371437955_small.jpg?5300525480014731583">-->
-                            </div>
-                            <span class="product-thumbnail__quantity" aria-hidden="true">1</span>
-                        </div>
+          <?php if($array) { ?>
+                <?php foreach ($array as $cur) { ?>
+                      <tr class="product" data-product-id="" data-variant-id="" data-product-type="<?=$cur['name']?>">
+                          <td class="product__image">
+                              <div class="product-thumbnail">
+                                  <div class="product-thumbnail__wrapper">
+                                      <?= ShopEngine::Help()->ImageReSize($cur['image'], 95, 95, $cur['title'], '%', 'product-thumbnail__image')?>
+                          <!--    <img alt="6 Металлик" class="product-thumbnail__image" src="//cdn.shopify.com/s/files/1/1339/0281/products/371437955_small.jpg?5300525480014731583">-->
+                                  </div>
+                                  <span class="product-thumbnail__quantity" aria-hidden="true">1</span>
+                              </div>
 
-                    </td>
-                        <td class="product__description">
-                            <span class="product__description__name order-summary__emphasis"><?=$cur['title']?></span>
-                            <span class="product__description__variant order-summary__small-text"></span>
-                        </td>
-                    <td class="product__quantity visually-hidden"><?=$cur['orders_count']?></td>
-                    <td class="product__price">
-                        <span class="order-summary__emphasis"><?= ShopEngine::Help()->AsPrice($cur['orders_price'])?></span>
-                    </td>
-                </tr>
+                          </td>
+                              <td class="product__description">
+                                  <span class="product__description__name order-summary__emphasis"><?=$cur['title']?></span>
+                                  <span class="product__description__variant order-summary__small-text"></span>
+                              </td>
+                          <td class="product__quantity visually-hidden"><?=$cur['orders_count']?></td>
+                          <td class="product__price">
+                              <span class="order-summary__emphasis"><?= ShopEngine::Help()->AsPrice($cur['orders_price'])?></span>
+                          </td>
+                      </tr>
+                <?php } ?>
           <?php } ?>
       </tbody>
     </table>

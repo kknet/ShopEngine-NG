@@ -8,7 +8,7 @@
                 $db = database::getInstance();
             
                 $id    = ShopEngine::Help()->Clear($_POST['id']);
-                $count = ShopEngine::Help()->Clear($_POST['count']);
+//                $count = ShopEngine::Help()->Clear($_POST['count']);
                 $csrf  = ShopEngine::Help()->Clear($_POST['csrf']);
                 $ip    = ShopEngine::GetUserIp();
                 

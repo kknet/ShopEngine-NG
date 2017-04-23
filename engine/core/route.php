@@ -2,14 +2,11 @@
 
 /*
  * 
- * Роутер. Спасибо сайту Хабрахабр
+ * Simple router
  */
 
 class Route 
 {
-    
-    private static $controller = NULL;
-    
     static function start() 
     {   
         if(!ShopEngine::AllowControllers()) {
@@ -21,9 +18,9 @@ class Route
         
         // Getting names of model, controller, action
         $controller_name = ShopEngine::GetController();
-        $model_name = ShopEngine::GetModel();
-        $action = ShopEngine::GetAction();
-        $option = ShopEngine::GetOption();
+        $model_name      = ShopEngine::GetModel();
+        $action          = ShopEngine::GetAction();
+        $option          = ShopEngine::GetOption();
         
         // Это не очень изящное решение, но я придумаю позже что-нибудь
         if($controller_name === 'Controller_Ajax') {
@@ -35,12 +32,12 @@ class Route
         $model_file = strtolower($model_name.'.php');
         $model_path = 'engine/models/'.$model_file;
         if (file_exists($model_path)) {
-            include($model_path);
+            require_once($model_path);
         }
         $controller_file = $controller_name.'.php';
         $controller_path = 'engine/controllers/'.$controller_file;
         if (file_exists($controller_path)) {
-            include($controller_path); 
+            require_once($controller_path); 
             $controller = new $controller_name;
             if($controller->type() === 'gen') {
                 $start = $controller->start();
@@ -64,20 +61,13 @@ class Route
                     else {
                         return Route::ErrorPage404();
                     }
-                }
-                        
-            }
-            
+                }          
+            } 
         }
         else {
-                Route::ErrorPage404();
+                return Route::ErrorPage404();
         }
-        
-//        if($start === false)
-//        {
-//            ShopEngine::Help()->Refresh();
-//        }
-        
+
         // Include view 
         $view_name = ShopEngine::GetController()::SetView();
         //
@@ -90,11 +80,9 @@ class Route
             require_once 'template/layout/'.$layout;
         }
         else {
-            Route::ErrorPage404();
+            return Route::ErrorPage404();
         }
-
-        //$controller = new $controller_name;
-        //$action = $action_name;
+        
         Request::EraseErrorSession();
     }
 
@@ -102,7 +90,7 @@ class Route
     {
         // Ошибка 404, пока не работает
         //$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        header( 'Location: /catalog/all', true, 301 );
+        header( 'Location: /catalog/all', true, 404);
     }
     
 }

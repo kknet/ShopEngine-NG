@@ -54,27 +54,29 @@
         </tr>
       </thead>
       <tbody data-order-summary-section="line-items">
-          <?php foreach ($array as $cur) { ?>
-                <tr class="product" data-product-id="" data-variant-id="" data-product-type="<?=$cur['name']?>">
-                    <td class="product__image">
-                        <div class="product-thumbnail">
-                            <div class="product-thumbnail__wrapper">
-                                <?= ShopEngine::Help()->ImageReSize($cur['image'], 95, 95, $cur['title'], '%', 'product-thumbnail__image')?>
-                    <!--    <img alt="6 Металлик" class="product-thumbnail__image" src="//cdn.shopify.com/s/files/1/1339/0281/products/371437955_small.jpg?5300525480014731583">-->
-                            </div>
-                            <span class="product-thumbnail__quantity" aria-hidden="true">1</span>
-                        </div>
+          <?php if ($array) { ?>
+            <?php foreach ($array as $cur) { ?>
+                  <tr class="product" data-product-id="" data-variant-id="" data-product-type="<?=$cur['name']?>">
+                      <td class="product__image">
+                          <div class="product-thumbnail">
+                              <div class="product-thumbnail__wrapper">
+                                  <?= ShopEngine::Help()->ImageReSize($cur['image'], 95, 95, $cur['title'], '%', 'product-thumbnail__image')?>
+                      <!--    <img alt="6 Металлик" class="product-thumbnail__image" src="//cdn.shopify.com/s/files/1/1339/0281/products/371437955_small.jpg?5300525480014731583">-->
+                              </div>
+                              <span class="product-thumbnail__quantity" aria-hidden="true">1</span>
+                          </div>
 
-                    </td>
-                        <td class="product__description">
-                            <span class="product__description__name order-summary__emphasis"><?=$cur['title']?></span>
-                            <span class="product__description__variant order-summary__small-text"></span>
-                        </td>
-                    <td class="product__quantity visually-hidden"><?=$cur['orders_count']?></td>
-                    <td class="product__price">
-                        <span class="order-summary__emphasis"><?= ShopEngine::Help()->AsPrice($cur['orders_price'])?></span>
-                    </td>
-                </tr>
+                      </td>
+                          <td class="product__description">
+                              <span class="product__description__name order-summary__emphasis"><?=$cur['title']?></span>
+                              <span class="product__description__variant order-summary__small-text"></span>
+                          </td>
+                      <td class="product__quantity visually-hidden"><?=$cur['orders_count']?></td>
+                      <td class="product__price">
+                          <span class="order-summary__emphasis"><?= ShopEngine::Help()->AsPrice($cur['orders_price'])?></span>
+                      </td>
+                  </tr>
+            <?php } ?>
           <?php } ?>
       </tbody>
     </table>
@@ -441,246 +443,8 @@
   
   <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_billing_address_country">Страна</label>
     <select size="1" autocomplete="billing country" data-backup="country" class="field__input field__input--select" name="checkout_billing_country" id="checkout_billing_address_country">
-        <option data-code="AF" value="Afghanistan">Афганистан</option>
-<option data-code="AX" value="Aland Islands">Аландские о-ва</option>
-<option data-code="AL" value="Albania">Албания</option>
-<option data-code="DZ" value="Algeria">Алжир</option>
-<option data-code="AD" value="Andorra">Андорра</option>
-<option data-code="AO" value="Angola">Ангола</option>
-<option data-code="AI" value="Anguilla">Ангилья</option>
-<option data-code="AG" value="Antigua And Barbuda">Антигуа и Барбуда</option>
-<option data-code="AR" value="Argentina">Аргентина</option>
-<option data-code="AM" value="Armenia">Армения</option>
-<option data-code="AW" value="Aruba">Аруба</option>
-<option data-code="AU" value="Australia">Австралия</option>
-<option data-code="AT" value="Austria">Австрия</option>
-<option data-code="AZ" value="Azerbaijan">Азербайджан</option>
-<option data-code="BS" value="Bahamas">Багамские о-ва</option>
-<option data-code="BH" value="Bahrain">Бахрейн</option>
-<option data-code="BD" value="Bangladesh">Бангладеш</option>
-<option data-code="BB" value="Barbados">Барбадос</option>
-<option data-code="BY" value="Belarus">Беларусь</option>
-<option data-code="BE" value="Belgium">Бельгия</option>
-<option data-code="BZ" value="Belize">Белиз</option>
-<option data-code="BJ" value="Benin">Бенин</option>
-<option data-code="BM" value="Bermuda">Бермудские о-ва</option>
-<option data-code="BT" value="Bhutan">Бутан</option>
-<option data-code="BO" value="Bolivia">Боливия</option>
-<option data-code="BA" value="Bosnia And Herzegovina">Босния и Герцеговина</option>
-<option data-code="BW" value="Botswana">Ботсвана</option>
-<option data-code="BV" value="Bouvet Island">о-в Буве</option>
-<option data-code="BR" value="Brazil">Бразилия</option>
-<option data-code="IO" value="British Indian Ocean Territory">Британская территория в Индийском океане</option>
-<option data-code="BN" value="Brunei">Бруней-Даруссалам</option>
-<option data-code="BG" value="Bulgaria">Болгария</option>
-<option data-code="BF" value="Burkina Faso">Буркина-Фасо</option>
-<option data-code="BI" value="Burundi">Бурунди</option>
-<option data-code="KH" value="Cambodia">Камбоджа</option>
-<option data-code="CA" value="Canada">Канада</option>
-<option data-code="CV" value="Cape Verde">Кабо-Верде</option>
-<option data-code="KY" value="Cayman Islands">Каймановы о-ва</option>
-<option data-code="CF" value="Central African Republic">ЦАР</option>
-<option data-code="TD" value="Chad">Чад</option>
-<option data-code="CL" value="Chile">Чили</option>
-<option data-code="CN" value="China">Китай</option>
-<option data-code="CX" value="Christmas Island">о-в Рождества</option>
-<option data-code="CC" value="Cocos (Keeling) Islands">Кокосовые о-ва</option>
-<option data-code="CO" value="Colombia">Колумбия</option>
-<option data-code="KM" value="Comoros">Коморские о-ва</option>
-<option data-code="CG" value="Congo">Конго - Браззавиль</option>
-<option data-code="CD" value="Congo, The Democratic Republic Of The">Конго - Киншаса</option>
-<option data-code="CK" value="Cook Islands">о-ва Кука</option>
-<option data-code="CR" value="Costa Rica">Коста-Рика</option>
-<option data-code="HR" value="Croatia">Хорватия</option>
-<option data-code="CU" value="Cuba">Куба</option>
-<option data-code="CW" value="Curaçao">Кюрасао</option>
-<option data-code="CY" value="Cyprus">Кипр</option>
-<option data-code="CZ" value="Czech Republic">Чехия</option>
-<option data-code="CI" value="Côte d'Ivoire">Кот-д’Ивуар</option>
-<option data-code="DK" value="Denmark">Дания</option>
-<option data-code="DJ" value="Djibouti">Джибути</option>
-<option data-code="DM" value="Dominica">Доминика</option>
-<option data-code="DO" value="Dominican Republic">Доминиканская Республика</option>
-<option data-code="EC" value="Ecuador">Эквадор</option>
-<option data-code="EG" value="Egypt">Египет</option>
-<option data-code="SV" value="El Salvador">Сальвадор</option>
-<option data-code="GQ" value="Equatorial Guinea">Экваториальная Гвинея</option>
-<option data-code="ER" value="Eritrea">Эритрея</option>
-<option data-code="EE" value="Estonia">Эстония</option>
-<option data-code="ET" value="Ethiopia">Эфиопия</option>
-<option data-code="FK" value="Falkland Islands (Malvinas)">Фолклендские о-ва</option>
-<option data-code="FO" value="Faroe Islands">Фарерские о-ва</option>
-<option data-code="FJ" value="Fiji">Фиджи</option>
-<option data-code="FI" value="Finland">Финляндия</option>
-<option data-code="FR" value="France">Франция</option>
-<option data-code="GF" value="French Guiana">Французская Гвиана</option>
-<option data-code="PF" value="French Polynesia">Французская Полинезия</option>
-<option data-code="TF" value="French Southern Territories">Французские Южные Территории</option>
-<option data-code="GA" value="Gabon">Габон</option>
-<option data-code="GM" value="Gambia">Гамбия</option>
-<option data-code="GE" value="Georgia">Грузия</option>
-<option data-code="DE" value="Germany">Германия</option>
-<option data-code="GH" value="Ghana">Гана</option>
-<option data-code="GI" value="Gibraltar">Гибралтар</option>
-<option data-code="GR" value="Greece">Греция</option>
-<option data-code="GL" value="Greenland">Гренландия</option>
-<option data-code="GD" value="Grenada">Гренада</option>
-<option data-code="GP" value="Guadeloupe">Гваделупа</option>
-<option data-code="GT" value="Guatemala">Гватемала</option>
-<option data-code="GG" value="Guernsey">Гернси</option>
-<option data-code="GN" value="Guinea">Гвинея</option>
-<option data-code="GW" value="Guinea Bissau">Гвинея-Бисау</option>
-<option data-code="GY" value="Guyana">Гайана</option>
-<option data-code="HT" value="Haiti">Гаити</option>
-<option data-code="HM" value="Heard Island And Mcdonald Islands">о-ва Херд и Макдональд</option>
-<option data-code="VA" value="Holy See (Vatican City State)">Ватикан</option>
-<option data-code="HN" value="Honduras">Гондурас</option>
-<option data-code="HK" value="Hong Kong">Гонконг (особый район)</option>
-<option data-code="HU" value="Hungary">Венгрия</option>
-<option data-code="IS" value="Iceland">Исландия</option>
-<option data-code="IN" value="India">Индия</option>
-<option data-code="ID" value="Indonesia">Индонезия</option>
-<option data-code="IR" value="Iran, Islamic Republic Of">Иран</option>
-<option data-code="IQ" value="Iraq">Ирак</option>
-<option data-code="IE" value="Ireland">Ирландия</option>
-<option data-code="IM" value="Isle Of Man">О-в Мэн</option>
-<option data-code="IL" value="Israel">Израиль</option>
-<option data-code="IT" value="Italy">Италия</option>
-<option data-code="JM" value="Jamaica">Ямайка</option>
-<option data-code="JP" value="Japan">Япония</option>
-<option data-code="JE" value="Jersey">Джерси</option>
-<option data-code="JO" value="Jordan">Иордания</option>
-<option data-code="KZ" value="Kazakhstan">Казахстан</option>
-<option data-code="KE" value="Kenya">Кения</option>
-<option data-code="KI" value="Kiribati">Кирибати</option>
-<option data-code="KP" value="Korea, Democratic People's Republic Of">КНДР</option>
-<option data-code="XK" value="Kosovo">Косово</option>
-<option data-code="KW" value="Kuwait">Кувейт</option>
-<option data-code="KG" value="Kyrgyzstan">Киргизия</option>
-<option data-code="LA" value="Lao People's Democratic Republic">Лаос</option>
-<option data-code="LV" value="Latvia">Латвия</option>
-<option data-code="LB" value="Lebanon">Ливан</option>
-<option data-code="LS" value="Lesotho">Лесото</option>
-<option data-code="LR" value="Liberia">Либерия</option>
-<option data-code="LY" value="Libyan Arab Jamahiriya">Ливия</option>
-<option data-code="LI" value="Liechtenstein">Лихтенштейн</option>
-<option data-code="LT" value="Lithuania">Литва</option>
-<option data-code="LU" value="Luxembourg">Люксембург</option>
-<option data-code="MO" value="Macao">Макао (особый район)</option>
-<option data-code="MK" value="Macedonia, Republic Of">Македония</option>
-<option data-code="MG" value="Madagascar">Мадагаскар</option>
-<option data-code="MW" value="Malawi">Малави</option>
-<option data-code="MY" value="Malaysia">Малайзия</option>
-<option data-code="MV" value="Maldives">Мальдивские о-ва</option>
-<option data-code="ML" value="Mali">Мали</option>
-<option data-code="MT" value="Malta">Мальта</option>
-<option data-code="MQ" value="Martinique">Мартиника</option>
-<option data-code="MR" value="Mauritania">Мавритания</option>
-<option data-code="MU" value="Mauritius">Маврикий</option>
-<option data-code="YT" value="Mayotte">Майотта</option>
-<option data-code="MX" value="Mexico">Мексика</option>
-<option data-code="MD" value="Moldova, Republic of">Молдова</option>
-<option data-code="MC" value="Monaco">Монако</option>
-<option data-code="MN" value="Mongolia">Монголия</option>
-<option data-code="ME" value="Montenegro">Черногория</option>
-<option data-code="MS" value="Montserrat">Монтсеррат</option>
-<option data-code="MA" value="Morocco">Марокко</option>
-<option data-code="MZ" value="Mozambique">Мозамбик</option>
-<option data-code="MM" value="Myanmar">Мьянма (Бирма)</option>
-<option data-code="NA" value="Namibia">Намибия</option>
-<option data-code="NR" value="Nauru">Науру</option>
-<option data-code="NP" value="Nepal">Непал</option>
-<option data-code="NL" value="Netherlands">Нидерланды</option>
-<option data-code="AN" value="Netherlands Antilles">Нидерландские Антильские о-ва</option>
-<option data-code="NC" value="New Caledonia">Новая Каледония</option>
-<option data-code="NZ" value="New Zealand">Новая Зеландия</option>
-<option data-code="NI" value="Nicaragua">Никарагуа</option>
-<option data-code="NE" value="Niger">Нигер</option>
-<option data-code="NG" value="Nigeria">Нигерия</option>
-<option data-code="NU" value="Niue">Ниуэ</option>
-<option data-code="NF" value="Norfolk Island">о-в Норфолк</option>
-<option data-code="NO" value="Norway">Норвегия</option>
-<option data-code="OM" value="Oman">Оман</option>
-<option data-code="PK" value="Pakistan">Пакистан</option>
-<option data-code="PS" value="Palestinian Territory, Occupied">Палестинские территории</option>
-<option data-code="PA" value="Panama">Панама</option>
-<option data-code="PG" value="Papua New Guinea">Папуа – Новая Гвинея</option>
-<option data-code="PY" value="Paraguay">Парагвай</option>
-<option data-code="PE" value="Peru">Перу</option>
-<option data-code="PH" value="Philippines">Филиппины</option>
-<option data-code="PN" value="Pitcairn">Питкэрн</option>
-<option data-code="PL" value="Poland">Польша</option>
-<option data-code="PT" value="Portugal">Португалия</option>
-<option data-code="QA" value="Qatar">Катар</option>
-<option data-code="CM" value="Republic of Cameroon">Камерун</option>
-<option data-code="RE" value="Reunion">Реюньон</option>
-<option data-code="RO" value="Romania">Румыния</option>
-<option data-code="RU" value="Russia">Россия</option>
-<option data-code="RW" value="Rwanda">Руанда</option>
-<option data-code="BL" value="Saint Barthélemy">Сен-Бартельми</option>
-<option data-code="SH" value="Saint Helena">О-в Св. Елены</option>
-<option data-code="KN" value="Saint Kitts And Nevis">Сент-Китс и Невис</option>
-<option data-code="LC" value="Saint Lucia">Сент-Люсия</option>
-<option data-code="MF" value="Saint Martin">Сен-Мартен</option>
-<option data-code="PM" value="Saint Pierre And Miquelon">Сен-Пьер и Микелон</option>
-<option data-code="WS" value="Samoa">Самоа</option>
-<option data-code="SM" value="San Marino">Сан-Марино</option>
-<option data-code="ST" value="Sao Tome And Principe">Сан-Томе и Принсипи</option>
-<option data-code="SA" value="Saudi Arabia">Саудовская Аравия</option>
-<option data-code="SN" value="Senegal">Сенегал</option>
-<option data-code="RS" value="Serbia">Сербия</option>
-<option data-code="SC" value="Seychelles">Сейшельские о-ва</option>
-<option data-code="SL" value="Sierra Leone">Сьерра-Леоне</option>
-<option data-code="SG" value="Singapore">Сингапур</option>
-<option data-code="SX" value="Sint Maarten">Синт-Мартен</option>
-<option data-code="SK" value="Slovakia">Словакия</option>
-<option data-code="SI" value="Slovenia">Словения</option>
-<option data-code="SB" value="Solomon Islands">Соломоновы о-ва</option>
-<option data-code="SO" value="Somalia">Сомали</option>
-<option data-code="ZA" value="South Africa">ЮАР</option>
-<option data-code="GS" value="South Georgia And The South Sandwich Islands">Южная Георгия и Южные Сандвичевы о-ва</option>
-<option data-code="KR" value="South Korea">Республика Корея</option>
-<option data-code="ES" value="Spain">Испания</option>
-<option data-code="LK" value="Sri Lanka">Шри-Ланка</option>
-<option data-code="VC" value="St. Vincent">Сент-Винсент и Гренадины</option>
-<option data-code="SD" value="Sudan">Судан</option>
-<option data-code="SR" value="Suriname">Суринам</option>
-<option data-code="SJ" value="Svalbard And Jan Mayen">Шпицберген и Ян-Майен</option>
-<option data-code="SZ" value="Swaziland">Свазиленд</option>
-<option data-code="SE" value="Sweden">Швеция</option>
-<option data-code="CH" value="Switzerland">Швейцария</option>
-<option data-code="SY" value="Syria">Сирия</option>
-<option data-code="TW" value="Taiwan">Тайвань</option>
-<option data-code="TJ" value="Tajikistan">Таджикистан</option>
-<option data-code="TZ" value="Tanzania, United Republic Of">Танзания</option>
-<option data-code="TH" value="Thailand">Таиланд</option>
-<option data-code="TL" value="Timor Leste">Восточный Тимор</option>
-<option data-code="TG" value="Togo">Того</option>
-<option data-code="TK" value="Tokelau">Токелау</option>
-<option data-code="TO" value="Tonga">Тонга</option>
-<option data-code="TT" value="Trinidad and Tobago">Тринидад и Тобаго</option>
-<option data-code="TN" value="Tunisia">Тунис</option>
-<option data-code="TR" value="Turkey">Турция</option>
-<option data-code="TM" value="Turkmenistan">Туркменистан</option>
-<option data-code="TC" value="Turks and Caicos Islands">О-ва Тёркс и Кайкос</option>
-<option data-code="TV" value="Tuvalu">Тувалу</option>
-<option data-code="UG" value="Uganda">Уганда</option>
-<option data-code="UA" value="Ukraine">Украина</option>
-<option data-code="AE" value="United Arab Emirates">ОАЭ</option>
-<option data-code="GB" value="United Kingdom">Великобритания</option>
-<option data-code="US" value="United States">Соединенные Штаты</option>
-<option data-code="UM" value="United States Minor Outlying Islands">Внешние малые о-ва (США)</option>
-<option data-code="UY" value="Uruguay">Уругвай</option>
-<option data-code="UZ" value="Uzbekistan">Узбекистан</option>
-<option data-code="VU" value="Vanuatu">Вануату</option>
-<option data-code="VE" value="Venezuela">Венесуэла</option>
-<option data-code="VN" value="Vietnam">Вьетнам</option>
-<option data-code="VG" value="Virgin Islands, British">Виргинские о-ва (Британские)</option>
-<option data-code="WF" value="Wallis And Futuna">Уоллис и Футуна</option>
-<option data-code="EH" value="Western Sahara">Западная Сахара</option>
-<option data-code="YE" value="Yemen">Йемен</option>
-<option data-code="ZM" value="Zambia">Замбия</option>
-<option data-code="ZW" value="Zimbabwe">Зимбабве</option></select>
+        <option data-code="RU" value="Russia">Россия</option>
+    </select>
   </div>
 </div><div data-address-field="zip" class="field field--required field--half <?=$error['billing_index']['class']?>">
   

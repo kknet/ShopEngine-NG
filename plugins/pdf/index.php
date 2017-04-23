@@ -14,5 +14,5 @@ require_once __DIR__ . '/lib/getdata.php';
 require_once __DIR__ . '/lib/generator.php';
 
 
-$generator = new generator2((!empty($_GET['id']) ? $_GET['id'] : false), (!empty($_GET['site']) ? $_GET['site'] : 'blackberry'), false, (!empty($_GET['ur']) ? true : false));
+$generator = new generator2((Request::GetSession('last_order_id')), Config::$config['site_handle'], false, (!empty($_GET['ur']) ? true : false));
 $html = $generator->render();

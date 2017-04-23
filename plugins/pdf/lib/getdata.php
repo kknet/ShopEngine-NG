@@ -41,7 +41,7 @@ class getData{
 				$totalPrice = $data['info']['orders_price'];
 				$this->data = [
 					"ORDERID" => $data['info']['orders_id'],
-					"DATE" => $data['info']['orders_'],
+					"DATE" => $data['info']['orders_date'],
 					"CUSTOMERNAME" => $data['info']['orders_name']." ".$data['info']['orders_last_name'],
 					"CUSTOMERNAMETWO" => $data['info']['orders_name']." ".$data['info']['orders_last_name'],
 					"CUSTOMERPHONE" => $data['info']['orders_phone'],

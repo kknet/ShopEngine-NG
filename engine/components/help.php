@@ -27,6 +27,10 @@ class Help
     {
         if ($row != "" && file_exists($row)) {
             $img_path = $row;
+        }
+        else {
+            $img_path = "img/no_image.gif";
+        }
             $max_width = $oNwidth;
             $max_height = $oNheight;
             list($width, $height) = getimagesize($img_path);
@@ -38,15 +42,6 @@ class Help
             $image = '<img src="/'.$img_path.'" class="'.$class.'" title="'.$title.'" width="'.$width.$e.'" height="'.$height.$e.'" alt="'.$title.'"/>';
             //$image = '<img src="/'.$img_path.'" title="'.$title.'" alt="'.$title.'"/>';
             return $image;
-        }
-        else {
-            $img_path = "/img/no_image.gif";
-            $width = $oNwidth;
-            $height = $oNheight;
-            //$image = '<img src="'.$img_path.'" title="'.$title.'" alt="image"/>';
-            $image = '<img src="'.$img_path.'" class="'.$class.'" title="'.$title.'" width="'.$width.$e.'" height="'.$height.$e.'" alt="image"/>';
-            return $image;
-        }
     }
     
     public function AsSimplePrice($num)
@@ -550,5 +545,28 @@ class Help
         include_once 'plugins/pdf/index.php';
     }
     
-
+    //From Habrahabr
+    public function ForcedDownload($file)
+    {
+        if(!file_exists($file))
+        {
+            return false;
+        }
+        
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($file));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        
+        readfile($file);
+        exit;
+    }
 }

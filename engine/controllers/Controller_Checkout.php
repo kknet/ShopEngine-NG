@@ -35,9 +35,10 @@ class Controller_Checkout extends Controller{
         $ip = ShopEngine::GetUserIp();
         $sql = "SELECT * FROM order_products WHERE orders_ip=? AND orders_status='0'";
         //If we have no products in cart
-        if(!Getter::GetFreeData($sql, [$ip]))
+        $array = Getter::GetFreeData($sql, [$ip]);
+        if(!$array)
         {
-            Route::ErrorPage404();   
+            return ShopEngine::Help()->RegularRedirect('catalog', 'all');  
         }
         
         if(Request::Post('checkout_step1')) 
@@ -52,7 +53,7 @@ class Controller_Checkout extends Controller{
             self::$errors = Controller::GetModel()->ValidateStep1();
             
             if(!self::$errors) {
-                Request::SetSession('step1', true);
+                Request::SetSession('checkout_complete_step1', true);
                 return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
             }
         }
@@ -102,11 +103,11 @@ class Controller_Checkout extends Controller{
             Request::SetSession('full_price', $full + Request::GetSession('shipper_price'));
             //
             
-            Request::SetSession('step2', true);
+            Request::SetSession('checkout_complete_step2', true);
             return ShopEngine::Help()->StrongRedirect('checkout', 'step3');
         }
-
-        if(!Request::GetSession('step1')) 
+        
+        if(!Request::GetSession('checkout_complete_step1')) 
         {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step1');
         }
@@ -126,7 +127,7 @@ class Controller_Checkout extends Controller{
          * 3. If user wants to use his poits to pay, recalculate full price and amount of points;
          */
         
-        if(!Request::GetSession('step2')) 
+        if(!Request::GetSession('checkout_complete_step2')) 
         {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
         }
@@ -175,9 +176,9 @@ class Controller_Checkout extends Controller{
          * 2. Generate link to this page;
          * 3. Generate bill for payment;
          */
-        $key = ShopEngine::Help()->Clear($_GET['orderid']);
+        $key = Request::Get('orderid');
         if(!$key) {
-            return ShopEngine::Help()->StrongRedirect('checkout', 'step3'); 
+            return ShopEngine::Help()->RegularRedirect('checkout', 'step3'); 
         }
         $sql = "SELECT * FROM orders o RIGHT JOIN payment p ON o.orders_payment = p.payment_id WHERE orders_key=? AND orders_status='1'";
         $array = Getter::GetFreeData($sql, [$key]);
@@ -186,6 +187,22 @@ class Controller_Checkout extends Controller{
             return ShopEngine::Help()->StrongRedirect('checkout', 'step3'); 
         }
         return $array;
+    }
+    
+    public function download()
+    {
+        $key = Request::Get('orderid');
+        if(!$key) {
+            return ShopEngine::Help()->RegularRedirect('checkout', 'thank_you'); 
+        }
+        
+        $sql   = "SELECT * FROM orders_documents WHERE orders_key=?";
+        $array = Getter::GetFreeData($sql, [$key], true);
+        if(count($array) < 1)
+        {
+            return ShopEngine::Help()->RegularRedirect('checkout', 'thank_you'); 
+        }
+        return ShopEngine::Help()->ForcedDownload($array['document_file']);
     }
     
     public static function GetErrors()
@@ -232,19 +249,16 @@ class Controller_Checkout extends Controller{
         switch ($action) {
             case 'step1':
                 return 'View_Checkout_Step1';
-                break;
             case 'step2':
                 return 'View_Checkout_Step2';
-                break;
             case 'step3':
                 return 'View_Checkout_Step3';
-                break;
             case 'thank_you':
                 return 'View_Checkout_Final';
-                break;
+            case 'download':
+                return 'View_Checkout_Download';
             default:
                 return Route::ErrorPage404();
-                break;
         }
         
     }
@@ -272,8 +286,10 @@ class Controller_Checkout extends Controller{
     {
         if(Self::$pre_price === null) {
             $array = self::GetData();
-            foreach ($array as $cur) {
-                Self::$pre_price = Self::$pre_price + $cur['orders_price'];
+            if($array) { 
+                foreach ($array as $cur) {
+                    Self::$pre_price = Self::$pre_price + $cur['orders_price'];
+                }
             }
             if(Request::GetSession('checkout_points_enabled')) { 
                 Self::$pre_price = ShopEngine::Business()->UsePoints(Self::$pre_price);
@@ -286,11 +302,13 @@ class Controller_Checkout extends Controller{
     {
         if(Self::$price === null) {
             $array = self::GetData();
-            foreach ($array as $cur) {
-                Self::$price = Self::$price + $cur['orders_price'];
+            if($array) { 
+                foreach ($array as $cur) {
+                    Self::$price = Self::$price + $cur['orders_price'];
+                }
             }
-        }
         return Self::$price;
+        }
     }
     
     public static function GetFinalPrice()

@@ -25,17 +25,25 @@ class Controller_Cart extends Controller
             }
             
         }
+        
+        $ip = ShopEngine::GetUserIp();
+        $sql = "SELECT c.cart_id, c.cart_price, c.cart_count, p.brand, p.title, p.price, p.handle, p.image FROM cart c RIGHT JOIN products p ON c.products_handle = p.handle AND p.title <> '' WHERE cart_ip=?";
+        $array = Getter::GetFreeData($sql, [$ip], false);
+        if(!$array) {
+            return ShopEngine::Help()->RegularRedirect('catalog', 'all');
+        }
+        return $array; 
     }
     
     public static function GetData()
     {
-        $ip = ShopEngine::GetUserIp();
-        $sql = "SELECT c.cart_id, c.cart_price, c.cart_count, p.brand, p.title, p.price, p.handle, p.image FROM cart c RIGHT JOIN products p ON c.products_handle = p.handle AND p.title <> '' WHERE cart_ip=?";
-        $array = Getter::GetFreeData($sql, [$ip], false);
-        if(count($array) < 1) {
-            return Route::ErrorPage404();
-        }
-        return $array;
+//        $ip = ShopEngine::GetUserIp();
+//        $sql = "SELECT c.cart_id, c.cart_price, c.cart_count, p.brand, p.title, p.price, p.handle, p.image FROM cart c RIGHT JOIN products p ON c.products_handle = p.handle AND p.title <> '' WHERE cart_ip=?";
+//        $array = Getter::GetFreeData($sql, [$ip], false);
+//        if(!$array) {
+//            return Route::ErrorPage404();
+//        }
+//        return $array;
     }
     
     public static function GetSum()
@@ -44,6 +52,10 @@ class Controller_Cart extends Controller
         $sql = "SELECT cart_count, cart_price FROM cart WHERE cart_ip=?";
         $array = Getter::GetFreeData($sql, [$ip], false);
         $sum = 0;
+        if(!$array)
+        {
+            return false;
+        }
         foreach ($array as $cur) {
             $sum = $sum + $cur['cart_price'];
         }

@@ -12,6 +12,9 @@ class Getter extends ShopEngine{
             $result = $query->execute($params);
             if($result) {
                 $array = $query->fetchAll();
+                if(count($array) < 1) {
+                    return false;
+                }
                 if($type === true) {
                     if(count($array) === 1) {
                         return $array[0];
@@ -27,6 +30,9 @@ class Getter extends ShopEngine{
             $query = $db->query($sql);
             if($query) {
                 $array = $query->fetchAll();
+                if(count($array) < 1) {
+                    return false;
+                }
                 if($type === true) {
                     if(count($array) === 1) {
                         return $array[0];

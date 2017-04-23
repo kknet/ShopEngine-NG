@@ -16,6 +16,7 @@ class Config {
             'errorpage'
         ],
         'site_name' => 'Потерпите, пожалуйста!',
+        'site_handle' => 'poterpite',
         'protocol'  => 'http://',
         'components' => [
             'getter',
@@ -24,7 +25,8 @@ class Config {
             'seo',
             'request'
         ],
-        'points' => 300
+        'points' => 300,
+        'orders_location' => 'files/orders/'
     ];
     
     public static function Password()
