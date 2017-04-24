@@ -2,6 +2,7 @@
 
 class Config { 
     public static $config = [
+        'admin_email' => 'info@poterpite.ru',
         'allowed_controllers' => [
             'catalog',
             'products',
@@ -16,6 +17,7 @@ class Config {
             'errorpage'
         ],
         'site_name' => 'Потерпите, пожалуйста!',
+        'site_email_name' => 'Потерпите',
         'site_handle' => 'poterpite',
         'protocol'  => 'http://',
         'components' => [

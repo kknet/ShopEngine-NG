@@ -31,14 +31,20 @@ class Help
         else {
             $img_path = "img/no_image.gif";
         }
-            $max_width = $oNwidth;
-            $max_height = $oNheight;
-            list($width, $height) = getimagesize($img_path);
-            $ratioh = $max_height/$height;
-            $ratiow = $max_width/$width;
-            $ratio = min($ratioh, $ratiow);
-            $width = intval($ratio*$width);
-            $height = intval($ratio*$height);
+            if($oNheight !== null AND $oNwidth !== null) { 
+                $max_width = $oNwidth;
+                $max_height = $oNheight;
+                list($width, $height) = getimagesize($img_path);
+                $ratioh = $max_height/$height;
+                $ratiow = $max_width/$width;
+                $ratio = min($ratioh, $ratiow);
+                $width = intval($ratio*$width);
+                $height = intval($ratio*$height);
+            } else {
+                $width  = "";
+                $height = "";
+                $e      = "";
+            }
             $image = '<img src="/'.$img_path.'" class="'.$class.'" title="'.$title.'" width="'.$width.$e.'" height="'.$height.$e.'" alt="'.$title.'"/>';
             //$image = '<img src="/'.$img_path.'" title="'.$title.'" alt="'.$title.'"/>';
             return $image;
@@ -56,7 +62,7 @@ class Help
     public function AsPrice($num)
     {
         if(!$num) {
-            return '0.00 .';
+            return '0.00 р.';
         }
         
         return number_format($num, 2, '.', ',').' р.';
@@ -532,7 +538,7 @@ class Help
         $sql  = "SELECT * FROM users WHERE users_id=?";
         $user = Getter::GetFreeData($sql, [$id]);
         
-        if($user['users_temp_token'] !== Request::GetSession('user_token'))
+        if($user['users_session_token'] !== Request::GetSession('user_token'))
         {
             return false;
         }

@@ -364,6 +364,62 @@ class Controller_User extends Controller{
             return true;
         }
     }
+    
+    public function restore()
+    {
+        if(Request::GetSession('user_is_logged'))
+        {
+            return ShopEngine::Help()->RegularRedirect('user', 'account');
+        }
+        
+        if(Request::Post('restore')) { 
+        
+            $csrf = Request::Post('csrf');
+
+            if(!ShopEngine::Help()->ValidateToken($csrf))
+            {
+                return ShopEngine::GoHome();
+            }
+            
+            if($errors = Controller::GetModel()->Restore())
+            {
+                return $errors;
+            }
+            
+            return true;
+        
+        }
+    }
+    
+    public function new_password()
+    {
+        $this->restore();
+        
+        if(Request::Post('restore_new'))
+        {
+            $token = Request::Get('token');
+            
+            if($errors = Controller::GetModel()->NewPassword($token))
+            {
+                return [
+                    'status' => 'new_password',
+                    'errors' => $errors
+                ];
+            }
+            return ShopEngine::Help()->RegularRedirect('user', 'login');
+        }
+        
+        if($token = Request::Get('token'))
+        {
+            if(Controller::GetModel()->NewPasswordValidate($token))
+            {
+                return ['status' => 'new_password'];
+            }
+        }
+        
+        return ShopEngine::GoHome();
+        
+    }
 
     //Set view name
     public static function SetView()
@@ -388,6 +444,8 @@ class Controller_User extends Controller{
                 return 'View_Addresses';
             case 'invite':
                 return 'View_Invite';
+            case 'restore':
+                return 'View_Restore';
             default:
                 return Route::ErrorPage404();
         }

@@ -186,7 +186,13 @@ class Controller_Checkout extends Controller{
         {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step3'); 
         }
-        return $array;
+        $products = Controller_Checkout::GetOrderProducts($array['orders_id']);
+        $final    = Controller_Checkout::GetFinalPrice($array['orders_id']);
+        return [
+            'info'     => $array,
+            'products' => $products,
+            'final'    => $final
+        ];
     }
     
     public function download()
@@ -210,16 +216,15 @@ class Controller_Checkout extends Controller{
         return self::$errors;
     }
     
-    public static function GetOrderProducts()
+    public static function GetOrderProducts($id)
     {
         if(self::$order_pr === null) {
-            $id = Request::GetSession('last_order_id');
             $ip = ShopEngine::GetUserIp();
             $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
                     . "RIGHT JOIN products p ON o.products_handle = p.handle AND p.title <> ''"
                     . "RIGHT JOIN category c ON p.category_id = c.category_id "
-                    . "WHERE orders_ip=? AND orders_final_id=?";
-            self::$order_pr = Getter::GetFreeData($sql, [$ip, $id], false);
+                    . "WHERE orders_final_id=?";
+            self::$order_pr = Getter::GetFreeData($sql, [$id], false);
             if(!self::$order_pr) {
                 return Route::ErrorPage404();
             }
@@ -311,10 +316,10 @@ class Controller_Checkout extends Controller{
         return Self::$price;
     }
     
-    public static function GetFinalPrice()
+    public static function GetFinalPrice($id)
     {
         if(Self::$price === null) {
-            $array = self::GetOrderProducts();
+            $array = self::GetOrderProducts($id);
             foreach ($array as $cur) {
                 Self::$price = Self::$price + $cur['orders_price'];
             }

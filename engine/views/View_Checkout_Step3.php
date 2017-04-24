@@ -20,7 +20,7 @@
         <svg width="11" height="7" xmlns="http://www.w3.org/2000/svg" class="order-summary-toggle__dropdown" fill="#000"><path d="M6.138.876L5.642.438l-.496.438L.504 4.972l.992 1.124L6.138 2l-.496.436 3.862 3.408.992-1.122L6.138.876z" /></svg>
       </div>
       <div class="order-summary-toggle__total-recap total-recap" data-order-summary-section="toggle-total-recap">
-          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= GetCheckoutPrice()?></span>
+          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= ShopEngine::Help()->AsPrice(Request::GetSession('full_price')) ?></span>
       </div>
     </div>
   </div>
@@ -367,7 +367,7 @@
       <div class="content-box">
         <div class="radio-wrapper content-box__row">
           <div class="radio__input">
-            <input class="input-radio" data-backup="different_billing_address_false" type="radio" value="0" name="checkout_billing_address_payment" id="checkout_different_billing_address_false">
+            <input class="input-radio checkout_billing_radio" data-backup="different_billing_address_false" checked="checked" type="radio" value="0" name="checkout_billing_address_payment" id="checkout_different_billing_address_false">
           </div>
 
           <label class="radio__label content-box__emphasis" for="checkout_different_billing_address_false">
@@ -376,13 +376,13 @@
 
         <div class="radio-wrapper content-box__row">
           <div class="radio__input">
-            <input class="input-radio" data-backup="different_billing_address_true" checked="checked" aria-expanded="false" aria-controls="section--billing-address__different" type="radio" value="1" name="checkout_billing_address_payment" id="checkout_different_billing_address_true">
+            <input class="input-radio checkout_billing_radio" data-backup="different_billing_address_true" aria-expanded="false" aria-controls="section--billing-address__different" type="radio" value="1" name="checkout_billing_address_payment" id="checkout_different_billing_address_true">
           </div>
           <label class="radio__label content-box__emphasis" for="checkout_different_billing_address_true">
             Используйте другой платежный адрес
         </label>        </div>
 
-        <div class="radio-group__row content-box__row content-box__row--secondary" id="section--billing-address__different">
+        <div class="checkout_billing_block radio-group__row content-box__row content-box__row--secondary hidden" id="section--billing-address__different">
           <div class="fieldset" data-address-fields="">
             
               

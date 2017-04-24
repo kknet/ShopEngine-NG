@@ -392,24 +392,171 @@ class Model_Checkout extends Model {
         try { 
             $mailfrom = 'info@poterpite.ru';
             $mailto   = Request::GetSession('checkout_email');
-            $subject  = 'Спасибо за заказ!';
+            $subject  = "Заказ #{$id} принят";
             
-            $mailto_ad  = 'alexandergrachyov@gmail.com';
-            $subject_ad = 'Был совершен заказ';
+            $mailto_ad  = Config::$config['admin_email'];
+            $subject_ad = "[".Config::$config['site_email_name']."] Заказ #{$id} ".Request::GetSession('checkout_first_name').' '.Request::GetSession('checkout_last_name').' '.Request::GetSession('checkout_phone');
             
-            $this->array = Controller_Checkout::GetOrderProducts();
+            $this->array = Controller_Checkout::GetOrderProducts($id);
             
-            require_once 'widgets/mailbody.php';
+            $body    = $this->prepareEmail($id, $key, $this->array);
+            $body_ad = $this->prepareEmailAdmin($id, $key, $this->array);
 
             ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body, $this->array);
             
-            ShopEngine::Help()->SendMaill($mailto_ad, $mailfrom, $subject_ad, $body, $this->array);
+            ShopEngine::Help()->SendMaill($mailto_ad, $mailfrom, $subject_ad, $body_ad, $this->array);
             
             return true;
         } Catch(Exception $e) {
             ShopEngine::ExceptionToFile($e);
             return false;
         }
+    }
+    
+    public function prepareEmail($id, $key, $array)
+    {
+        $session = Request::GetSession();
+        $tpl = file_get_contents('widgets/ordermail_tpl.php');
+        
+        $tpl = str_replace("{{ORDERID}}", 'ORDER #'.$id, $tpl);
+        $tpl = str_replace("{{ORDER_NAME}}", $session['checkout_name'], $tpl);
+        $tpl = str_replace("{{ORDER_LAST_NAME}}", $session['checkout_last_name'], $tpl);
+        $tpl = str_replace("{{ORDER_PHONE}}", $session['checkout_phone'], $tpl);
+        
+        $items = $this->prepareEmailItems($array);
+        
+        $tpl = str_replace("{{ITEMS}}", $items, $tpl);
+        $tpl = str_replace("{{SHIPPER_NAME}}", $session['shipper_name'], $tpl);
+        $tpl = str_replace("{{SHIPPER_PRICE}}", ShopEngine::Help()->AsPrice($session['shipper_price']), $tpl);
+        $tpl = str_replace("{{FULL_PRICE}}", ShopEngine::Help()->AsPrice($session['full_price']), $tpl);
+        $tpl = str_replace("{{CHECKOUT_ADDRESS}}", $session['checkout_address'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_CITY}}", $session['checkout_city'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_REGION}}", $session['checkout_region'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_INDEX}}", $session['checkout_index'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_COUNTRY}}", $session['checkout_country'], $tpl);
+        $tpl = str_replace("{{COMPANY_NAME}}", $session['checkout_company'], $tpl);
+        
+        if($session['checkout_billing_address_payment'] === '0') {
+          
+        $tpl = str_replace("{{CHECKOUT_BILLING_NAME}}", $session['checkout_name'], $tpl);    
+        $tpl = str_replace("{{CHECKOUT_BILLING_LAST_NAME}}", $session['checkout_last_name'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_phone'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_address'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_city'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_region'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_INDEX}}", $session['checkout_index'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_COUNTRY}}", $session['checkout_country'], $tpl);
+        $tpl = str_replace("{{COMPANY_BILLING_NAME}}", $session['checkout_company'], $tpl);
+        
+        } else {
+         
+            
+        $tpl = str_replace("{{CHECKOUT_BILLING_NAME}}", $session['checkout_billing_first_name'], $tpl);    
+        $tpl = str_replace("{{CHECKOUT_BILLING_LAST_NAME}}", $session['checkout_billing_last_name'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billingphone'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_billing_address'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_billing_city'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_INDEX}}", $session['checkout_billing_index'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_COUNTRY}}", $session['checkout_billing_country'], $tpl);
+        $tpl = str_replace("{{COMPANY_BILLING_NAME}}", $session['checkout_billing_company'], $tpl); 
+        
+        }
+        
+        $link = ShopEngine::GetHost()."/checkout/thank_you?orderid={$key}";
+        $tpl = str_replace("{{ORDER_LINK}}", $link, $tpl); 
+        
+        return $tpl;
+    }
+    
+    public function prepareEmailAdmin($id, $key, $array)
+    {
+        $session = Request::GetSession();
+        $tpl = file_get_contents('widgets/ordermail_tpl_admin.php');
+        
+        $tpl = str_replace("{{ORDERID}}", 'ORDER #'.$id, $tpl);
+        $tpl = str_replace("{{ORDER_NAME}}", $session['checkout_name'], $tpl);
+        $tpl = str_replace("{{ORDER_LAST_NAME}}", $session['checkout_last_name'], $tpl);
+        $tpl = str_replace("{{ORDER_PHONE}}", $session['checkout_phone'], $tpl);
+        
+        $items = $this->prepareEmailItems($array);
+        
+        $tpl = str_replace("{{ITEMS}}", $items, $tpl);
+        $tpl = str_replace("{{SHIPPER_NAME}}", $session['shipper_name'].' - '. $session['shipper_price'], $tpl);
+        $tpl = str_replace("{{SHIPPER_PRICE}}", ShopEngine::Help()->AsPrice($session['shipper_price']), $tpl);
+        $tpl = str_replace("{{FULL_PRICE}}", ShopEngine::Help()->AsPrice($session['full_price']), $tpl);
+        $tpl = str_replace("{{CHECKOUT_ADDRESS}}", $session['checkout_address'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_CITY}}", $session['checkout_city'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_REGION}}", $session['checkout_region'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_INDEX}}", $session['checkout_index'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_COUNTRY}}", $session['checkout_country'], $tpl);
+        $tpl = str_replace("{{COMPANY_NAME}}", $session['checkout_company'], $tpl);
+        
+        if($session['checkout_billing_address_payment'] === '0') {
+          
+        $tpl = str_replace("{{CHECKOUT_BILLING_NAME}}", $session['checkout_name'], $tpl);    
+        $tpl = str_replace("{{CHECKOUT_BILLING_LAST_NAME}}", $session['checkout_last_name'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_phone'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_address'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_city'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_region'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_INDEX}}", $session['checkout_index'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_COUNTRY}}", $session['checkout_country'], $tpl);
+        $tpl = str_replace("{{COMPANY_BILLING_NAME}}", $session['checkout_company'], $tpl);
+        
+        } else {
+         
+            
+        $tpl = str_replace("{{CHECKOUT_BILLING_NAME}}", $session['checkout_billing_first_name'], $tpl);    
+        $tpl = str_replace("{{CHECKOUT_BILLING_LAST_NAME}}", $session['checkout_billing_last_name'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billingphone'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_billing_address'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_billing_city'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_INDEX}}", $session['checkout_billing_index'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_COUNTRY}}", $session['checkout_billing_country'], $tpl);
+        $tpl = str_replace("{{COMPANY_BILLING_NAME}}", $session['checkout_billing_company'], $tpl); 
+        
+        }
+        
+        $link = ShopEngine::GetHost()."/checkout/thank_you?orderid={$key}";
+        $tpl = str_replace("{{ORDER_LINK}}", $link, $tpl); 
+        
+        return $tpl;
+    }
+    
+    public function prepareEmailItems($array)
+    {
+        $body = null;
+        if($array) { 
+            foreach ($array as $cur)
+            {
+                
+                $body .= '<tr class="m_-1216999618458073902order-list__item m_-1216999618458073902order-list__item" style="width:100%">'
+                        . '<td class="m_-1216999618458073902order-list__item__cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Segoe UI'.'\',\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif">
+                    <table style="border-collapse:collapse;border-spacing:0">
+                      <tbody><tr><td style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;">
+
+                        <div style=" width:50px; height:50px; border:1px solid #e5e5e5;border-radius:8px;margin-right:15px;" >
+                          <img src="cid:'.$cur['handle'].'" align="left" width="60" height="60" class="m_-1216999618458073902order-list__product-image CToWUd" style="width:100%; height:auto; max-width:100%; max-height:100%">
+                        </div>
+                      </td>
+                      <td class="m_-1216999618458073902order-list__product-description-cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;width:75%">
+
+                        <span class="m_-1216999618458073902order-list__item-title" style="color:#555;font-size:16px;font-weight:600;line-height:1.4">'.$cur['title'].'&nbsp;×&nbsp;'.$cur['orders_count'].'</span><br>
+
+                      </td>
+                        <td class="m_-1216999618458073902order-list__price-cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;white-space:nowrap">
+
+                          <p class="m_-1216999618458073902order-list__item-price" style="color:#555;font-size:16px;font-weight:600;line-height:150%;margin:0 0 0 15px" align="right">'.ShopEngine::Help()->AsPrice($cur['orders_price']).'</p>
+                        </td>
+                    </tr></tbody></table>
+                  </td></tr>';
+                
+            }
+            
+            return $body;
+        }   
     }
         
 }

@@ -1,3 +1,4 @@
+<h1>Пригласить друга</h1>
 <div class="invite-body">
     <form method="post" action="">
         <div class="invite_block">

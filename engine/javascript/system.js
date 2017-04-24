@@ -13,7 +13,26 @@ window.onload = function() {
         search   =  document.querySelector(".site-header__search-input"),
         add_del  =  document.querySelectorAll(".delete_address"),
         add_sel  =  document.getElementById("checkout_shipping_address_id"),
-        point_ch =  document.getElementById("checkout_buyer_accepts_marketing");
+        point_ch =  document.getElementById("checkout_buyer_accepts_marketing"),
+        del_0    =  document.getElementById("checkout_different_billing_address_false"),
+        del_1    =  document.getElementById("checkout_different_billing_address_true"),
+        del_bl   =  document.querySelector(".checkout_billing_block");
+
+    if(del_0) {
+        del_0.addEventListener("change", function(){
+            if(del_0.checked) {
+                del_bl.classList.add("hidden");
+            }
+        });
+    }
+
+    if(del_1) {
+        del_1.addEventListener("change", function(){
+            if(del_1.checked) {
+                del_bl.classList.remove("hidden");
+            }
+        });
+    }
 
     if(point_ch) {
         var data = {
@@ -179,6 +198,7 @@ function addToCart(csrf) {
             success: function(data) {
                 if(data === '1') {
                     //alert(data);
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
                     cartload();
                     showMessage();
                 }

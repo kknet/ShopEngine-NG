@@ -15,7 +15,7 @@
             <tr class="cart__row responsive-table__row">
             <td class="cart__cell--image text-center">
               <a href="/products/<?=$cur['handle']?>" class="cart__image">
-                  <?=ShopEngine::Help()->ImageReSize($cur['image'], 120, 220, $cur['title'], 'px')?>
+                  <?=ShopEngine::Help()->ImageReSize($cur['image'], null, null, $cur['title'], 'px')?>
               </a>
             </td>
             <td>

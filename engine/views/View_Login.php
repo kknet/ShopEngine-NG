@@ -2,10 +2,15 @@
 
   <div class="grid__item medium-up--one-half medium-up--push-one-quarter">
     <div class="content-block text-center">
-
       <div class="form-success hide" id="ResetSuccess">
         Мы отправили Вам письмо по электронной почте со ссылкой для обновления Вашего пароля.
       </div>
+        <?php if(Request::GetSession('success_password')) { ?>
+            <div class="form-success" id="ResetSuccess">
+                <?=Request::GetSession('success_password')?>
+            </div>   
+        <?php }  ?>
+        <?php Request::EraseFullSession('success')?>
 
       <div id="CustomerLoginForm" class="form-vertical">
         <form method="post" action="/user/login" id="customer_login" accept-charset="UTF-8">

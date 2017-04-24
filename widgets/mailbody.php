@@ -225,11 +225,11 @@ $body .= '
                 
                 ';
 
-if($session['checkout_billing_address_payment'] === 0) {
+if($session['checkout_billing_address_payment'] === '0') {
     $body .= '<td class="m_-1216999618458073902customer-info__item" style="font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;padding-bottom:40px;width:50%">'
             . '<h4 style="color:#555;font-size:16px;font-weight:500;margin:0 0 5px">Платёжный адрес</h4>'
-            . ''.$session['checkout_name'].' '.$session['checkout_last_name'].'<br>'
-            . ''.$session['checkout_address'].''
+            .$session['checkout_name'].' '.$session['checkout_last_name'].'<br>'
+            .$session['checkout_address'].''
             . '<br>
             <br>'.$session['checkout_city'].', '.$session['checkout_region'].' '.$session['checkout_inder'].'
             <br>Россия
@@ -239,8 +239,8 @@ if($session['checkout_billing_address_payment'] === 0) {
 else {
         $body .= '<td class="m_-1216999618458073902customer-info__item" style="font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;padding-bottom:40px;width:50%">'
             . '<h4 style="color:#555;font-size:16px;font-weight:500;margin:0 0 5px">Платёжный адрес</h4>'
-            . ''.$session['checkout_billing_first_name'].' '.$session['checkout_billing_last_name'].'<br>'
-            . ''.$session['checkout_billing_address'].''
+            .$session['checkout_billing_first_name'].' '.$session['checkout_billing_last_name'].'<br>'
+            .$session['checkout_billing_address'].''
             . '<br>
             <br>'.$session['checkout_billing_city'].', '.$session['checkout_billing_country'].' '.$session['checkout_billing_index'].'
             <br>Россия

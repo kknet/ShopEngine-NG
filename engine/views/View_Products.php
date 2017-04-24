@@ -12,7 +12,7 @@
           <div class="product-single__photo" id="ProductPhoto">
             
             <a href="" class="js-modal-open-product-modal" id="ProductPhotoLink">
-                <?=ShopEngine::Help()->ImageReSize($product['image_lnk'], 560, 489, $product['title'])?>
+                <?=ShopEngine::Help()->ImageReSize($product['image_lnk'], null, null, $product['title'])?>
             </a>
           </div>
         </div>

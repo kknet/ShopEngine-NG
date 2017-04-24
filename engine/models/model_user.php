@@ -211,7 +211,7 @@ class Model_User extends Model {
                 Request::SetSession('user_email', $user['users_email']);
                 Request::SetSession('user_token', $token);
                 
-                $sql  = "UPDATE users SET users_temp_token=:token WHERE users_id=:id";
+                $sql  = "UPDATE users SET users_session_token=:token WHERE users_id=:id";
                 $stmt = $db->prepare($sql);
                 $stmt->bindParam(":token", $token);
                 $stmt->bindParam(":id", $user['users_id']);
@@ -499,7 +499,7 @@ class Model_User extends Model {
         $sql  = "SELECT * FROM users WHERE users_id=?";
         $user = Getter::GetFreeData($sql, [$id]);
         
-        $mailfrom = 'info@poterpite.ru';
+        $mailfrom = Config::$config['admin_email'];
         $mailto   = $post['invite_email'];
         $subject  = 'Приглашение на сайт "Потерпите, пожалуйста!"';
         $body     = 'Добрый день, пользователь '.$user['users_name'].' '.$user['users_last_name'].' только что пригласил вас зарегистрироватьс на нашем сайте. Для регистрации перейдите по <a href="'.ShopEngine::GetHost().'/user/signup?ref='.$user['users_referer_key'].'">ссылке</a>';
@@ -510,6 +510,95 @@ class Model_User extends Model {
         }
         
         return true;
+    }
+    
+    public function Restore()
+    {
+        $post = Request::Post('restore_email');
+        
+        if(!$post OR !preg_match("/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i", trim($post)))
+        {
+            return 'E-Mail введён некорректно';
+        }
+        
+        $token = sha1(uniqid(rand(), true).md5($post));
+        
+        $db = database::getInstance();
+        
+        $sql = "SELECT * FROM users WHERE users_email=?";
+        if(!Getter::GetFreeData($sql, [$post]))
+        {
+            return 'Пользователь с таким E-Mail не найден';
+        }
+        
+        $sql = "UPDATE users SET users_temp_token=:token WHERE users_email=:email";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":token", $token);
+        $stmt->bindParam(":email", $post);
+        
+        if(!$stmt->execute())
+        {
+            return true;
+        }
+        
+        $body     = "Для восстановления паролья перейдите по <a href='".ShopEngine::GetHost()."/users/restore/new_password?token={$token}'>ссылке</a>";
+        $subject  = "Восстановление пароля на сайте ".Config::$config['site_name'];
+        $mailto   = $post;
+        $mailfrom = Config::$config['admin_email'];
+        
+        if(ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body))
+        {
+            return false;
+        }
+    }
+        
+    public function NewPasswordValidate($token)
+    {
+        $db = database::getInstance();
+        
+        $sql = "SELECT * FROM users WHERE users_temp_token=?";
+        if(!Getter::GetFreeData($sql, [$token]))
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function NewPassword($token) 
+    {
+        $db = database::getInstance();
+        
+        $sql = "SELECT * FROM users WHERE users_temp_token=?";
+        if(!Getter::GetFreeData($sql, [$token]))
+        {
+            return 'Пользователь не найден';
+        }
+        
+        $password1 = Request::Post('restore_password');
+        $password2 = Request::Post('restore_repassword');
+        
+        if($password1 !== $password2 OR strlen($password1) < 6 OR strlen($password2) < 6)
+        {
+            return 'Пароли должны совпадать и содержать минимум 6 символов';
+        }
+        
+        $password = password_hash($password1, PASSWORD_BCRYPT);
+        
+        $sql  = "UPDATE users SET users_password=:password, users_temp_token='' WHERE users_temp_token=:token";
+        $stmt = $db->prepare($sql);
+        
+        $stmt->bindParam(":password", $password);
+        $stmt->bindParam(":token", $token);
+        
+        if(!$stmt->execute())
+        {
+            return 'Произошла ошибка';
+        }
+        
+        Request::SetSession('success_password', 'Пароль успешно изменен. Вы можете войти.');
+        
+        return false;
     }
     
 }

@@ -74,5 +74,22 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
     margin-bottom:15px;
 }
 
+.cart__cell--image img {
+    max-height: 150px !important;
+}
 
+.restore_block {
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.restore_block input{
+    width:100%;
+    margin-top:5px;
+}
+
+.restore_block li {
+    margin-bottom:15px;
+}
 

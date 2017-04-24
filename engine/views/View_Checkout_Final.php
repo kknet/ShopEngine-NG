@@ -1,6 +1,6 @@
 <?php 
-    $array = GetFinalProducts();
-    if(!$start) 
+    $array = $start['products'];
+    if(!$start['info']) 
     {
         //return Route::ErrorPage404();
     }
@@ -23,7 +23,7 @@
         <svg width="11" height="7" xmlns="http://www.w3.org/2000/svg" class="order-summary-toggle__dropdown" fill="#000"><path d="M6.138.876L5.642.438l-.496.438L.504 4.972l.992 1.124L6.138 2l-.496.436 3.862 3.408.992-1.122L6.138.876z" /></svg>
       </div>
       <div class="order-summary-toggle__total-recap total-recap" data-order-summary-section="toggle-total-recap">
-          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= GetFinalPrice()?></span>
+          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= ShopEngine::Help()->AsPrice($start['info']['orders_price']) ?></span>
       </div>
     </div>
   </div>
@@ -107,7 +107,7 @@
           <td class="total-line__name">Промежуточный итог</td>
           <td class="total-line__price">
             <span class="order-summary__emphasis" data-checkout-subtotal-price-target="">
-              <?= GetFinalPrice()?>
+              <?= ShopEngine::Help()->AsPrice($start['final']) ?>
             </span>
           </td>
         </tr>
@@ -117,7 +117,7 @@
             <td class="total-line__name">Доставка</td>
             <td class="total-line__price">
               <span class="order-summary__emphasis" data-checkout-total-shipping-target="0">
-               <?= ShopEngine::Help()->AsPrice($start['orders_shipping_price']) ?>
+               <?= ShopEngine::Help()->AsPrice($start['info']['orders_shipping_price']) ?>
               </span>
             </td>
           </tr>
@@ -138,7 +138,7 @@
         <td class="total-line__price payment-due">
           <span class="payment-due__currency">RUB</span>
           <span class="payment-due__price" data-checkout-payment-due-target="">
-            <?= ShopEngine::Help()->AsPrice($start['orders_price']) ?>
+            <?= ShopEngine::Help()->AsPrice($start['info']['orders_price']) ?>
           </span>
         </td>
       </tr>
@@ -192,10 +192,10 @@
 
       <div class="os-header__heading">
         <span class="os-order-number">
-            Заказ #<?=$start['orders_id']?>
+            Заказ #<?=$start['info']['orders_id']?>
         </span>
         <h2 class="os-header__title">
-            Спасибо<?php echo $start['orders_name'] !== "" ? ' , '. $start['orders_name'] : ''?>!
+            Спасибо<?php echo $start['info']['orders_name'] !== "" ? ' , '. $start['info']['orders_name'] : ''?>!
         </h2>
       </div>
     </div>
@@ -257,7 +257,7 @@
             <p class="h1">Скачать счет</p>
             <p>Вы можете заполнить реквизиты и скачать счет для оплаты<br>
             Подтверждение оплаты и отправка товара произойдет на следующий рабочий день, при условии наличия товара на складе</p>
-            <a class="button" target="_blank" href="<?=ShopEngine::GetHost().'/checkout/download?orderid='.$start['orders_key']?>">Скачать счет</a>
+            <a class="button" target="_blank" href="<?=ShopEngine::GetHost().'/checkout/download?orderid='.$start['info']['orders_key']?>">Скачать счет</a>
         </div>    
     </div>
 </div>
@@ -317,7 +317,7 @@
   <div class="content-box__row">
     <h2 class="os-step__title">Order updates</h2>
       <p class="os-step__description">
-          A confirmation was sent to <span class="emphasis"><?= $start['orders_email']?></span>
+          A confirmation was sent to <span class="emphasis"><?= $start['info']['orders_email']?></span>
       </p>
   </div>
 </div>
@@ -330,23 +330,23 @@
     <div class="section__content">
           <div class="section__content__column section__content__column--half">
               <h3>Адрес доставки</h3>
-              <p><?= $start['orders_name']?> <?= $start['orders_last_name']?><br><?= $start['orders_address']?><br><?= $start['orders_city']?><br><?= $start['orders_region']?><br><?= $start['orders_index']?><br><?= $start['orders_country']?><br><?= $start['orders_phone']?></p>
+              <p><?= $start['info']['orders_name']?> <?= $start['info']['orders_last_name']?><br><?= $start['info']['orders_address']?><br><?= $start['info']['orders_city']?><br><?= $start['info']['orders_region']?><br><?= $start['info']['orders_index']?><br><?= $start['info']['orders_country']?><br><?= $start['info']['orders_phone']?></p>
               <h3>Способ доставки</h3>
-              <p><?= $start['orders_shipping']?></p>
+              <p><?= $start['info']['orders_shipping']?></p>
           </div>
           <div class="section__content__column section__content__column--half">
               <h3>Платежный адрес</h3>
               <?php 
-                if($start['orders_billing_status'] === '0') { ?>
-              <p><?= $start['orders_name']?> <?= $start['orders_last_name']?><br><?= $start['orders_address']?><br><?= $start['orders_city']?><br><?= $start['orders_region']?><br><?= $start['orders_index']?><br><?= $start['orders_country']?><br><?= $start['orders_phone']?></p>
+                if($start['info']['orders_billing_status'] === '0') { ?>
+              <p><?= $start['info']['orders_name']?> <?= $start['info']['orders_last_name']?><br><?= $start['info']['orders_address']?><br><?= $start['info']['orders_city']?><br><?= $start['info']['orders_region']?><br><?= $start['info']['orders_index']?><br><?= $start['info']['orders_country']?><br><?= $start['info']['orders_phone']?></p>
                 <?php } else { ?>
-                    <p><?= $start['orders_billing_name']?> <?= $start['orders_billing_last_name']?><br><?= $start['orders_billing_address']?><br><?= $start['orders_billing_city']?><br><?= $start['orders_region']?><br><?= $start['orders_billing_index']?><br><?= $start['orders_billing_country']?><br><?= $start['orders_billing_phone']?></p>
+                    <p><?= $start['info']['orders_billing_name']?> <?= $start['info']['orders_billing_last_name']?><br><?= $start['info']['orders_billing_address']?><br><?= $start['info']['orders_billing_city']?><br><?= $start['info']['orders_region']?><br><?= $start['info']['orders_billing_index']?><br><?= $start['info']['orders_billing_country']?><br><?= $start['info']['orders_billing_phone']?></p>
                <?php } ?>                        
                 <h3>Способ оплаты
               <ul class="payment-method-list">
                 <li class="payment-method-list__item">
-    <span class="payment-method-list__item__info"><?= $start['payment_name']?></span>
-  <span class="payment-method-list__item__amount emphasis"><?= ShopEngine::Help()->AsPrice($start['orders_price'])?></span>
+    <span class="payment-method-list__item__info"><?= $start['info']['payment_name']?></span>
+  <span class="payment-method-list__item__amount emphasis"><?= ShopEngine::Help()->AsPrice($start['info']['orders_price'])?></span>
 </li>
 
 
