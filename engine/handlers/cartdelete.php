@@ -12,6 +12,15 @@
                 $csrf  = ShopEngine::Help()->Clear($_POST['csrf']);
                 $ip    = ShopEngine::GetUserIp();
                 
+                $sql  = "SELECT * FROM cart WHERE cart_id=? AND cart_ip=?";
+                $prod = Getter::GetFreeData($sql, [$id, $ip]);
+                if(!$prod)
+                {
+                    return false;
+                }
+                
+                $handle = $prod['products_handle'];
+                
                 if(!ShopEngine::Help()->ValidateToken($csrf))
                 {
                     return false;
@@ -27,9 +36,9 @@
                     $ok1 = true;
                 }
                 
-                $sql = "DELETE FROM order_products WHERE orders_cart_id=:id AND orders_ip=:ip";
+                $sql = "DELETE FROM order_products WHERE products_handle=:handle AND orders_ip=:ip AND orders_status='0'";
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam(":id", $id);
+                $stmt->bindParam(":handle", $handle);
                 $stmt->bindParam(":ip", $ip);
                 
                 if($stmt->execute())

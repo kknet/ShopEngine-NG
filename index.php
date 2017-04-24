@@ -13,8 +13,9 @@ require_once 'engine/components/ErrorHandler.php';
 
 if(isset($_SESSION['ok'])) 
 {
+    define('ROOT', dirname(__FILE__));
     require_once 'engine/startup.php';
-    require_once 'engine/core/error.php';
+    //require_once 'engine/core/error.php';
 }
 else {
     require_once 'widgets/blocker.php';

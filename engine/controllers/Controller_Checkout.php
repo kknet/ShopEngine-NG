@@ -215,7 +215,7 @@ class Controller_Checkout extends Controller{
         if(self::$order_pr === null) {
             $id = Request::GetSession('last_order_id');
             $ip = ShopEngine::GetUserIp();
-            $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, c.name FROM order_products o "
+            $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
                     . "RIGHT JOIN products p ON o.products_handle = p.handle AND p.title <> ''"
                     . "RIGHT JOIN category c ON p.category_id = c.category_id "
                     . "WHERE orders_ip=? AND orders_final_id=?";
@@ -231,7 +231,7 @@ class Controller_Checkout extends Controller{
     {
         if(self::$data === null) {
             $ip = ShopEngine::GetUserIp();
-            $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, c.name FROM order_products o "
+            $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
                     . "RIGHT JOIN products p ON o.products_handle = p.handle AND p.title <> ''"
                     . "RIGHT JOIN category c ON p.category_id = c.category_id "
                     . "WHERE orders_ip=? AND orders_status='0'";
@@ -307,8 +307,8 @@ class Controller_Checkout extends Controller{
                     Self::$price = Self::$price + $cur['orders_price'];
                 }
             }
-        return Self::$price;
         }
+        return Self::$price;
     }
     
     public static function GetFinalPrice()

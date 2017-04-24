@@ -38,15 +38,15 @@ class getData{
             $id = Request::GetSession('last_order_id');
             
 		if($data = ShopEngine::GetOrderData($id)){
-				$totalPrice = $data['info']['orders_price'];
+				$totalPrice = (int)$data['info']['orders_payment'] === 2 ? ($data['info']['orders_price'] * 1.05) : $data['info']['orders_price'];
 				$this->data = [
 					"ORDERID" => $data['info']['orders_id'],
 					"DATE" => $data['info']['orders_date'],
-					"CUSTOMERNAME" => $data['info']['orders_name']." ".$data['info']['orders_last_name'],
+					"CUSTOMERNAME" => (int)$data['info']['orders_payment'] === 2 ? $data['info']['orders_company'] : $data['info']['orders_name']." ".$data['info']['orders_last_name'],
 					"CUSTOMERNAMETWO" => $data['info']['orders_name']." ".$data['info']['orders_last_name'],
 					"CUSTOMERPHONE" => $data['info']['orders_phone'],
-					"ALLPRICE" => number_format($data['info']['orders_price'], 2, ".", ""),
-					"ALLPRICESTRING" => $this->num2str($data['info']['orders_price']),
+					"ALLPRICE" => number_format($totalPrice, 2, ".", ""),
+					"ALLPRICESTRING" => $this->num2str($totalPrice),
 				];
 
 				$this->getItems($data);
@@ -69,24 +69,24 @@ class getData{
 	private function getItems($data){
 		$lastKey = 0;
 		foreach ($data['products'] as $key => $value) {
-			$price = $value['orders_price'];
+			$price = (int)$data['info']['orders_payment'] === 2 ? ($value['price'] * 1.05) : $value['price'];
 			$this->data['items'][$key] = [
 				"name" => $value['title'],
 				"quantity" => $value['orders_count'],
 				"unit" => "шт",
-				"price" => number_format($value['price'], 2, ".", ""),
-				"allprice" => number_format(($value['orders_count']*$value['price']), 2, ".", ""),
+				"price" => number_format($price, 2, ".", ""),
+				"allprice" => number_format(($price * $value['orders_count']), 2, ".", ""),
 			];
 			$lastKey = $key;
 		}
 		if((float)$data['info']['orders_shipping_price'] !== 0.00){
-			$price = $data['info']['orders_shipping_price'];
+			$price = (int)$data['info']['orders_payment'] === 2 ? ($data['info']['orders_shipping_price'] * 1.05) : $data['info']['orders_shipping_price'];
 			$this->data['items'][($lastKey+1)] = [
 				"name" => $data['info']['orders_shipping'],
 				"quantity" => "1",
 				"unit" => "",
-				"price" => number_format($data['info']['orders_shipping_price'], 2, ".", ""),
-				"allprice" => number_format($data['info']['orders_shipping_price'], 2, ".", ""),
+				"price" => number_format($price, 2, ".", ""),
+				"allprice" => number_format($price, 2, ".", ""),
 			];
 		}
 	}
