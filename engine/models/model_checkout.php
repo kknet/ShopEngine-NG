@@ -395,7 +395,7 @@ class Model_Checkout extends Model {
             $subject  = "Заказ #{$id} принят";
             
             $mailto_ad  = Config::$config['admin_email'];
-            $subject_ad = "[".Config::$config['site_email_name']."] Заказ #{$id} ".Request::GetSession('checkout_first_name').' '.Request::GetSession('checkout_last_name').' '.Request::GetSession('checkout_phone');
+            $subject_ad = "[".Config::$config['site_email_name']."] Заказ #{$id} ".Request::GetSession('checkout_name').' '.Request::GetSession('checkout_last_name').' '.Request::GetSession('checkout_phone');
             
             $this->array = Controller_Checkout::GetOrderProducts($id);
             
@@ -426,7 +426,7 @@ class Model_Checkout extends Model {
         $items = $this->prepareEmailItems($array);
         
         $tpl = str_replace("{{ITEMS}}", $items, $tpl);
-        $tpl = str_replace("{{SHIPPER_NAME}}", $session['shipper_name'], $tpl);
+        $tpl = str_replace("{{SHIPPER_NAME}}", $session['shipper_name'].' - '. $session['shipper_price'], $tpl);
         $tpl = str_replace("{{SHIPPER_PRICE}}", ShopEngine::Help()->AsPrice($session['shipper_price']), $tpl);
         $tpl = str_replace("{{FULL_PRICE}}", ShopEngine::Help()->AsPrice($session['full_price']), $tpl);
         $tpl = str_replace("{{CHECKOUT_ADDRESS}}", $session['checkout_address'], $tpl);
@@ -453,7 +453,7 @@ class Model_Checkout extends Model {
             
         $tpl = str_replace("{{CHECKOUT_BILLING_NAME}}", $session['checkout_billing_first_name'], $tpl);    
         $tpl = str_replace("{{CHECKOUT_BILLING_LAST_NAME}}", $session['checkout_billing_last_name'], $tpl);
-        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billingphone'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billing_phone'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_billing_address'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_billing_city'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);
@@ -509,7 +509,7 @@ class Model_Checkout extends Model {
             
         $tpl = str_replace("{{CHECKOUT_BILLING_NAME}}", $session['checkout_billing_first_name'], $tpl);    
         $tpl = str_replace("{{CHECKOUT_BILLING_LAST_NAME}}", $session['checkout_billing_last_name'], $tpl);
-        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billingphone'], $tpl);
+        $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billing_phone'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_billing_address'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_billing_city'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);

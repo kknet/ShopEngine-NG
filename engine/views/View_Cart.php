@@ -19,7 +19,7 @@
               </a>
             </td>
             <td>
-                <p class="cart-vendor-title">Marvis</p>
+                <p class="cart-vendor-title"><?=$cur['brand']?></p>
               <a href="/products/<?=$cur['handle']?>" class="h5">
                     <?=$cur['title']?>
               </a>

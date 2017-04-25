@@ -2,7 +2,7 @@
 
 class Paginator extends ShopEngine {
     
-    public static function PreparePagination($sql, $params = NULL)
+    public static function PreparePagination($sql, $params = NULL, $num = 20)
     {
         if(Self::$query === NULL OR Self::$sort === NULL)
         {
@@ -11,8 +11,6 @@ class Paginator extends ShopEngine {
             $array = ShopEngine::Help()->Sorting();
             Self::$qsort = $array['sorting_db'];	
             Self::$sort = $array['sorting'];
-
-            $num = 20;
             
             if(array_key_exists("page", $_GET)) { 
                 $page = (int)$_GET["page"];

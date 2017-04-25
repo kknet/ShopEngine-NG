@@ -182,23 +182,36 @@
                 <td class="m_-1216999618458073902customer-info__item" style="font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif;padding-bottom:40px;width:50%">
                   <h4 style="color:#555;font-size:16px;font-weight:500;margin:0 0 5px">Адрес доставки</h4>
                   <p style="color:#777;font-size:16px;line-height:150%;margin:0">
-   {{ORDER_NAME}} {{ORDER_LAST_NAME}}<br> 
-   {{CHECKOOUT_PHONE}}<br>
-   {{CHECKOUT_ADDRESS}}<br>
-   {{CHECKOUT_CITY}}, {{CHECKOUT_REGION}}, {{CHECKOUT_INDEX}}<br>
-   {{CHECKOUT_COUNTRY}}<br>
-   {{COMPANY_NAME}}<br>
-</p>
+                      <b>Имя покупателя</b><br>
+                      {{ORDER_NAME}} {{ORDER_LAST_NAME}}</b><br> 
+                      <b>Мобильный телефон</b><br>
+                      {{ORDER_PHONE}}<br>
+                      <b>Адрес</b><br>
+                      {{CHECKOUT_ADDRESS}}<br>
+                      <b>Город, регион, индекс</b><br>
+                      {{CHECKOUT_CITY}}, {{CHECKOUT_REGION}}, {{CHECKOUT_INDEX}}<br>
+                      <b>Страна</b><br>
+                      {{CHECKOUT_COUNTRY}}<br>
+                      <b>Компания</b><br>
+                      {{COMPANY_NAME}}<br>
+                 </p>
 
                 </td>
                 <td class="m_-1216999618458073902customer-info__item" style="font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif;padding-bottom:40px;width:50%">
             <h4 style="color:#555;font-size:16px;font-weight:500;margin:0 0 5px">Платёжный адрес</h4>
-            {{CHECKOUT_BILLING_NAME}} {{CHECKOUT_BILLING_LAST_NAME}}<br> 
-            {{CHECKOUT_BILLING_PHONE}}<br>
-            {{CHECKOUT_BILLING_ADDRESS}}<br>
-            {{CHECKOUT_BILLING_CITY}}, {{CHECKOUT_BILLING_REGION}}, {{CHECKOUT_BILLING_INDEX}}<br>
-            {{CHECKOUT_BILLING_COUNTRY}}<br>
-            {{COMPANY_BILLING_NAME}}<br>
+            <p>
+                <b>Имя</b><br>
+                {{CHECKOUT_BILLING_NAME}} {{CHECKOUT_BILLING_LAST_NAME}}<br> 
+                <b>Мобильный телефон</b><br>
+                {{CHECKOUT_BILLING_PHONE}}<br>
+                <b>Адрес</b><br>
+                {{CHECKOUT_BILLING_ADDRESS}}<br>
+                <b>Город, индекс</b><br>
+                {{CHECKOUT_BILLING_CITY}}, {{CHECKOUT_BILLING_INDEX}}<br>
+                <b>Страна</b><br>
+                {{CHECKOUT_BILLING_COUNTRY}}<br>
+                <b>Компания</b><br>
+                {{COMPANY_BILLING_NAME}}<br>
             </p>
             </td>    
               </tr>

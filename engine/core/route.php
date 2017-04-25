@@ -7,10 +7,18 @@
 
 class Route 
 {
+    static function ErrorPage404() 
+    {
+        // Ошибка 404, пока не работает
+        //$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+        //ob_clean();
+        return ShopEngine::GoHome();
+    }
+    
     static function start() 
     {   
         if(!ShopEngine::AllowControllers()) {
-            ShopEngine::Help()->StrongRedirect('catalog', 'all');
+            ShopEngine::GoHome();
         }
         // Redirect
             ShopEngine::Help()->IndexRedirect();
@@ -84,13 +92,6 @@ class Route
         }
         
         Request::EraseErrorSession();
-    }
-
-    static function ErrorPage404() 
-    {
-        // Ошибка 404, пока не работает
-        //$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        header( 'Location: /catalog/all', true, 404);
     }
     
 }

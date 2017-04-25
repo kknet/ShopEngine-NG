@@ -31,7 +31,7 @@ class ShopEngine {
     public static function GoHome()
     {
         //Temp
-        return ShopEngine::Help()->RegularRedirect('catalog', 'all');
+        return ShopEngine::Help()->HomeRedirect();
     }
     
     // Получить информацию

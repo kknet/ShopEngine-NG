@@ -93,19 +93,16 @@ Class Products
                     'sales'          => $sales_news_popular, 
                     'image'          => $image, 
                     'image_lnk'      => $row['image'],
-                    //'id'             => $row["products_id"], 
                     'title'          => $row["title"], 
                     'description'    => $row['description'],
-                    //'mark'           => $mark, 
                     'count'          => $row['count'], 
-                    //'count_of_views' => $count_of_reviews, 
                     'old_price'      => $old_price, 
                     'price'          => ShopEngine::Help()->AsPrice($row["price"]), 
                     'price_int'      => round($row["price"]),
-                    //'avail'          => $availability_vari, 
                     'brand'          => $row['brand'],
                     'category'       => $cat_name,
-                    'categ_lnk'      => $cat_hand
+                    'categ_lnk'      => $cat_hand,
+                    'viewed'         => $row['viewed']
                     );
 
                 $total_votes        = 0;

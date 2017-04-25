@@ -1063,19 +1063,19 @@ window.AjaxCart = (function () {
 //      promoKeyName: 'promo-' + {{ settings.promo_bar_text | strip_html | handle | json }}
 //    }
 
-    this.$form = $form;
-    this.$lastFocusedElement = null;
-    this.notifyTimer;
-    this.eventListeners();
-    this.notifyPromo();
+//    this.$form = $form;
+//    this.$lastFocusedElement = null;
+//    this.notifyTimer;
+////    this.eventListeners();
+//    this.notifyPromo();
   };
 
-  cart.prototype.eventListeners = function() {
-    if (theme.settings.ajaxEnabled && this.$form.length) {
-      this.$form.on('submit', $.proxy(this.addItemFromForm, this));
-    }
-    this.cache.$notificationClose.on('click', $.proxy(this.notifyClose, this));
-  };
+//  cart.prototype.eventListeners = function() {
+////    if (theme.settings.ajaxEnabled && this.$form.length) {
+////      this.$form.on('submit', $.proxy(this.addItemFromForm, this));
+////    }
+//    this.cache.$notificationClose.on('click', $.proxy(this.notifyClose, this));
+//  };
 
   cart.prototype.addItemFromForm = function (evt) {
     evt.preventDefault();
@@ -1183,15 +1183,15 @@ window.AjaxCart = (function () {
     this.$lastFocusedElement = null;
   };
 
-  cart.prototype.notifyPromo = function() {
-    if (theme.isLocalStorageSupported && localStorage[this.settings.promoKeyName] === 'hidden') {
-      return;
-    }
-
-    this.cache.$notificationPromo
-      .attr('aria-hidden', false)
-      .addClass(this.settings.notifyActiveClass);
-  };
+//  cart.prototype.notifyPromo = function() {
+//    if (theme.isLocalStorageSupported && localStorage[this.settings.promoKeyName] === 'hidden') {
+//      return;
+//    }
+//
+//    this.cache.$notificationPromo
+//      .attr('aria-hidden', false)
+//      .addClass(this.settings.notifyActiveClass);
+//  };
 
   return cart;
 })();

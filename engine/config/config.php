@@ -3,7 +3,9 @@
 class Config { 
     public static $config = [
         'admin_email' => 'info@poterpite.ru',
+        'developer_email' => 'alexandergrachyov@gmail.com',
         'allowed_controllers' => [
+            '',
             'catalog',
             'products',
             'collections',

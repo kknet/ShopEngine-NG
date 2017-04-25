@@ -81,14 +81,14 @@ class Getter extends ShopEngine{
     }
    
     // Получить товары
-    public static function GetProducts($sql, $params = NULL)
+    public static function GetProducts($sql, $params = NULL, $num = 20)
     { 
         Self::$sql    = $sql;
         Self::$params = $params;
 
         $db = database::getInstance();
 
-        $array = Paginator::PreparePagination($sql, $params);
+        $array = Paginator::PreparePagination($sql, $params, $num);
         $sorting_db = $array[4];
         $query_start_num = $array[1];
 

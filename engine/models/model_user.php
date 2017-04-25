@@ -541,8 +541,8 @@ class Model_User extends Model {
             return true;
         }
         
-        $body     = "Для восстановления паролья перейдите по <a href='".ShopEngine::GetHost()."/users/restore/new_password?token={$token}'>ссылке</a>";
-        $subject  = "Восстановление пароля на сайте ".Config::$config['site_name'];
+        $body     = "Для восстановления паролья перейдите по <a href='".ShopEngine::GetHost()."/user/restore/new_password?token={$token}'>ссылке</a>";
+        $subject  = "Восстановление пароля на сайте \"".Config::$config['site_name']."\"";
         $mailto   = $post;
         $mailfrom = Config::$config['admin_email'];
         

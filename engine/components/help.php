@@ -170,7 +170,7 @@ class Help
             break;
 
             default:
-            $sorting_db = 'products_id DESC';
+            $sorting_db = 'viewed DESC';
             $sort_name = 'Без сортировки';
             break;
         }
@@ -271,6 +271,11 @@ class Help
         }
     }
     
+    public function HomeRedirect()
+    {
+        header( "Location: ".ShopEngine::GetHost(), true, 301 );
+    }
+    
     public function RegularRedirect($controller, $action)
     {
         header( "Location: /$controller/$action", true, 301 );
@@ -288,6 +293,10 @@ class Help
         if($route[1] === 'collections') {
             if($route[2] === 'people' AND $route[3] === 'products' AND $route[4] !== '') {
                 header( "Location: /products/$route[4]", true, 301 );
+            } elseif($route[2] === 'children' OR $route[2] === 'dentist') {
+                header( "Location: /section/$route[2]", true, 301 );
+            } elseif($route[2] === 'people') {
+                header( "Location: /catalog/all", true, 301 );
             }
             else {
                 Route::ErrorPage404();
@@ -475,6 +484,7 @@ class Help
             }
         }
         $mail->AddAddress($mailto);
+        //$mail->addReplyTo(Config::$config['developer_email'], $subject.' (replied)');
 
         if(!$mail->Send()) {
             ShopEngine::ExceptionToFile($mail->ErrorInfo);

@@ -177,6 +177,7 @@ window.onload = function() {
             addToCart(this.prototype.csrf);
         });
     }
+    
 };
 
 function addToCart(csrf) {
@@ -541,6 +542,7 @@ function ErasePoint(csrf) {
             }
         }
     });
+    
 }
 
 

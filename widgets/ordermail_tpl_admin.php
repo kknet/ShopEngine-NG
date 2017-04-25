@@ -46,14 +46,14 @@
           <tbody><tr>
             <td style="font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif">
               
-                <h2 style="font-size:24px;font-weight:normal;margin:0 0 10px">{{ORDER_NAME}} {{ORDER_LAST_NAME}} только что совершил покупку. </h2>
+                <h2 style="font-size:24px;font-weight:normal;margin:0 0 10px">{{ORDER_NAME}} {{ORDER_LAST_NAME}} только что совершил(а) покупку. </h2>
             
               <table class="m_-1216999618458073902row m_-1216999618458073902actions" style="border-collapse:collapse;border-spacing:0;margin-top:20px;width:100%">
   <tbody><tr>
     <td class="m_-1216999618458073902actions__cell" style="font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif">
       <table class="m_-1216999618458073902button m_-1216999618458073902main-action-cell" style="border-collapse:collapse;border-spacing:0;float:left;margin-right:15px">
         <tbody><tr>
-          <td class="m_-1216999618458073902button__cell" style="border-radius:4px;font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif" align="center" bgcolor="#1990C6"><a href="{{ORDER_LINK}}" class="m_-1216999618458073902button__text" style="color:#fff;display:block;font-size:16px;padding:20px 25px;text-decoration:none" target="_blank" data-saferedirecturl="">Посмотреть / оплатить заказ</a></td>
+          <td class="m_-1216999618458073902button__cell" style="border-radius:4px;font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif" align="center" bgcolor="#1990C6"><a href="{{ORDER_LINK}}" class="m_-1216999618458073902button__text" style="color:#fff;display:block;font-size:16px;padding:20px 25px;text-decoration:none" target="_blank" data-saferedirecturl="">Подробности заказа</a></td>
         </tr>
       </tbody></table>
       
@@ -167,7 +167,7 @@
         <table class="m_-1216999618458073902container" style="border-collapse:collapse;border-spacing:0;margin:0 auto;text-align:left;width:560px">
           <tbody><tr>
             <td style="font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif">
-              <h3 style="font-size:20px;font-weight:normal;margin:0 0 25px">Информация для покупателя</h3>
+              <h3 style="font-size:20px;font-weight:normal;margin:0 0 25px">Информация о покупателе</h3>
             </td>
           </tr>
         </tbody></table>
@@ -181,24 +181,37 @@
                 <td class="m_-1216999618458073902customer-info__item" style="font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif;padding-bottom:40px;width:50%">
                   <h4 style="color:#555;font-size:16px;font-weight:500;margin:0 0 5px">Адрес доставки</h4>
                   <p style="color:#777;font-size:16px;line-height:150%;margin:0">
-   {{ORDER_NAME}} {{ORDER_LAST_NAME}}<br> 
-   {{ORDER_PHONE}}<br>
-   {{CHECKOUT_ADDRESS}}<br>
-   {{CHECKOUT_CITY}}, {{CHECKOUT_REGION}}, {{CHECKOUT_INDEX}}<br>
-   {{CHECKOUT_COUNTRY}}<br>
-   {{COMPANY_NAME}}<br>
-</p>
+                      <b>Имя покупателя</b><br>
+                      {{ORDER_NAME}} {{ORDER_LAST_NAME}}</b><br> 
+                      <b>Мобильный телефон</b><br>
+                      {{ORDER_PHONE}}<br>
+                      <b>Адрес</b><br>
+                      {{CHECKOUT_ADDRESS}}<br>
+                      <b>Город, регион, индекс</b><br>
+                      {{CHECKOUT_CITY}}, {{CHECKOUT_REGION}}, {{CHECKOUT_INDEX}}<br>
+                      <b>Страна</b><br>
+                      {{CHECKOUT_COUNTRY}}<br>
+                      <b>Компания</b><br>
+                      {{COMPANY_NAME}}<br>
+                 </p>
 
                 </td>
                 <td class="m_-1216999618458073902customer-info__item" style="font-family:-apple-system,BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,sans-serif;padding-bottom:40px;width:50%">
             <h4 style="color:#555;font-size:16px;font-weight:500;margin:0 0 5px">Платёжный адрес</h4>
-            {{CHECKOUT_BILLING_NAME}} {{CHECKOUT_BILLING_LAST_NAME}}<br> 
-            {{CHECKOUT_BILLING_PHONE}}<br>
-            {{CHECKOUT_BILLING_ADDRESS}}<br>
-            {{CHECKOUT_BILLING_CITY}}, {{CHECKOUT_BILLING_REGION}}, {{CHECKOUT_BILLING_INDEX}}<br>
-            {{CHECKOUT_BILLING_COUNTRY}}<br>
-            {{COMPANY_BILLING_NAME}}<br>
-            </p>
+                <p>
+                    <b>Имя</b><br>
+                    {{CHECKOUT_BILLING_NAME}} {{CHECKOUT_BILLING_LAST_NAME}}<br> 
+                    <b>Мобильный телефон</b><br>
+                    {{CHECKOUT_BILLING_PHONE}}<br>
+                    <b>Адрес</b><br>
+                    {{CHECKOUT_BILLING_ADDRESS}}<br>
+                    <b>Город, индекс</b><br>
+                    {{CHECKOUT_BILLING_CITY}}, {{CHECKOUT_BILLING_INDEX}}<br>
+                    <b>Страна</b><br>
+                    {{CHECKOUT_BILLING_COUNTRY}}<br>
+                    <b>Компания</b><br>
+                    {{COMPANY_BILLING_NAME}}<br>
+                </p>
             </td>    
               </tr>
             </tbody></table>

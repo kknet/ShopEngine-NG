@@ -93,3 +93,46 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
     margin-bottom:15px;
 }
 
+.hero-wrapper {
+    max-height:500px;
+    overflow:hidden;
+    margin-bottom:-40px;
+    min-height:200px;
+}
+
+.slider_item {
+    max-height:500px;
+    min-height:200px;
+}
+.no_margin_top {
+    margin-top:0 !important;
+}
+
+.hero__text-content {
+    opacity: 1 !important;
+}
+
+.slider_lineup {
+    background-color:#fff;
+    z-index:3;
+}
+
+.hero-wrapper .img_slider {
+    width:auto !important;
+    height:400px;
+    max-height:1000px;
+    max-width:1000%;
+}
+
+#img_slider1 {
+    background-image:url('/slider/5.jpg');
+    background-repeat:no-repeat;
+    background-size:100%;
+}
+
+#img_slider2 {
+    background-image:url('/slider/4.jpg');
+    background-repeat:no-repeat;
+    background-size:100%;
+}
+

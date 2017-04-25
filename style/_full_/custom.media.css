@@ -1,4 +1,4 @@
-@media only screen and (max-width:700px){
+@media only screen and (max-width:750px){
     .myaccount_body .left{
         float:none;
         width:100%;
@@ -20,5 +20,13 @@
     
     .myaccount_body .submit {
         width:100%;
+    }
+    
+    .hero-wrapper {
+        margin-bottom:0;
+    }
+    
+    .hero-wrapper .img_slider {
+        height:300px;
     }
 }

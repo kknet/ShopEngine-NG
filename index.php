@@ -6,6 +6,7 @@
  * github.com/Mateil
  */
 session_start();
+//ob_start();
 
 //Set error handler
 require_once 'engine/components/ErrorHandler.php';

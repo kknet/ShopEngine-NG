@@ -1,16 +1,29 @@
 <?php
 
 class Controller_Products extends Controller{
+   
     private static $data;
+    
+    public function start()
+    {
+        $id = ShopEngine::GetRoute()[2];
+        $sql = "SELECT * FROM products WHERE handle=? AND avail='1'";
+        if(!Getter::GetFreeData($sql, [$id]))
+        {
+            return Route::ErrorPage404();
+        }
+    }
     public static function GetData()
     {
         if(self::$data === NULL) {
             $id = ShopEngine::GetRoute()[2];
             $sql = "SELECT * FROM products WHERE handle=? AND avail='1'";
             self::$data = Getter::GetFreeProducts($sql, [$id]);  
+            
+            Controller::GetModel()->UpdateCount(self::$data);
         }
         if(!self::$data) {
-            return Route::ErrorPage404();
+            //return Route::ErrorPage404();
         }
         return self::$data;
     }
