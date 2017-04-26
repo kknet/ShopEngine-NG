@@ -9,7 +9,7 @@ class Controller_Catalog extends Controller
         $category = ShopEngine::GetAction();
         
         if($category === 'all' OR $category === '') {
-            $sql = "SELECT * FROM products WHERE avail='1' AND price <> 0.00"; 
+            $sql = "SELECT * FROM products WHERE avail='1' AND price <> 0.00 AND category_id BETWEEN 1 AND 13"; 
             return Getter::getProducts($sql);
         }
 

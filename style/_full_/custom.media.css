@@ -1,4 +1,4 @@
-@media only screen and (max-width:750px){
+@media only screen and (max-width:749px){
     .myaccount_body .left{
         float:none;
         width:100%;
@@ -28,5 +28,9 @@
     
     .hero-wrapper .img_slider {
         height:300px;
+    }
+    
+    .small--one-half {
+        width:100% !important;
     }
 }

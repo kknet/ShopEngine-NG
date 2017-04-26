@@ -1,7 +1,7 @@
 <header class="grid medium-up--grid--table section-header small--text-center">
     <div class="grid__item medium-up--one-half section-header__item">
       <h1 class="section-header__title">
-        <?= ShopEngine::GetController()::GetCategoryName() ?>
+        Каталог товаров
       </h1>
         <!---->
       
@@ -39,18 +39,14 @@
             <div class="filter_item_block">
                 <label for="filter_category">Категория</label>
                 <select name="filter_category" id="filter_category">
-                    <option value="all">Все</option>
-                    <?php $cats = GetMenu();
-                        foreach ($cats as $cur) { ?>
-                            <option value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
-                        <?php } ?>
+                    <option value="1">Зубные щётки</option>
+                    <option value="2">Ёршики</option>
+                    <option value="3">Нити</option>
                 </select>
             </div>
             <div class="filter_item_block">
                 <label for="filter_brand">Производитель</label>
-                <select disabled name="filter_brand" id="filter_brand">
-                    <option value="cuparox">Cuparox</option>
-                    <option value="cuparox">Cuparox</option>
+                <select name="filter_brand" id="filter_brand">
                     <option value="cuparox">Cuparox</option>
                 </select>
             </div>
@@ -71,7 +67,7 @@
             </div>
             <div class="filter_item_block">
                 <label for="filter_brand">Сортировать по</label>
-                <select disabled name="filter_brand" id="filter_brand">
+                <select name="filter_brand" id="filter_brand">
                     <option value="cuparox">Стоимость (по возрастанию)</option>
                     <option value="cuparox">Стоимость (по убыванию)</option>
                     <option value="cuparox">Просмотры (по возрастанию)</option>
@@ -89,7 +85,7 @@
     </form>
 </div>
 <div class="grid grid--no-gutters grid--uniform">
-    <?php $array = GetProducts();
+    <?php $array = $start['products'];
     if($array) { 
         foreach ($array as $cur) { ?>
         <div class="grid__item small--one-half medium-up--one-fifth">

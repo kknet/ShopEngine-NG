@@ -16,7 +16,14 @@ window.onload = function() {
         point_ch =  document.getElementById("checkout_buyer_accepts_marketing"),
         del_0    =  document.getElementById("checkout_different_billing_address_false"),
         del_1    =  document.getElementById("checkout_different_billing_address_true"),
-        del_bl   =  document.querySelector(".checkout_billing_block");
+        del_bl   =  document.querySelector(".checkout_billing_block"),
+        show_fil =  document.getElementById("show_filter");
+
+    if(show_fil) {
+        show_fil.addEventListener("click", function(){
+            ShowFilter();
+        });
+    }
 
     if(del_0) {
         del_0.addEventListener("change", function(){
@@ -545,4 +552,17 @@ function ErasePoint(csrf) {
     
 }
 
+function ShowFilter() {
+    var block = document.querySelector('.filter_contailer');
+    
+    var style = getComputedStyle(block).display;
+    
+    if(style === 'block') {
+        block.style.display = 'none';
+    } else if(style === 'none') {
+        block.style.display = 'block';
+    } else {
+        return false;
+    }
+}
 

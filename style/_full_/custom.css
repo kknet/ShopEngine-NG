@@ -136,3 +136,49 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
     background-size:100%;
 }
 
+/* Фильтр Товаров*/
+
+.filter_contailer {
+    display:none;
+    min-height:200px;
+    margin-bottom:40px;
+    padding-top:10px;
+    border:1px solid lightgray;
+    box-sizing: border-box;
+}
+
+.filter_contailer form {
+    width:100%;
+}
+
+.filter_flex {
+    padding-left:10px;
+    padding-right:10px;
+    min-height:100px;
+    width:100%;
+    display:flex;
+    display:-webkit-flex;
+    justify-content: space-between; 
+    align-items: flex-start;
+}
+
+.filter_item_block {
+    display: inline-block;
+    width:30%;
+}
+
+.filter_item_block select, .filter_item_block input {
+    width:100%;
+    margin-top:5px;
+}
+
+.filter_footer {
+    text-align: right;
+    border-top:1px solid lightgray;
+    box-sizing: content-box;
+    margin-bottom:-1px;
+}
+
+#filter_slider {
+    margin-top:31px;
+}

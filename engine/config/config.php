@@ -16,7 +16,8 @@ class Config {
             'section',
             'search',
             'user',
-            'errorpage'
+            'errorpage',
+            'filter'
         ],
         'site_name' => 'Потерпите, пожалуйста!',
         'site_email_name' => 'Потерпите',
