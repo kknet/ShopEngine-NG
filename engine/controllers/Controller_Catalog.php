@@ -2,6 +2,37 @@
 
 class Controller_Catalog extends Controller
 {   
+    public function start()
+    {
+//        //Getting parameters
+//        $category = ShopEngine::GetAction();
+//        
+//        if($category === 'all' OR $category === '') {
+//            return false;
+//        }
+//        
+//        $sql = "SELECT * FROM category c LEFT OUTER JOIN category_parameters p ON c.category_id = p.parameter_category_id WHERE c.category_handle=?";
+//        $array = Getter::GetFreeData($sql, [$category], false);
+//        if($array[0]['parameter_id']) {
+//            
+//             for ($i = 0; $i < count($array); $i++) {
+//                 $id = $array[$i]['parameter_id'];
+//                 
+//                 $sql = "SELECT * FROM category_parameters_values WHERE parameter_id=?";
+//                 $values = Getter::GetFreeData($sql, [$id], false);
+//                 
+//                 $array[$i]['values'] = $values;
+//            }
+//            
+//            return $array;
+//            
+//        }
+//        
+//        return false;
+
+    }
+          
+    
     public static function GetData()
     {    
         //ShopEngine::Help()->MakeYML();

@@ -1215,7 +1215,6 @@ theme.initCache = function () {
     $stickyBar: $('#StickyBar'),
     $stickyNav: $('#StickyNav'),
     $stickNavWrapper: $('#StickNavWrapper'),
-    $stickyNavSearchCart: $('#StickyNavSearchCart'),
 
     $sortDropdown: $('#SortBy'),
     $tagsDropdown: $('#SortTags'),
@@ -1245,6 +1244,9 @@ theme.initCache = function () {
     $heroImage: $('.hero__image'),
     $heroPause: $('.hero__pause')
   };
+  
+
+console.log(theme.cache.$stickyNavSearchCart);
 
 //  theme.settings = {
 //    ajaxEnabled: {{ settings.cart_enable_ajax }},

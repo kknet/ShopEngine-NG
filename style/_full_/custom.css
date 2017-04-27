@@ -182,3 +182,8 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
 #filter_slider {
     margin-top:31px;
 }
+
+.filter_custom {
+    padding-top:20px;
+    border-top:1px solid lightgray;
+}

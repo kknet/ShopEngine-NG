@@ -35,53 +35,83 @@
 </header>
 <div class="filter_contailer">
     <form action="/filter/" method="get" >
-        <div class="filter_flex">
-            <div class="filter_item_block">
-                <label for="filter_category">Категория</label>
-                <select name="filter_category" id="filter_category">
-                    <option value="all">Все</option>
-                    <?php $cats = GetMenu();
-                        foreach ($cats as $cur) { ?>
-                            <option value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
-                        <?php } ?>
-                </select>
+        <div class="filter_general">
+            <div class="filter_flex">
+                <div class="filter_item_block">
+                    <label for="filter_category">Категория</label>
+                    <select name="filter_category" id="filter_category">
+                        <option value="all">Все</option>
+                        <?php $cats = GetMenu();
+                            foreach ($cats as $cur) { ?>
+                                <option value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
+                            <?php } ?>
+                    </select>
+                </div>
+                <div class="filter_item_block">
+                    <label for="filter_brand">Производитель</label>
+                    <select disabled name="filter_brand" id="filter_brand">
+                        <option value="cuparox">Cuparox</option>
+                        <option value="cuparox">Cuparox</option>
+                        <option value="cuparox">Cuparox</option>
+                    </select>
+                </div>
+                <div class="filter_item_block">
+                    <label>Ключевые слова</label>
+                    <input name="filter_keys" type="text" placeholder="Слова через запятую"/>
+                </div>
             </div>
-            <div class="filter_item_block">
-                <label for="filter_brand">Производитель</label>
-                <select disabled name="filter_brand" id="filter_brand">
-                    <option value="cuparox">Cuparox</option>
-                    <option value="cuparox">Cuparox</option>
-                    <option value="cuparox">Cuparox</option>
-                </select>
-            </div>
-            <div class="filter_item_block">
-                <label>Ключевые слова</label>
-                <input name="filter_keys" type="text" placeholder="Слова через запятую"/>
+
+            <div class="filter_flex">
+                <div class="filter_item_block">
+                    <label for="filter_price">Стоимость</label>
+                    <input type="text" name="filter_price" id="filte_price" placeholder="Цена до, &#8381;" >
+    <!--                <div id="filter_slider"></div>
+                    <script>
+                        $("#filter_slider").rangeSlider();
+                    </script>-->
+                </div>
+                <div class="filter_item_block">
+                    <label for="filter_brand">Сортировать по</label>
+                    <select disabled name="filter_brand" id="filter_brand">
+                        <option value="cuparox">Стоимость (по возрастанию)</option>
+                        <option value="cuparox">Стоимость (по убыванию)</option>
+                        <option value="cuparox">Просмотры (по возрастанию)</option>
+                        <option value="cuparox">Просмотры (по убыванию)</option>
+                    </select>
+                </div>
+                <div class="filter_item_block">
+
+                </div>
             </div>
         </div>
-        
-        <div class="filter_flex">
-            <div class="filter_item_block">
-                <label for="filter_price">Стоимость</label>
-                <input type="text" name="filter_price" id="filte_price" placeholder="Цена до, &#8381;" >
-<!--                <div id="filter_slider"></div>
-                <script>
-                    $("#filter_slider").rangeSlider();
-                </script>-->
-            </div>
-            <div class="filter_item_block">
-                <label for="filter_brand">Сортировать по</label>
-                <select disabled name="filter_brand" id="filter_brand">
-                    <option value="cuparox">Стоимость (по возрастанию)</option>
-                    <option value="cuparox">Стоимость (по убыванию)</option>
-                    <option value="cuparox">Просмотры (по возрастанию)</option>
-                    <option value="cuparox">Просмотры (по убыванию)</option>
-                </select>
-            </div>
-            <div class="filter_item_block">
+        <?php if($start) { ?>
+            <div class="filter_custom">
+                    <?php for($i = 0; $i < count($start); $i++) { ?>
+                        <?php if($i % 3 === 0 OR $i === 0) { ?>
+                            <div class="filter_flex">
+                        <?php } ?>
+                        <div class="filter_item_block">
+                            <label for="<?=$start[$i]['parameter_handler']?>"><?=$start[$i]['parameter_name']?></label>
+                            <select name="custom[<?=$start[$i]['parameter_handler']?>]" id="<?=$start[$i]['parameter_handler']?>">
+                                <?php if($start[$i]['values']) { ?>
+                                    <?php foreach ($start[$i]['values'] as $cur) { ?>
+                                        <option value="<?=$cur['parameter_value_handler']?>"><?=$cur['parameter_value_name']?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <?php if(($i + 1) % 3 === 0) { ?>
+                            </div>
+                        <?php } ?>
+                        <?php if(($i + 1) === count($start) AND ($i + 1) % 3 !== 0) { ?>
+                            <div class="filter_item_block">
+                            </div>
+                        <?='</div>'?>
+                        <?php } ?>
+                    <?php } ?>
                 
             </div>
-        </div>
+        <?php } ?>    
         <div class="filter_footer">
             <input type="submit" name="filter_submit" class="btn" value="Поиск" />
         </div>

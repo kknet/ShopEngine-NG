@@ -225,7 +225,8 @@ function cartload() {
     var cart_el = document.getElementById("cartIndicatorAjax");
     if(cart_el) {
          var csrf = cart_el.getAttribute("data-csrf");
-         var indi = document.querySelector(".site-header__cart-indicator");
+         var indi  = document.querySelector(".site-header__cart-indicator");
+         var indi2 = document.querySelector(".sticky_indicator");
     }
     else {
         return false;
@@ -242,9 +243,11 @@ function cartload() {
         success: function(data) {
             if(data === '1') {
                 indi.classList.remove("hide");
+                indi2.classList.remove("hide");
             }
             else {
                 indi.classList.add("hide");
+                indi2.classList.add("hide");
             }
         }
     });

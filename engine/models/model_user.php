@@ -19,7 +19,7 @@ class Model_User extends Model {
         $sql = "SELECT * FROM users WHERE users_email = ?";
         $email = Getter::GetFreeData($sql, [$post['customer_email']], false);
         
-        if(count($email) > 0)
+        if($email)
         {
             Request::SetSession('sign_message_text', 'Пользователь с таким E-Mail уже существует.');
             return false;

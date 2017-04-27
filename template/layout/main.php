@@ -37,7 +37,7 @@
     <link href="/style/_full_/theme.scss.css" rel="stylesheet" type="text/css" media="all">
     <link href="/style/_full_/custom.css" rel="stylesheet" type="text/css" media="all">
     <link href="/style/_full_/custom.media.css" rel="stylesheet" type="text/css" media="all">
-    <link href="/style/_full_/css.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/style/_full_/css" rel="stylesheet" type="text/css" media="all">
     <link href="https://poterpite.ru/collections/people.atom" title="Feed" rel="alternate" type="application/atom+xml">
     <link rel="alternate" type="application/json+oembed" href="https://poterpite.ru/collections/people.oembed">
     <link rel="next" href="https://poterpite.ru/collections/people?page=2">
@@ -368,14 +368,15 @@
                   <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-search"><path fill="#444" d="M21.84 18.77a10.012 10.012 0 0 0 1.57-5.39c0-5.547-4.494-10.047-10.035-10.047-5.548 0-10.04 4.5-10.04 10.048s4.492 10.05 10.033 10.05c2.012 0 3.886-.595 5.456-1.61l.455-.318 7.164 7.165 2.223-2.263-7.158-7.165.33-.47zM18.994 7.768c1.498 1.498 2.322 3.49 2.322 5.608s-.825 4.11-2.322 5.608c-1.498 1.498-3.49 2.322-5.608 2.322s-4.11-.825-5.608-2.322c-1.5-1.498-2.323-3.49-2.323-5.608s.825-4.11 2.322-5.608c1.497-1.498 3.49-2.322 5.607-2.322s4.11.825 5.608 2.322z"></path></svg>
                   <span class="icon__fallback-text">Поиск</span>
                 </button>
-              <ul class="search-results" style="position: absolute; left: -210px; top: 0px; display: none;"></ul></form>
+              <ul class="search-results" style="position: absolute; left: -210px; top: 0px; display: none;"></ul>
+              </form>
 
-              <a href="<?=ShopEngine::GetHost()?>/cart" class="site-header__link site-header__cart">
+              <a href="<?=ShopEngine::GetHost()?>/cart" id="cartIndicatorAjax2" class="site-header__link site-header__cart">
                 <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 31 32" class="icon icon-cart"><path d="M14.568 25.63c-1.222 0-2.11.888-2.11 2.11 0 1.11 1 2.11 2.11 2.11 1.222 0 2.11-.888 2.11-2.11s-.888-2.11-2.11-2.11zm10.22 0c-1.222 0-2.11.888-2.11 2.11 0 1.11 1 2.11 2.11 2.11 1.222 0 2.11-.888 2.11-2.11s-.888-2.11-2.11-2.11zm2.555-3.778H12.457L7.347 7.078c-.222-.333-.555-.667-1-.667H1.792c-.667 0-1.11.445-1.11 1s.443 1 1.11 1H5.57l5.11 14.886c.11.444.554.666 1 .666H27.34c.555 0 1.11-.444 1.11-1 0-.666-.554-1.11-1.11-1.11zm2.333-11.442l-18.44-1.555h-.11c-.556 0-.778.333-.668.89l3.222 9.22c.222.554.89 1 1.444 1h13.44c.556 0 1.112-.445 1.223-1l.778-7.444c.11-.554-.333-1.11-.89-1.11zm-2 7.443H15.568l-2.333-6.776L28.343 12.3l-.666 5.553z"></path></svg>
                 <span class="icon__fallback-text">Корзина</span>
-                <span class="site-header__cart-indicator hide"></span>
+                <span class="site-header__cart-indicator sticky_indicator hide"></span>
               </a>
-            </div>
+                </div>
 
                     <div class="customer-login-links sticky-hidden">
 
