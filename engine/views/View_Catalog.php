@@ -43,7 +43,7 @@
                         <option value="all">Все</option>
                         <?php $cats = GetMenu();
                             foreach ($cats as $cur) { ?>
-                                <option value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
+                                <option <?php echo $cur['category_id'] === $start['category_id'] ? "selected" : ""?> value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
                             <?php } ?>
                     </select>
                 </div>
@@ -84,26 +84,30 @@
                 </div>
             </div>
         </div>
-        <?php if($start) { ?>
+        <?php if($start['filter']) { $array = $start['filter'] ?>
             <div class="filter_custom">
-                    <?php for($i = 0; $i < count($start); $i++) { ?>
+                    <?php for($i = 0; $i < count($array); $i++) { ?>
                         <?php if($i % 3 === 0 OR $i === 0) { ?>
                             <div class="filter_flex">
                         <?php } ?>
                         <div class="filter_item_block">
-                            <label for="<?=$start[$i]['parameter_handler']?>"><?=$start[$i]['parameter_name']?></label>
-                            <select name="custom[<?=$start[$i]['parameter_handler']?>]" id="<?=$start[$i]['parameter_handler']?>">
-                                <?php if($start[$i]['values']) { ?>
-                                    <?php foreach ($start[$i]['values'] as $cur) { ?>
-                                        <option value="<?=$cur['parameter_value_handler']?>"><?=$cur['parameter_value_name']?></option>
+                            <label for="filter_brand"><?=$array[$i]['attribute_name']?></label>
+                                <?php if($array[$i]['values']) { ?>
+                                <ul style="margin-top:10px">
+                                    <?php foreach ($array[$i]['values'] as $cur) { ?>
+                                    <li>
+                                        <input style="width:auto" type="checkbox" name="custom[<?=$array[$i]['attribute_id']?>][]" value="<?=$cur['value_id']?>" id="<?=$cur['value_id']?>"/>
+                                        <label style="margin-left:15px;" for="<?=$cur['value_id']?>"><?=$cur['value_name']?></label>
+                                    </li>  
+                        
                                     <?php } ?>
+                                </ul>
                                 <?php } ?>
-                            </select>
                         </div>
                         <?php if(($i + 1) % 3 === 0) { ?>
                             </div>
                         <?php } ?>
-                        <?php if(($i + 1) === count($start) AND ($i + 1) % 3 !== 0) { ?>
+                        <?php if(($i + 1) === count($array) AND ($i + 1) % 3 !== 0) { ?>
                             <div class="filter_item_block">
                             </div>
                         <?='</div>'?>
@@ -115,7 +119,8 @@
         <div class="filter_footer">
             <input type="submit" name="filter_submit" class="btn" value="Поиск" />
         </div>
-        
+            <input type="hidden" name="category_name" value="<?=ShopEngine::GetAction()?>" />
+            <input type="hidden" name="csrf" value="<?=ShopEngine::Help()->generateToken()?>" />
     </form>
 </div>
 <div class="grid grid--no-gutters grid--uniform">

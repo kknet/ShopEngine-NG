@@ -1293,7 +1293,7 @@ theme.init = function () {
   theme.AjaxCart = new window.AjaxCart(theme.cache.$addToCartForm);
   theme.drawerSearch();
   theme.cartNote();
-  theme.setQueryParams();
+//  theme.setQueryParams();
   theme.passwordModalInit();
   theme.responsiveVideos();
   theme.setActiveThumbnail();
@@ -1590,16 +1590,16 @@ theme.articleImages = function () {
   });
 };
 
-theme.setQueryParams = function () {
-  // Set current sort by value
-  if (theme.cache.$sortDropdown.length) {
-    if (Shopify.queryParams.sort_by) {
-      theme.cache.$sortDropdown.val(Shopify.queryParams.sort_by);
-    } else {
-      theme.cache.$sortDropdown.val(theme.cache.$sortDropdown.data('default-sort'));
-    }
-  }
-};
+//theme.setQueryParams = function () {
+//  // Set current sort by value
+//  if (theme.cache.$sortDropdown.length) {
+//    if (Shopify.queryParams.sort_by) {
+//      theme.cache.$sortDropdown.val(Shopify.queryParams.sort_by);
+//    } else {
+//      theme.cache.$sortDropdown.val(theme.cache.$sortDropdown.data('default-sort'));
+//    }
+//  }
+//};
 
 theme.sortCollection = function () {
   Shopify.queryParams.sort_by = theme.cache.$sortDropdown.val();

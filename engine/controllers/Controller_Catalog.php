@@ -4,31 +4,36 @@ class Controller_Catalog extends Controller
 {   
     public function start()
     {
-//        //Getting parameters
-//        $category = ShopEngine::GetAction();
-//        
-//        if($category === 'all' OR $category === '') {
-//            return false;
-//        }
-//        
-//        $sql = "SELECT * FROM category c LEFT OUTER JOIN category_parameters p ON c.category_id = p.parameter_category_id WHERE c.category_handle=?";
-//        $array = Getter::GetFreeData($sql, [$category], false);
-//        if($array[0]['parameter_id']) {
-//            
-//             for ($i = 0; $i < count($array); $i++) {
-//                 $id = $array[$i]['parameter_id'];
-//                 
-//                 $sql = "SELECT * FROM category_parameters_values WHERE parameter_id=?";
-//                 $values = Getter::GetFreeData($sql, [$id], false);
-//                 
-//                 $array[$i]['values'] = $values;
-//            }
-//            
-//            return $array;
-//            
-//        }
-//        
-//        return false;
+        // Getting parameters
+        $category = ShopEngine::GetAction();
+        
+        $sql         = "SELECT category_id FROM category WHERE category_handle = ?";
+        $start['category_id'] = Getter::GetFreeData($sql, [$category], true)['category_id'];
+        
+        if($category === 'all' OR $category === '') {
+            return false;
+        }
+        
+        $sql = "SELECT * FROM category c LEFT OUTER JOIN category_attributes a ON c.category_id = a.category_id WHERE c.category_handle=?";
+        $array = Getter::GetFreeData($sql, [$category], false);
+        
+        if($array[0]['attribute_id']) {
+            
+            for($i = 0; $i < count($array); $i++) {
+                $id = $array[$i]['attribute_id'];
+                
+                $sql = "SELECT * FROM attribute_value a RIGHT OUTER JOIN value_names n ON a.value_id = n.value_id WHERE attribute_id=?";
+                
+                $values = Getter::GetFreeData($sql, [$id], false);
+                
+                $array[$i]['values'] = $values;
+            }
+            
+            $start['filter'] = $array;
+            
+        }
+       
+        return $start;
 
     }
           

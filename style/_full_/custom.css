@@ -187,3 +187,15 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
     padding-top:20px;
     border-top:1px solid lightgray;
 }
+
+.filter_item_block li {
+    line-height: 20px;
+    margin-bottom:5px;
+    vertical-align: middle;
+}
+
+.filter_item_block li input {
+    width:auto;
+    margin:0;
+    vertical-align:middle;
+}
