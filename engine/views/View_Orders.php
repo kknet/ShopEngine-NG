@@ -5,7 +5,7 @@
     <div class="content-block content-block--large">
       <h2>История заказов</h2>
       
-        <?php if($start['orders']) { ?>
+        <?php if($orders) { ?>
 
           <table class="responsive-table">
             <thead>
@@ -21,7 +21,7 @@
             
             <tbody>
               
-                <?php foreach($start['orders'] as $order) { ?>
+                <?php foreach($orders as $order) { ?>
                 
                 <tr>
                   <td data-label="Заказ"><a href="<?=ShopEngine::GetHost()?>/checkout/thank_you?orderid=<?=$order['orders_key']?>" title="">#<?=$order['orders_id']?></a></td>
@@ -65,32 +65,32 @@
 
       <p><?= Request::GetSession('user_name')?> <?= Request::GetSession('user_last_name')?> <?= Request::GetSession('user_patronymic')?></p>
 
-      <?php if($start['addresses']) { ?>
+      <?php if($addresses) { ?>
       
       
         <p>
-          <?=$start['addresses'][0]['address']?><br>
+          <?=$addresses[0]['address']?><br>
 
           
 
           
-            <?=$start['addresses'][0]['address_city']?><br>
+            <?=$addresses[0]['address_city']?><br>
           
 
           
-            <?=$start['addresses'][0]['region_name']?><br>
+            <?=$addresses[0]['region_name']?><br>
           
 
           
-            <?=$start['addresses'][0]['address_index']?><br>
+            <?=$addresses[0]['address_index']?><br>
           
 
           
-            <?=$start['addresses'][0]['country_name']?><br>
+            <?=$addresses[0]['country_name']?><br>
           
 
           
-            <?=$start['addresses'][0]['address_phone']?>
+            <?=$addresses[0]['address_phone']?>
           
         </p>
         

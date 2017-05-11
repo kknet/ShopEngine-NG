@@ -5,6 +5,9 @@
  */
 
 class Controller_User extends Controller{
+    
+    public $change_password;
+    public $change_information;
    
     //Make this controller actionable
     public function type()
@@ -18,17 +21,7 @@ class Controller_User extends Controller{
         /*
          * 
          * In some cases, it is more appropriate to create a separate methods for manipulating data and displaying this data to the user
-         */
-//        if(!Request::GetSession('user_is_logged'))
-//        {
-//            ShopEngine::Help()->RegularRedirect('user', 'login');
-//        }
-//        
-//        if(!ShopEngine::Help()->ValidateUser())
-//        {
-//            return ShopEngine::Help()->RegularRedirect("user", 'logout');
-//        }
-//        
+         */       
       
         if(!Request::GetSession('user_id'))
         {
@@ -40,8 +33,10 @@ class Controller_User extends Controller{
     }
     
     //Actions
-    public function LogIn()
+    public function Action_LogIn()
     {
+        $this->title = "Вход";
+        
         if(Request::GetSession('user_is_logged'))
         {
             ShopEngine::Help()->RegularRedirect('user', 'account');
@@ -56,7 +51,7 @@ class Controller_User extends Controller{
                 return false;
             }
             
-            if(controller::GetModel()->Login())
+            if($this->GetModel()->Login())
             {
                 return ShopEngine::Help()->RegularRedirect("user", 'account');
             }
@@ -64,10 +59,16 @@ class Controller_User extends Controller{
                 Request::SetSession('error_login_message', 'error');
             }  
         }
+        
+        return $this->view->render("View_Login", [
+            
+        ]);
     }
     
-    public function SignUp()
+    public function Action_SignUp()
     {
+        $this->title = "Регистрация";
+        
         if(Request::GetSession('user_is_logged'))
         {
             ShopEngine::Help()->RegularRedirect('user', 'account');
@@ -83,9 +84,9 @@ class Controller_User extends Controller{
                 return false;
             }
             
-            if(Controller::GetModel()->ValidateSignUp())
+            if($this->GetModel()->ValidateSignUp())
             {
-                if(Controller::getModel()->SignUp())
+                if($this->getModel()->SignUp())
                 {
                     Request::SetSession('sign_message', 'success');
                 }
@@ -94,10 +95,14 @@ class Controller_User extends Controller{
                     Request::SetSession('sign_message', 'error');
             }   
         }
+        
+        return $this->view->render("View_SignUp", [
+            
+        ]);
     }
     
     // Проверить!
-    public function Activate()
+    public function Action_Activate()
     {    
         if(Request::GetSession('user_is_logged'))
         {
@@ -112,9 +117,9 @@ class Controller_User extends Controller{
             $array = Getter::GetFreeData($sql, [$token], true);
             if(count($array) > 0)
             {
-                if(Controller::getModel()->Activate($array))
+                if($this->GetModel()->Activate($array))
                 {
-                    
+                    $activate = true;
                     if(Request::Post('activate'))
                     {
                         $csrf = Request::Post('csrf');
@@ -125,21 +130,29 @@ class Controller_User extends Controller{
                         }
                         $post = Request::Post();
 
-                        if(Controller::getModel()->Finish($post))
+                        if($this->GetModel()->Finish($post))
                         {
                             return ShopEngine::Help()->RegularRedirect("user", 'login');
                         }
                     } 
-                    return true;
+                } 
+                else {
+                    $activate = false;
                 }
-                return false;
             }
+        } else {
+            return Route::ErrorPage404();   
         }
-        return Route::ErrorPage404();   
+        
+        return $this->view->render("View_Activate", [
+            'activate' => $activate
+        ]);
     }
     
-    public function Account()
+    public function Action_Account()
     {
+        $this->title = "Аккаунт";
+        
         if(!Request::GetSession('user_is_logged'))
         {
             return ShopEngine::Help()->RegularRedirect('user', 'login');
@@ -161,24 +174,42 @@ class Controller_User extends Controller{
         
             if(Request::Post('myaccount_new_password') OR Request::Post('myaccount_old_password') OR Request::Post('myaccount_new_repassword'))
             {
-                if(!Controller::GetModel()->PasswordChange())
+                if(Controller::GetModel()->PasswordChange())
                 {
-                    return false;
+                    $this->change_password = true;
                 }
             }
             
-            if(!Controller::GetModel()->UserChange())
+            if(Controller::GetModel()->UserChange())
             {
-                return false;
+                $this->change_information = true;
             }
             
             return ShopEngine::Help()->RegularRedirect('user', 'account');
+            
         }
+        
+        if(!Request::GetSession('user_id'))
+        {
+            return ShopEngine::Help()->RegularRedirect('user', 'login');
+        }
+        
+        $id   = Request::GetSession('user_id');
+        $sql  = "SELECT * FROM users WHERE users_id=?";
+        $user = Getter::GetFreeData($sql, [$id]);
+        
+        return $this->view->render("View_MyAccount", [
+            'password'    => $this->change_password,
+            'information' => $this->change_information,
+            'user'        => $user
+        ]);
         
     }
     
-    public function Orders()
+    public function Action_Orders()
     {
+        $this->title = "Мои заказы";
+        
         if(!Request::GetSession('user_is_logged'))
         {
             ShopEngine::Help()->RegularRedirect('user', 'login');
@@ -209,14 +240,17 @@ class Controller_User extends Controller{
             $addresses = false;
         }
         
-        return [
-            'orders'  => $orders,
+        return $this->view->render("View_Orders", [
+            'orders'    => $orders,
             'addresses' => $addresses
-        ];
+        ]);
+
     }
     
-    public function Addresses()
+    public function Action_Addresses(bool $option = false)
     {
+        $this->title = "Мои адреса";
+        
         if(!ShopEngine::Help()->ValidateUser())
         {
             return false;
@@ -243,7 +277,7 @@ class Controller_User extends Controller{
             
             $addid = Request::Post('address_change');
             
-            if(Controller::GetModel()->ChangeAddress($addid))
+            if($this->GetModel()->ChangeAddress($addid))
             {
                 return ShopEngine::Help()->RegularRedirect('user', 'addresses');
             }
@@ -261,7 +295,7 @@ class Controller_User extends Controller{
                 return ShopEngine::GoHome();
             }
             
-            if(Controller::GetModel()->NewAddress())
+            if($this->GetModel()->NewAddress())
             {
                 return ShopEngine::Help()->RegularRedirect('user', 'addresses');
             }
@@ -275,10 +309,18 @@ class Controller_User extends Controller{
                 . "WHERE address_user=?";
         $addresses = Getter::GetFreeData($sql, [$id], false);
         
-        return [
+        $start = [
             'addresses' => $addresses,
-            'red'       => $red,
+            'red'       => $red
         ];
+        
+        if($option) {
+            return $start;
+        }
+        
+        return $this->view->render("View_Addresses", [
+            'start' => $start
+        ]);
         
     }
     
@@ -291,41 +333,41 @@ class Controller_User extends Controller{
             $red = false;
         }
 
-        $red = Controller::GetModel()->GetAddress($red_id);
+        $red = $this->GetModel()->GetAddress($red_id);
 
         if(count($red) < 1)
         {
             $red = false;
         }
         
-        $return = $this->Addresses();
+        $return = $this->Action_Addresses(true);
         
         $return['red'] = $red;
         
-        return $return;
+        return $this->view->render("View_Addresses", [
+            'start' => $return
+        ]);
     }
     
     public function Add()
     {
         $new = true;
         
-        $return = $this->Addresses();
+        $return = $this->Action_Addresses(true);
         
         $return['new'] = $new;
         
-        return $return;
+        return $this->view->render("View_Addresses", [
+            'start' => $return
+        ]);
     }
     
-    public function logout()
+    public function Action_Logout()
     {
         if(!Request::GetSession('user_is_logged'))
         {
             return ShopEngine::Help()->RegularRedirect('user', 'login');
         }
-        
-        Request::EraseUserSession();
-        
-        var_dump($_SESSION);
         
         if(Request::EraseUserSession())
         {
@@ -335,8 +377,10 @@ class Controller_User extends Controller{
         return ShopEngine::Help()->RegularRedirect('user', 'login');
     }
     
-    public function invite()
+    public function Action_Invite()
     {
+        $this->title = "Пригласить друга";
+        
         if(!Request::GetSession('user_is_logged'))
         {
             return ShopEngine::Help()->RegularRedirect('user', 'login');
@@ -347,6 +391,8 @@ class Controller_User extends Controller{
             return false;
         }
         
+        $error = false;
+        
         if(Request::Post('invite'))
         {
             $csrf = Request::Post('csrf');
@@ -356,17 +402,22 @@ class Controller_User extends Controller{
                 return ShopEngine::GoHome();
             }
             
-            if(!Controller::GetModel()->SendInvite())
+            if(!$this->GetModel()->SendInvite())
             {
-                return false;
+                $error = true;
             }
-            
-            return true;
+
         }
+        
+        return $this->view->render("View_Invite",[
+            'error' => $error
+        ]);
     }
     
-    public function restore()
+    public function Action_Restore(bool $option = false)
     {
+        $this->title = "Восстановление пароля";
+        
         if(Request::GetSession('user_is_logged'))
         {
             return ShopEngine::Help()->RegularRedirect('user', 'account');
@@ -381,74 +432,59 @@ class Controller_User extends Controller{
                 return ShopEngine::GoHome();
             }
             
-            if($errors = Controller::GetModel()->Restore())
-            {
-                return $errors;
-            }
+            $start  = false;
+            $errors = false;
             
-            return true;
+            if(!$errors = Controller::GetModel()->Restore())
+            {
+                $start  = true;
+            }
         
         }
+        
+        if($option)
+        {
+            return true;
+        }
+        
+        return $this->view->render("View_Restore", [
+            'errors' => $errors,
+            'start'  => $start
+        ]);
     }
     
     public function new_password()
     {
-        $this->restore();
+        $this->title = "Восстановление пароля";
+        
+        $this->Action_Restore(true);
         
         if(Request::Post('restore_new'))
         {
             $token = Request::Get('token');
             
-            if($errors = Controller::GetModel()->NewPassword($token))
+            if($errors = $this->GetModel()->NewPassword($token))
             {
-                return [
+                return $this->view->render("View_Restore", [
                     'status' => 'new_password',
                     'errors' => $errors
-                ];
+                ]);
             }
             return ShopEngine::Help()->RegularRedirect('user', 'login');
         }
         
         if($token = Request::Get('token'))
         {
-            if(Controller::GetModel()->NewPasswordValidate($token))
+            if($this->GetModel()->NewPasswordValidate($token))
             {
-                return ['status' => 'new_password'];
+                return $this->view->render("View_Restore", [
+                    'status' => 'new_password'
+                ]);
             }
         }
         
         return ShopEngine::GoHome();
         
-    }
-
-    //Set view name
-    public static function SetView()
-    {
-        $action = ShopEngine::GetAction();
-        
-        switch ($action) 
-        {
-            case 'login':
-                return 'View_Login';
-            case 'signup':
-                return 'View_SignUp';
-            case 'activate':
-                return 'View_Activate';
-            case 'account':
-                return 'View_MyAccount';
-            case 'logout':
-                return 'View_Login';
-            case 'orders':
-                return 'View_Orders';
-            case 'addresses':
-                return 'View_Addresses';
-            case 'invite':
-                return 'View_Invite';
-            case 'restore':
-                return 'View_Restore';
-            default:
-                return Route::ErrorPage404();
-        }
     }
     
 }

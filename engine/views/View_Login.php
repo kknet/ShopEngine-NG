@@ -5,13 +5,6 @@
       <div class="form-success hide" id="ResetSuccess">
         Мы отправили Вам письмо по электронной почте со ссылкой для обновления Вашего пароля.
       </div>
-        <?php if(Request::GetSession('success_password')) { ?>
-            <div class="form-success" id="ResetSuccess">
-                <?=Request::GetSession('success_password')?>
-            </div>   
-        <?php }  ?>
-        <?php Request::EraseFullSession('success')?>
-
       <div id="CustomerLoginForm" class="form-vertical">
         <form method="post" action="/user/login" id="customer_login" accept-charset="UTF-8">
             <input type="hidden" name="login" value="1" />
@@ -25,6 +18,12 @@
                 <p>Ошибка авторизации. Проверьте, пожалуйста, вводимые данные.</p>
             </div>
         <?php } ?>
+        <?php if(Request::GetSession('success_password')) { ?>
+            <div class="form-success" id="ResetSuccess">
+                <?=Request::GetSession('success_password')?>
+            </div>   
+        <?php }  ?>
+        <?php Request::EraseFullSession('success')?>
 
           <label for="CustomerEmail" class="label--hidden">Email</label>
           <input type="email" name="login_email" id="CustomerEmail" class="" placeholder="Email" autocorrect="off" autocapitalize="off" autofocus="">

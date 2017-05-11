@@ -27,6 +27,7 @@ class ShopEngine {
     protected static $total;
     public static $sql;
     public static $params;
+    public static $num;
     
     public static function GoHome()
     {
@@ -124,25 +125,22 @@ class ShopEngine {
         return Self::$view;
     }
     
-    public static function GetAction()
+    public static function GetAction($full = false)
     {
-        if(Self::$act === NULL)
-        {
-            $routes = ShopEngine::GetRoute();
+        $routes = ShopEngine::GetRoute();
 
-            if(!empty($routes[2])) 
-            {
-                $get = strpos($routes[2], '?');
-                if(!$get) {
-                    Self::$act = ShopEngine::Help()->Clear($routes[2]);
-                } else {
-                    Self::$act = ShopEngine::Help()->Clear(substr($routes[2], 0, $get));
-                }
+        if(!empty($routes[2])) 
+        {
+            $get = strpos($routes[2], '?');
+            if(!$get) {
+                Self::$act = $full === true ? 'Action_'.ucfirst(ShopEngine::Help()->Clear($routes[2])) : ShopEngine::Help()->Clear($routes[2]);
+            } else {
+                Self::$act = $full === true ? 'Action_'.ucfirst(ShopEngine::Help()->Clear(substr($routes[2], 0, $get))) : ShopEngine::Help()->Clear(substr($routes[2], 0, $get));
             }
-            else 
-            {
-                Self::$act = NULL;
-            }
+        }
+        else 
+        {
+            Self::$act = NULL;
         }
         return Self::$act;
     }
@@ -184,7 +182,7 @@ class ShopEngine {
         $array = Config::$config['components'];
         foreach ($array as $comp) {
             $comp_name = strtolower($comp.'.php');
-            require_once 'engine/components/'.$comp_name;
+            require_once ENGINE.'/components/'.$comp_name;
         }
     }
     
@@ -193,7 +191,7 @@ class ShopEngine {
     {
         if(Self::$help === NULL)
         {
-            require_once 'engine/components/help.php';
+            require_once ENGINE.'components/help.php';
             Self::$help = new Help();
         }
         return Self::$help;
@@ -204,7 +202,7 @@ class ShopEngine {
     {
         if(Self::$business === NULL)
         {
-            require_once 'engine/components/business.php';
+            require_once ENGINE.'components/business.php';
             Self::$business = new Business();
         }
         return Self::$business;
@@ -251,7 +249,7 @@ class ShopEngine {
         } else {
             $text = "( ".date('Y-m-d H:i:s (T)')." ) Выброшено исключение: ".serialize($ex->getMessage())."\r\n";
         }
-        $err = fopen('engine/errlog.txt', 'a');
+        $err = fopen(ROOT.'engine/errlog.txt', 'a');
         fwrite($err, $text);
         fclose($err);
     }
@@ -260,7 +258,7 @@ class ShopEngine {
     {
         $sql = "SELECT * FROM orders WHERE orders_id=?";
         $info = Getter::GetFreeData($sql, [$id]);
-        $sql = "SELECT * FROM order_products o RIGHT OUTER JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=?";
+        $sql = "SELECT * FROM order_products o RIGHT JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=? AND p.title <> ''";
         $products = Getter::GetFreeData($sql, [$id], false);
         
         return [

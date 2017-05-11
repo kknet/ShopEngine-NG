@@ -2,30 +2,26 @@
 
 class Controller_Products extends Controller{
    
-    private static $data;
+    public $products;
     
-    public function start()
+    public function Action_Basic()
     {
         $id = ShopEngine::GetRoute()[2];
         $sql = "SELECT * FROM products WHERE handle=? AND avail='1'";
-        if(!Getter::GetFreeData($sql, [$id]))
+        $this->products = Getter::GetFreeProducts($sql, [$id]);  
+        
+        if(!$this->products)
         {
             return Route::ErrorPage404();
         }
-    }
-    public static function GetData()
-    {
-        if(self::$data === NULL) {
-            $id = ShopEngine::GetRoute()[2];
-            $sql = "SELECT * FROM products WHERE handle=? AND avail='1'";
-            self::$data = Getter::GetFreeProducts($sql, [$id]);  
-            
-            Controller::GetModel()->UpdateCount(self::$data);
-        }
-        if(!self::$data) {
-            //return Route::ErrorPage404();
-        }
-        return self::$data;
+        
+        $this->GetModel()->UpdateCount($this->products);
+        
+        $this->title = $this->products['title'];
+        
+        return $this->view->render(ShopEngine::GetView(), [
+            'product' => $this->products
+        ]);
     }
     
     public function GetLink()
@@ -34,9 +30,9 @@ class Controller_Products extends Controller{
         return '/'.$route[1].'/'.$route[2];
     }
     
-    public static function SEO()
+    public function SEO()
     {
-        $product = Self::GetData();
+        $product = $this->products;
         return [
             'property' => [
                 'og:type'  => 'product',

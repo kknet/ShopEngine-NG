@@ -67,7 +67,7 @@
 		<tr>
 			<td style='width: 220px; padding: 2px 0;'>Руководитель предприятия</td>
 			<td>
-				<img src="plugins/pdf/lib/views/img/venzel_poterpite.png" alt="подпись" width='150px'>
+				<img src="../plugins/pdf/lib/views/img/venzel_poterpite.png" alt="подпись" width='150px'>
 			</td>
 			<td style='width: 200px; padding: 2px 0;'>(Старостина Н.И.)</td>
 		</tr>
@@ -78,7 +78,7 @@
 		</tr>
 		<tr>
 			<td colspan="3" style="text-align: left;">
-				<img src="plugins/pdf/lib/views/img/shtempel_poterpite.png" alt="печать компании" width='150px'>
+				<img src="../plugins/pdf/lib/views/img/shtempel_poterpite.png" alt="печать компании" width='150px'>
 			</td>
 		</tr>
 		<tr>

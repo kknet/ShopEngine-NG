@@ -4,44 +4,32 @@ class Controller_Search extends Controller
 {   
     public static $count;
     
-    public static function GetData()
+    public function Action_Basic()
     {    
-        $category = ShopEngine::GetAction();
-        
+        //Getting parameter
         $query = Request::Get('q');
         $array = explode(' ', $query);
-        foreach ($array as $key => $value)
-        {
-            if(isset($array[$key - 1])) {
-                $string .= " OR ";
-            }
-                $string .= "title LIKE ? ";
-                $array[$key] = "%$value%";
+        
+        //Getting products
+        $products = $this->GetModel()->GetProducts($array);
+        
+        //Entering into session
+        Request::SetSession('query', $query);
+        
+        //Getting count
+        if($products) { 
+            $count = count($products);
         }
         
-        Request::SetSession('query', $query);
-        $sql = "SELECT * FROM products WHERE $string AND avail='1' AND price <> 0.00";
-        $result = Getter::getProducts($sql, $array);
-        self::$count = ShopEngine::Help()->Count($sql, $array);
-        if(!$result) {
-            //return Route::ErrorPage404();
-        }
-        return $result;
+        
+        return $this->view->render(ShopEngine::GetView(), [
+            'search_products' => $products,
+            'search_count'    => $count
+        ]);
     }
     
-    public static function GetCategoryName()
+    public function GetPagination() 
     {
-        return 'Результаты поиска';
-    }
-
-    
-    public static function GetPagination() 
-    {
-        return Self::GetModel()->GetPagination();
-    }
-    
-    public static function GetPageAddress()
-    {
-        //return "/".ShopEngine::GetRoute()[1]."/".ShopEngine::GetAction();
+        return $this->GetModel()->GetPagination();
     }
 }

@@ -31,6 +31,11 @@ class Model_Filter extends Model
             
             $array = Getter::GetFreeData($sql, $param, false);
             
+            if(!$array)
+            {
+                return false;
+            }
+            
             $count = count($custom);
             
             $not_first = null;
@@ -46,8 +51,8 @@ class Model_Filter extends Model
                 
             } 
             
-            if($IDs) { 
-            
+            if(isset($IDs) AND $IDs) {
+                
                 $sql = "SELECT * FROM products WHERE products_id IN({$temp})";
                 return Getter::GetProducts($sql, $IDs);
                 

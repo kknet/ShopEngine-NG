@@ -7,7 +7,6 @@
 class database {
     
     private static $_db = null;
-    private static $dsn = "mysql:host=localhost;dbname=shopify;charset=utf8";
     private static $opt = array(
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
@@ -17,7 +16,7 @@ class database {
         {
             if (self::$_db === null) {
                 try { 
-                    self::$_db = new \PDO(self::$dsn, 'root', '', self::$opt);
+                    self::$_db = new \PDO("mysql:host=localhost;dbname=".Config::$db['database'].";charset=utf8", Config::$db['username'], Config::$db['password'], self::$opt);
                 } catch(Exception $e) {
                     die('Connect Error (' . self::$_db->connect_errno . ') ' . self::$_db->connect_error);
                 }

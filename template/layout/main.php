@@ -1,7 +1,7 @@
 <?php
     $nav = Controller::IsActive();
 ?>
-<!doctype html>
+<!DOCTYPE HTML>
 <!--[if IE 9]> <html class="ie9 supports-no-js" lang="{{ shop.locale }}"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="supports-no-js" lang="ru"> <!--<![endif]-->
 <head>
@@ -18,10 +18,10 @@
 
     <link rel="canonical" href="https://poterpite.ru/collections/people">
 
-    <title>Для красивой улыбки – Потерпите, пожалуйста!</title>
+    <title><?=$this->controller->title?></title>
 <!--    <meta name="description" content="Если Вы не нашли товар на сайте, Вы можете посмотреть полный список тут А менеджер поможет и подскажет, если вы позвоните по телефону:  8-495-740-66-09">-->
 
-    <?php echo SEO::GetSEO() ?>
+    <?=SEO::GetSEO($this->controller)?>
 
     <!-- /snippets/social-meta-tags.liquid -->
 
@@ -37,24 +37,24 @@
     <link href="/style/_full_/theme.scss.css" rel="stylesheet" type="text/css" media="all">
     <link href="/style/_full_/custom.css" rel="stylesheet" type="text/css" media="all">
     <link href="/style/_full_/custom.media.css" rel="stylesheet" type="text/css" media="all">
-    <link href="/style/_full_/css" rel="stylesheet" type="text/css" media="all">
-    <link href="https://poterpite.ru/collections/people.atom" title="Feed" rel="alternate" type="application/atom+xml">
+<!--    <link href="/style/_full_/css" rel="stylesheet" type="text/css" media="all">-->
+<!--    <link href="https://poterpite.ru/collections/people.atom" title="Feed" rel="alternate" type="application/atom+xml">-->
     <link rel="alternate" type="application/json+oembed" href="https://poterpite.ru/collections/people.oembed">
-    <link rel="next" href="https://poterpite.ru/collections/people?page=2">
+<!--    <link rel="next" href="https://poterpite.ru/collections/people?page=2">-->
     <link rel="stylesheet" type="test/css" href="/style/assets/font-awesome.min.css">
     <link rel="stylesheet" href="/plugins/owlcarousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="/plugins/owlcarousel/assets/owl.theme.default.min.css">
     <link rel="stylesheet" href="/js/jquery_ui/jquery-ui.min.css">
-    <link rel="stylesheet" href="/plugins/jQRangeSlider-5.7.2/css/classic-min.css">
+<!--    <link rel="stylesheet" href="/plugins/jQRangeSlider-5.7.2/css/classic-min.css">-->
 <!--    <script> var linkLists = {};  linkLists["main-menu"] = {}; linkLists["main-menu"].title = "Main menu"; linkLists["main-menu"].items = [];  linkLists["main-menu"].items[linkLists["main-menu"].items.length] = "/collections/people";  linkLists["main-menu"].items[linkLists["main-menu"].items.length] = "/collections/children";  linkLists["main-menu"].items[linkLists["main-menu"].items.length] = "/collections/dentist";  linkLists["main-menu"].items[linkLists["main-menu"].items.length] = "http://dental.poterpite.ru/";  linkLists["main-menu"].items[linkLists["main-menu"].items.length] = "http://clinic.poterpite.ru";   linkLists["footer"] = {}; linkLists["footer"].title = "Как купить?"; linkLists["footer"].items = [];  linkLists["footer"].items[linkLists["footer"].items.length] = "/pages/page-1";  linkLists["footer"].items[linkLists["footer"].items.length] = "/pages/delivery";  linkLists["footer"].items[linkLists["footer"].items.length] = "/pages/payment";  linkLists["footer"].items[linkLists["footer"].items.length] = "/pages/garanty";  linkLists["footer"].items[linkLists["footer"].items.length] = "/pages/contact";   linkLists["e-e"] = {}; linkLists["e-e"].title = "Зубныe щeтки"; linkLists["e-e"].items = [];  linkLists["e-e"].items[linkLists["e-e"].items.length] = "/collections/manual-toothbrush";   linkLists["contact"] = {}; linkLists["contact"].title = "Контакты"; linkLists["contact"].items = [];  linkLists["contact"].items[linkLists["contact"].items.length] = "http://help.poterpite.ru/";  linkLists["contact"].items[linkLists["contact"].items.length] = "/pages/about";  linkLists["contact"].items[linkLists["contact"].items.length] = "/pages/review";   linkLists["ac"] = {}; linkLists["ac"].title = "Пacты"; linkLists["ac"].items = [];   linkLists["a-o"] = {}; linkLists["a-o"].title = " Для крaсивoй улыбки"; linkLists["a-o"].items = [];  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/aksiessuary-dlia-zubnykh-shchietok-i-irrighatorov";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/zvukovyie-zubnyie-shchietki";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/irrighatory";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/opolaskivatieli";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/otbielivaniie";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/zubnaia-pasta";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/zubnaia-pasta-dlia-dietiei";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/zubnyie-shchietki-dlia-dietiei";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/zubnyie-shchietki";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/zvukovyie-zubnyie-shchietki";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/electrical";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/iorshiki-i-niti";  linkLists["a-o"].items[linkLists["a-o"].items.length] = "/collections/ultrazvukovyie-zubnyie-shchietki";   </script> <script> var beforeMegaMenuInterval = setInterval(function(){ menu = "none"; var links = []; jQuery.each(linkLists,function(key, item){ if (menu==key) { links = item.items; return false; } }); jQuery("ul").each(function(){ var elementFits = 0; jQuery(this).find(">li").each(function(){ var href = jQuery(this).find("a").first().attr("href"); if (links[elementFits]!=undefined && href==links[elementFits]) { elementFits++; } else if (elementFits>0 && elementFits!=links.length) { elementFits = 0; if (href==links[0]) { elementFits = 1; } } }); if (elementFits>0 && elementFits==links.length) { jQuery(this).addClass("buddha-disabled-menu"); } }); },1); setTimeout(function(){ jQuery(".buddha-disabled-menu").removeClass("buddha-disabled-menu"); clearInterval(beforeMegaMenuInterval); },3000); </script>
    --> 
-    <meta name="google-site-verification" content="p_FeuHqhzE39FL7oPXcRM56MC3yU_MG5wx6bflJHbCI">
+<!--    <meta name="google-site-verification" content="p_FeuHqhzE39FL7oPXcRM56MC3yU_MG5wx6bflJHbCI">-->
     <link rel="stylesheet" type="text/css" href="/style/spr.css" media="screen">
     <script src="/js/jquery-1.9.1.min.js"></script>
     <script src="/js/jquery_ui/jquery-ui.min.js"></script>
     <script src="/plugins/owlcarousel/owl.carousel.min.js"></script>
-    <script type="text/javascript" src="/engine/javascript/system.js"></script>
-    <script src="/plugins/jQRangeSlider-5.7.2/jQRangeSlider-min.js"></script>
+    <script type="text/javascript" src="/js/main_scripts.js"></script>
+<!--    <script src="/plugins/jQRangeSlider-5.7.2/jQRangeSlider-min.js"></script>-->
 
 <!--    <script type="text/javascript" src="/js/test.js"></script>-->
     </head>
@@ -62,7 +62,7 @@
     -->
     <body id="" class="template-collection">
 
-    <a class="in-page-link visually-hidden skip-link" href="https://poterpite.ru/collections/people#MainContent">Перейти к содержанию</a>
+    <a class="in-page-link visually-hidden skip-link" href="http://poterpite.ru/catalog/all">Перейти к содержанию</a>
     <div id="NavDrawer" class="drawer drawer--left">
     <div class="drawer__inner">
     <div style="padding: 11px;">
@@ -80,13 +80,13 @@
 </div>
         <form action="<?= ShopEngine::GetHost()?>/search/" method="get" class="drawer__search" role="search" style="position: relative;">
 
-        <input type="search" name="q" placeholder="Поиск" aria-label="Поиск" class="drawer__search-input" autocomplete="off">
+            <input type="search" name="q" placeholder="Поиск" aria-label="Поиск" data-csrf="<?=ShopEngine::Help()->generateToken()?>" class="drawer__search-input" autocomplete="off">
 
         <button type="submit" class="text-link drawer__search-submit">
           <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-search"><path fill="#444" d="M21.84 18.77a10.012 10.012 0 0 0 1.57-5.39c0-5.547-4.494-10.047-10.035-10.047-5.548 0-10.04 4.5-10.04 10.048s4.492 10.05 10.033 10.05c2.012 0 3.886-.595 5.456-1.61l.455-.318 7.164 7.165 2.223-2.263-7.158-7.165.33-.47zM18.994 7.768c1.498 1.498 2.322 3.49 2.322 5.608s-.825 4.11-2.322 5.608c-1.498 1.498-3.49 2.322-5.608 2.322s-4.11-.825-5.608-2.322c-1.5-1.498-2.323-3.49-2.323-5.608s.825-4.11 2.322-5.608c1.497-1.498 3.49-2.322 5.607-2.322s4.11.825 5.608 2.322z"></path></svg>
           <span class="icon__fallback-text">Поиск</span>
         </button>
-      <ul class="search-results" style="position: absolute; left: 0px; top: 0px; display: none;"></ul></form>
+      <ul class="search-results" id="search-results3" style="position: absolute; left: 0px; top: 0px; display: none;"></ul></form>
       <ul class="drawer__nav">
 
 
@@ -215,14 +215,14 @@
 
                 <div class="site-header__search-inner">
                   <label for="SiteNavSearch" class="visually-hidden">Поиск</label>
-                  <input type="search" name="q" id="SiteNavSearch" placeholder="Поиск" aria-label="Поиск" class="site-header__search-input" autocomplete="off">
+                  <input type="search" name="q" id="SiteNavSearch" placeholder="Поиск" aria-label="Поиск" data-csrf="<?=ShopEngine::Help()->generateToken()?>" class="site-header__search-input" autocomplete="off">
                 </div>
 
                 <button type="submit" class="text-link site-header__link site-header__search-submit">
                   <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-search"><path fill="#444" d="M21.84 18.77a10.012 10.012 0 0 0 1.57-5.39c0-5.547-4.494-10.047-10.035-10.047-5.548 0-10.04 4.5-10.04 10.048s4.492 10.05 10.033 10.05c2.012 0 3.886-.595 5.456-1.61l.455-.318 7.164 7.165 2.223-2.263-7.158-7.165.33-.47zM18.994 7.768c1.498 1.498 2.322 3.49 2.322 5.608s-.825 4.11-2.322 5.608c-1.498 1.498-3.49 2.322-5.608 2.322s-4.11-.825-5.608-2.322c-1.5-1.498-2.323-3.49-2.323-5.608s.825-4.11 2.322-5.608c1.497-1.498 3.49-2.322 5.607-2.322s4.11.825 5.608 2.322z"></path></svg>
                   <span class="icon__fallback-text">Поиск</span>
                 </button>
-              <ul class="search-results" style="position: absolute; left: -210px; top: 34px; display: none;"></ul></form>
+              <ul class="search-results" id="search-results1" style="position: absolute; left: -210px; top: 34px; display: none;"></ul></form>
 
               <a href="/cart" class="site-header__link site-header__cart" id="cartIndicatorAjax" data-csrf="<?=ShopEngine::Help()->generateToken()?>">
                 <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 31 32" class="icon icon-cart"><path d="M14.568 25.63c-1.222 0-2.11.888-2.11 2.11 0 1.11 1 2.11 2.11 2.11 1.222 0 2.11-.888 2.11-2.11s-.888-2.11-2.11-2.11zm10.22 0c-1.222 0-2.11.888-2.11 2.11 0 1.11 1 2.11 2.11 2.11 1.222 0 2.11-.888 2.11-2.11s-.888-2.11-2.11-2.11zm2.555-3.778H12.457L7.347 7.078c-.222-.333-.555-.667-1-.667H1.792c-.667 0-1.11.445-1.11 1s.443 1 1.11 1H5.57l5.11 14.886c.11.444.554.666 1 .666H27.34c.555 0 1.11-.444 1.11-1 0-.666-.554-1.11-1.11-1.11zm2.333-11.442l-18.44-1.555h-.11c-.556 0-.778.333-.668.89l3.222 9.22c.222.554.89 1 1.444 1h13.44c.556 0 1.112-.445 1.223-1l.778-7.444c.11-.554-.333-1.11-.89-1.11zm-2 7.443H15.568l-2.333-6.776L28.343 12.3l-.666 5.553z"></path></svg>
@@ -361,14 +361,14 @@
 
                 <div class="site-header__search-inner">
                   <label for="SiteNavSearch" class="visually-hidden">Поиск</label>
-                  <input type="search" name="q" id="SiteNavSearch" placeholder="Поиск" aria-label="Поиск" class="site-header__search-input" autocomplete="off">
+                  <input type="search" name="q" id="SiteNavSearch" placeholder="Поиск" aria-label="Поиск" data-csrf="<?=ShopEngine::Help()->generateToken()?>" class="site-header__search-input" autocomplete="off">
                 </div>
 
                 <button type="submit" class="text-link site-header__link site-header__search-submit">
                   <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-search"><path fill="#444" d="M21.84 18.77a10.012 10.012 0 0 0 1.57-5.39c0-5.547-4.494-10.047-10.035-10.047-5.548 0-10.04 4.5-10.04 10.048s4.492 10.05 10.033 10.05c2.012 0 3.886-.595 5.456-1.61l.455-.318 7.164 7.165 2.223-2.263-7.158-7.165.33-.47zM18.994 7.768c1.498 1.498 2.322 3.49 2.322 5.608s-.825 4.11-2.322 5.608c-1.498 1.498-3.49 2.322-5.608 2.322s-4.11-.825-5.608-2.322c-1.5-1.498-2.323-3.49-2.323-5.608s.825-4.11 2.322-5.608c1.497-1.498 3.49-2.322 5.607-2.322s4.11.825 5.608 2.322z"></path></svg>
                   <span class="icon__fallback-text">Поиск</span>
                 </button>
-              <ul class="search-results" style="position: absolute; left: -210px; top: 0px; display: none;"></ul>
+              <ul class="search-results" id="search-results2" style="position: absolute; left: -210px; top: 0px; display: none;"></ul>
               </form>
 
               <a href="<?=ShopEngine::GetHost()?>/cart" id="cartIndicatorAjax2" class="site-header__link site-header__cart">

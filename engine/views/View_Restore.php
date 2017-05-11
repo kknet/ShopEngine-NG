@@ -1,9 +1,9 @@
 <h1>Восстановление пароля</h1>
 <div class="restore_block">
-    <?php if($start['status'] === 'new_password') { ?>
-    <?php if($start['errors']) { ?>
+    <?php if(isset($status) AND $status === 'new_password') { ?>
+    <?php if(isset($errors) AND $errors) { ?>
         <div class="errors" id="ResetSuccess">
-            <?= $start['errors'] ?>
+            <?= $errors ?>
         </div>
     <?php } ?>
         <form method="post" action="">
@@ -31,9 +31,9 @@
                 </div>
             <?php } ?>
 
-            <?php if($start AND is_string($start)) { ?>
+            <?php if($errors AND is_string($errors)) { ?>
                 <div class="errors" id="ResetSuccess">
-                    <?= $start ?>
+                    <?= $errors ?>
                 </div>
             <?php } ?>
             <ul>

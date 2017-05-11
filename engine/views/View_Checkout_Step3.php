@@ -1,8 +1,3 @@
-<?php 
-    $array = GetOrderProducts();
-    $error = $start;
-?>
-
 <button class="order-summary-toggle order-summary-toggle--show" data-drawer-toggle="[data-order-summary]">
   <div class="wrap">
     <div class="order-summary-toggle__inner">
@@ -20,7 +15,7 @@
         <svg width="11" height="7" xmlns="http://www.w3.org/2000/svg" class="order-summary-toggle__dropdown" fill="#000"><path d="M6.138.876L5.642.438l-.496.438L.504 4.972l.992 1.124L6.138 2l-.496.436 3.862 3.408.992-1.122L6.138.876z" /></svg>
       </div>
       <div class="order-summary-toggle__total-recap total-recap" data-order-summary-section="toggle-total-recap">
-          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= ShopEngine::Help()->AsPrice(Request::GetSession('full_price')) ?></span>
+          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= ShopEngine::Help()->AsPrice($full_price) ?></span>
       </div>
     </div>
   </div>
@@ -54,9 +49,9 @@
         </tr>
       </thead>
       <tbody data-order-summary-section="line-items">
-          <?php if ($array) { ?>
-            <?php foreach ($array as $cur) { ?>
-                  <tr class="product" data-product-id="" data-variant-id="" data-product-type="<?=$cur['name']?>">
+          <?php if ($checkout_products) { ?>
+            <?php foreach ($checkout_products as $cur) { ?>
+                  <tr class="product">
                       <td class="product__image">
                           <div class="product-thumbnail">
                               <div class="product-thumbnail__wrapper">
@@ -104,7 +99,7 @@
           <td class="total-line__name">Промежуточный итог</td>
           <td class="total-line__price">
             <span class="order-summary__emphasis" data-checkout-subtotal-price-target="">
-              <?= GetCheckoutPrice()?>
+              <?= ShopEngine::Help()->AsPrice($checkout_price) ?>
             </span>
           </td>
         </tr>
@@ -148,7 +143,7 @@
         <td class="total-line__price payment-due">
           <span class="payment-due__currency">RUB</span>
           <span class="payment-due__price" data-checkout-payment-due-target="">
-            <?= ShopEngine::Help()->AsPrice(Request::GetSession('full_price')) ?>
+            <?= ShopEngine::Help()->AsPrice($full_price) ?>
           </span>
         </td>
       </tr>
@@ -195,7 +190,7 @@
           <div class="main__content">
             <div class="step" data-step="payment_method">
   
-  <form data-payment-form="" class="edit_checkout animate-floating-labels" action="/checkout/step3" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token" value="brmFCpyveNm13m/FJL+9taPUHs7dFLTlbodU0vAv2xeRGsI8DVvCSMUldVrM+QSjlzz9U1babZw1sQWrcLa6ug==">
+  <form data-payment-form="" class="edit_checkout animate-floating-labels" action="/checkout/step3?token=<?=ShopEngine::Help()->generateCheckoutToken()?>" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token" value="brmFCpyveNm13m/FJL+9taPUHs7dFLTlbodU0vAv2xeRGsI8DVvCSMUldVrM+QSjlzz9U1babZw1sQWrcLa6ug==">
 
     <input type="hidden" name="previous_step" id="previous_step" value="payment_method">
     <input type="hidden" name="step">

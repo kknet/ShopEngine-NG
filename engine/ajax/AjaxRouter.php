@@ -12,7 +12,7 @@ class AjaxRouter {
             $handler_name  = $routes[2].'.php';
         }
 
-        require_once 'engine/handlers/'.$handler_name;
+        require_once ENGINE.'handlers/'.$handler_name;
         
         $handler = new $handler_class;
         

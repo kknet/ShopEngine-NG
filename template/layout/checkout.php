@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
 
-    <title>Потерпите, пожалуйста! - Оформить заказ</title>
+    <title><?=$this->controller->title?></title>
 
     
 
@@ -41,7 +41,7 @@
 
 <script src="/style/assets/checkout.js"></script>
 <script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/engine/javascript/system.js"></script>
+<script type="text/javascript" src="/js/main_scripts.js"></script>
 
 
   

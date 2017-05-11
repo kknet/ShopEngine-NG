@@ -1,7 +1,7 @@
 <header class="grid medium-up--grid--table section-header small--text-center">
     <div class="grid__item medium-up--one-half section-header__item">
       <h1 class="section-header__title">
-        <?= ShopEngine::GetController()::GetCategoryName() ?>
+        <?= $category_name ?>
       </h1>
         <!---->
       
@@ -43,7 +43,7 @@
                         <option value="all">Все</option>
                         <?php $cats = GetMenu();
                             foreach ($cats as $cur) { ?>
-                                <option <?php echo $cur['category_id'] === $start['category_id'] ? "selected" : ""?> value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
+                                <option <?php echo $cur['category_id'] === $category_id ? "selected" : ""?> value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
                             <?php } ?>
                     </select>
                 </div>
@@ -84,7 +84,8 @@
                 </div>
             </div>
         </div>
-        <?php if($start['filter']) { $array = $start['filter'] ?>
+        <?php if(isset($filter)) { 
+            $array = $filter ?>
             <div class="filter_custom">
                     <?php for($i = 0; $i < count($array); $i++) { ?>
                         <?php if($i % 3 === 0 OR $i === 0) { ?>
@@ -124,9 +125,9 @@
     </form>
 </div>
 <div class="grid grid--no-gutters grid--uniform">
-    <?php $array = GetProducts();
-    if($array) { 
-        foreach ($array as $cur) { ?>
+    <?php 
+    if($cat_products) { 
+        foreach ($cat_products as $cur) { ?>
         <div class="grid__item small--one-half medium-up--one-fifth">
             <!-- /snippets/product-card.liquid -->
         <a href="/products/<?=$cur['handle']?>" class="product-card">
@@ -154,6 +155,6 @@
     <?php } ?>
 </div>
 <div class="pagination">
-    <?= GetPagination()?>
+    <?= $this->controller->GetPagination()?>
 </div>
 

@@ -55,7 +55,7 @@ class Getter extends ShopEngine{
             try {
                 $query = $db->prepare($sql);
                 $result = $query->execute($params);
-                include_once("engine/models/get_products.php");
+                include_once(ENGINE."models/get_products.php");
                 $array = Products::GetProducts($query);
                 if(count($array) <= 1) {
                     return $array[0];
@@ -68,7 +68,7 @@ class Getter extends ShopEngine{
         else { 
             try {
             $query = $db->query($sql);
-                include_once("engine/models/get_products.php");
+                include_once(ENGINE."models/get_products.php");
                 $array = Products::GetProducts($query);
                 if(count($array) <= 1) {
                     return $array[0];
@@ -79,12 +79,42 @@ class Getter extends ShopEngine{
             }
         }
     }
+    
+    //
+    public static function GetDataWithPagination($sql, $params = NULL, $num = 20)
+    {
+        Self::$sql    = $sql;
+        Self::$params = $params;
+        Self::$num    = $num;
+
+        $db = database::getInstance();
+
+        $array = Paginator::PreparePagination($sql, $params, $num);
+        $sorting_db = $array[4];
+        $query_start_num = $array[1];
+
+        // С параметрами или без них
+        if($params !== NULL)
+        {
+            $query = $db->prepare($sql.$query_start_num);
+            $query->execute($params);
+        }
+        else 
+        {
+            $query = $db->query($sql.$query_start_num);
+        }
+
+        $path = 'Последние добавленные товары';
+        
+        return $query->fetchAll();
+    }
    
     // Получить товары
     public static function GetProducts($sql, $params = NULL, $num = 20)
     { 
         Self::$sql    = $sql;
         Self::$params = $params;
+        Self::$num    = $num;
 
         $db = database::getInstance();
 
@@ -105,7 +135,7 @@ class Getter extends ShopEngine{
 
         $path = 'Последние добавленные товары';
 
-        include_once("engine/models/get_products.php");
+        include_once(ENGINE."models/get_products.php");
 
         return Products::GetProducts($query);
 

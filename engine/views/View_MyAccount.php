@@ -1,9 +1,14 @@
-<?php //$user = GetUserInfo() 
-$user = Controller_User::GetUserInfo();
-
-?>
 <div class="myaccount_body">
     <h1>Профиль</h1>
+    <?php if(Request::GetSession('error_user_success') AND !Request::GetSession('error_password')) { ?>
+        <div class="form-success" id="ResetSuccess">
+            <p>Все данные сохранены.</p>
+        </div> 
+    <?php } elseif(Request::GetSession('error_password')) { ?>
+        <div class="errors" id="ResetSuccess">
+            <p>Пароль не был сохранён. Информация ниже.</p>
+        </div> 
+    <?php } ?>
     <form action="" method="post">
         <div class="myaccount_first">
             <div class="myaccount_first_left left">

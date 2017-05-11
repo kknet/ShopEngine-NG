@@ -46,9 +46,9 @@ class ErrorHandler {
         header("HTTP/1.1 $code");
         
         $text = "( ".date('Y-m-d H:i:s (T)')." ) Сработала функция ".$funcname."; Сбой в работе сайта. Код ошибки/Класс ошибки: ".$errno."; Информация об ошибке: ".$errstr."; Файл: ".$errfile."; Строка: ".$errline."\r\n";
-        if(file_exists('engine/errlog.txt'))
+        if(file_exists('../engine/errlog.txt'))
         {
-            $err = fopen('engine/errlog.txt', 'a');
+            $err = fopen('../engine/errlog.txt', 'a');
             fwrite($err, $text);
             fclose($err);
         } 

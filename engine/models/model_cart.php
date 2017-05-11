@@ -14,11 +14,6 @@ class Model_Cart extends Model{
             return false;
         }
         
-        $text = $array[0]['cart_id'];
-        $file = fopen('engine/test.txt', 'a');
-        fwrite($file, $text);
-        fclose($file);
-        
         try {
             foreach ($array as $cur) {
                 

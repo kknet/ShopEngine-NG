@@ -21,7 +21,7 @@ if (array_key_exists("sort", $_GET)) {
     if($page + 2 <= $total) $page2right = '<span><a class="pstr_prev" href="'.$main_page.'page='.($page + 2).'&sort='.$sorting.'">'.($page+2).'</a></span>';
     if($page + 1 <= $total) $page1right = '<span><a class="pstr_prev" href="'.$main_page.'page='.($page + 1).'&sort='.$sorting.'">'.($page+1).'</a></span>';
 
-    if ($page+5 < $total) {
+    if ($page+3 < $total) {
         $strtotal = '<span class="nav-point">...</span><span><a href="'.$main_page.'sort='.$sorting.'&page='.$total.'">'.$total.'</a></span>';
     }
     else {
@@ -77,7 +77,7 @@ else {
         $page1right = '';
     }
 
-    if ($page+5 < $total) {
+    if ($page+3 < $total) {
         $strtotal = '<span class="nav-point">...</span><span><a href="'.$main_page.'page='.$total.'">'.$total.'</a></span>';
     }
     else {

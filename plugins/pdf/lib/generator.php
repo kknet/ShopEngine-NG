@@ -45,7 +45,7 @@ class generator2 extends template{
 		$mpdf->list_indent_first_level = 0;
 		//Записываем html
 		$mpdf->WriteHTML($this->html, 2);
-		$mpdf->Output('files/orders/order'.$this->orderID.'.pdf', 'F');
+		$mpdf->Output(ROOT.'files/orders/order'.$this->orderID.'.pdf', 'F');
 	}
 
 	private function setValues(){

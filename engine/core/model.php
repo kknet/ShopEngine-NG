@@ -1,5 +1,30 @@
 <?php 
-abstract class Model extends ShopEngine
+class Model extends ShopEngine
 {
-    // some
+    protected static $model = null;
+    
+    public function __cunstruct()
+    {
+        
+    }
+    
+    public static function getInstance()
+    {
+        if(self::$model === null) {
+            $model = ShopEngine::GetModel();
+            self::$model = new $model();
+        }
+        
+        return self::$model;
+    }
+    
+    public function __clone()
+    {
+        
+    }
+    
+    public function __wakeup() 
+    {
+        
+    }
 }

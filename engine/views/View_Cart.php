@@ -1,6 +1,3 @@
-<?php
-    $array = $start;
-?>
 <h1 class="small--text-center">Корзина покупателя</h1>
   <form action="/cart" method="post" novalidate class="cart">
     <table class="responsive-table cart-table">
@@ -10,8 +7,8 @@
         <th>Всего</th>
       </thead>
       <tbody id="CartProducts">
-        <?php if($array) { ?>
-          <?php foreach ($array as $cur) { ?>
+        <?php if($cart) { ?>
+          <?php foreach ($cart as $cur) { ?>
             <tr class="cart__row responsive-table__row">
             <td class="cart__cell--image text-center">
               <a href="/products/<?=$cur['handle']?>" class="cart__image">

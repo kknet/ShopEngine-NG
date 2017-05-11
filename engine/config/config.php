@@ -1,6 +1,13 @@
 <?php
 
 class Config { 
+    //Database
+    public static $db = [
+        'username' => 'root',
+        'database' => 'shopify',
+        'password' => ''
+    ];
+    //Other
     public static $config = [
         'admin_email' => 'info@poterpite.ru',
         'developer_email' => 'alexandergrachyov@gmail.com',
@@ -31,7 +38,8 @@ class Config {
             'request'
         ],
         'points' => 300,
-        'orders_location' => 'files/orders/'
+        'orders_location' => 'files/orders/',
+        'http_key' => 'asldjfgqwiuyrgoqw8fygsajdhfbos3iurtw0b389r7263b0rucgfalksjdfhacpbe498gydofijahsdofiuay409w8cyefoiasdhgfapw9384yrcbIFUHSDAIFUVYVBW0C498ABEFODISDHFAVPBI4WYBC09WRYbwoeituvayw08r97'
     ];
     
     public static function Password()

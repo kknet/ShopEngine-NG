@@ -3,10 +3,12 @@
 class Controller_Cart extends Controller
 {
     
-    public function start() 
+    public function Action_Basic() 
     {
+        $this->title = "Корзина";
         
-        if(Request::Post('checkout')) {
+        if(Request::Post('checkout')) 
+        {
             
             $csrf = Request::Post('csrf');
             if(!ShopEngine::Help()->ValidateToken($csrf))
@@ -16,9 +18,11 @@ class Controller_Cart extends Controller
             
             $ip = ShopEngine::GetUserIp();
             
+            $token = ShopEngine::Help()->generateCheckoutToken();
+            
             if(Controller::GetModel()->PrepareCheckout($ip)) 
             {
-               return ShopEngine::Help()->StrongRedirect('checkout', 'step1');
+               return ShopEngine::Help()->StrongRedirect('checkout', 'step1?token='.$token);
             }
             else {
                 return Route::ErrorPage404();
@@ -32,7 +36,11 @@ class Controller_Cart extends Controller
         if(!$array) {
             return ShopEngine::Help()->RegularRedirect('catalog', 'all');
         }
-        return $array; 
+        
+        return $this->view->render(ShopEngine::GetView(), [
+            'cart' => $array
+        ]);
+        
     }
     
     public static function GetData()

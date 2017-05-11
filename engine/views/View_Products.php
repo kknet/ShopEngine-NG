@@ -1,8 +1,5 @@
-<?php 
-    $product = ShopEngine::GetController()::GetData();
-?>  
 <meta itemprop="name" content="<?=$product['title']?>">
-<meta itemprop="url" content="<?=$controller->GetLink()?>">
+<meta itemprop="url" content="<?=$this->controller->GetLink()?>">
   <meta itemprop="image" content="<?=$product['image_lnk']?>">
 
   <div class="grid product-single">

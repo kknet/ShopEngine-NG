@@ -2,12 +2,14 @@
 
 class Controller_Main extends Controller
 {   
-    public static function GetData()
-    {    
-
+    public function Action_Basic()
+    {
         $sql = "SELECT * FROM products WHERE avail <> '0' AND price <> 0.00 AND category_id BETWEEN 1 AND 13"; 
-        return Getter::getProducts($sql, null, 10);
-
+        $products = Getter::getProducts($sql, null, 10);
+        
+        return $this->view->render(ShopEngine::GetView(), [
+            'main_products' => $products
+        ]);
     }
     
     public static function GetCategoryName()

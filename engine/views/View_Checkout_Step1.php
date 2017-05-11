@@ -1,7 +1,3 @@
-<?php 
-    $array = GetOrderProducts();
-    $error = $start['errors'];
-?>
 <button class="order-summary-toggle order-summary-toggle--show" data-drawer-toggle="[data-order-summary]">
   <div class="wrap">
     <div class="order-summary-toggle__inner">
@@ -19,7 +15,7 @@
         <svg width="11" height="7" xmlns="http://www.w3.org/2000/svg" class="order-summary-toggle__dropdown" fill="#000"><path d="M6.138.876L5.642.438l-.496.438L.504 4.972l.992 1.124L6.138 2l-.496.436 3.862 3.408.992-1.122L6.138.876z" /></svg>
       </div>
       <div class="order-summary-toggle__total-recap total-recap" data-order-summary-section="toggle-total-recap">
-          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= GetCheckoutPrice()?></span>
+          <span class="total-recap__final-price" data-checkout-payment-due-target=""><?= ShopEngine::Help()->AsPrice($order_price) ?></span>
       </div>
     </div>
   </div>
@@ -53,8 +49,8 @@
         </tr>
       </thead>
       <tbody data-order-summary-section="line-items">
-          <?php if($array) { ?>
-                <?php foreach ($array as $cur) { ?>
+          <?php if($order_products) { ?>
+                <?php foreach ($order_products as $cur) { ?>
                       <tr class="product" data-product-id="" data-variant-id="" data-product-type="<?=$cur['name']?>">
                           <td class="product__image">
                               <div class="product-thumbnail">
@@ -103,7 +99,7 @@
           <td class="total-line__name">Промежуточный итог</td>
           <td class="total-line__price">
             <span class="order-summary__emphasis" data-checkout-subtotal-price-target="">
-              <?= GetCheckoutPrice()?>
+              <?= ShopEngine::Help()->AsPrice($order_price) ?>
             </span>
           </td>
         </tr>
@@ -134,7 +130,7 @@
         <td class="total-line__price payment-due">
           <span class="payment-due__currency">RUB</span>
           <span class="payment-due__price" data-checkout-payment-due-target="">
-            <?= GetCheckoutPrice()?>
+            <?= ShopEngine::Help()->AsPrice($order_price) ?>
           </span>
         </td>
       </tr>
@@ -179,7 +175,7 @@
           </div>
           <div class="main__content">
             <div class="step" data-step="contact_information">
-  <form novalidate="novalidate" class="edit_checkout animate-floating-labels" data-customer-information-form="true" action="/checkout/step1" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token" value="ajGGyT0LRhBkF3U66a4lEXvyQ/k9E4Y3Rmbi9TSCYgcqdb09q/IXqEpRoOO5ucOPA4tJ1OONlYcUNZYP29VoJg==">
+                <form novalidate="novalidate" class="edit_checkout animate-floating-labels" data-customer-information-form="true" action="/checkout/step1?token=<?=ShopEngine::Help()->generateCheckoutToken()?>" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token" value="ajGGyT0LRhBkF3U66a4lEXvyQ/k9E4Y3Rmbi9TSCYgcqdb09q/IXqEpRoOO5ucOPA4tJ1OONlYcUNZYP29VoJg==">
 
   <input type="hidden" name="previous_step" id="previous_step" value="contact_information">
   <input type="hidden" name="step" value="shipping_method">
@@ -268,8 +264,8 @@
         <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_id">Адрес магазина</label>
             <select data-csrf="<?= ShopEngine::Help()->generateToken()?>" class="field__input field__input--select" name="checkout_address_id" id="checkout_shipping_address_id">
                 <option value="0">Новый адрес</option>
-                <?php if($start['addresses']) { ?>
-                    <?php foreach ($start['addresses'] as $cur) { ?>
+                <?php if($addresses) { ?>
+                    <?php foreach ($addresses as $cur) { ?>
                         <option data-properties="" value="<?= $cur['address_id']?>"><?=$cur['address']?>, <?=$cur['address_city']?>, <?=$cur['address_index']?></option>
                     <?php } ?>
                 <?php } ?>
@@ -279,11 +275,12 @@
   
   <?php } ?>
 
-      <div class="field field--optional field--half" data-address-field="first_name">
+      <div class="field field--optional field--half <?=$error['name']['class']?>" data-address-field="first_name">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_first_name">Имя</label>
     <input value="<?= Request::GetSession('checkout_name')?>" placeholder="Имя" autocomplete="shipping given-name" data-backup="first_name" class="field__input" size="30" type="text" name="checkout_name" id="checkout_shipping_address_first_name">
   </div>
+  <?=$error['name']['message']?>
 </div><div class="field field--required field--half <?=$error['last_name']['class']?>" data-address-field="last_name">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_last_name">Фамилия</label>

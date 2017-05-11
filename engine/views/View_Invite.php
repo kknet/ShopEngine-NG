@@ -2,6 +2,15 @@
 <div class="invite-body">
     <form method="post" action="">
         <div class="invite_block">
+            <?php if($error) { ?>
+                <div class="errors">
+                    <ul>
+                        <li>
+                            Произошла неизвестная ошибка. Попробуйте, пожалуйста, позже.
+                        </li>
+                    </ul>
+                </div>
+            <?php } ?>
             <?php if(Request::GetSession('error_success_email')) { ?>
                 <div class="form-success">
                     <ul>

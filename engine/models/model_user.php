@@ -108,7 +108,7 @@ class Model_User extends Model {
             $mailto   = Request::GetSession('customer_email');
             $subject  = 'Регистрация пользователя';
 
-            require_once 'widgets/mailbodysignup.php';
+            require_once ROOT.'widgets/mailbodysignup.php';
 
             ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body);
             return true;
@@ -303,7 +303,7 @@ class Model_User extends Model {
 
         if($stmt->execute())
         {
-            Request::PostUnset();
+            Request::SetSession('error_user_success', true);
             return true;
         }
 
@@ -316,6 +316,8 @@ class Model_User extends Model {
         $id   = Request::GetSession('user_id');
         $op   = Config::Password();
         $post = Request::Post();
+        
+        Request::SetSession('error_password', true);
         
         if(!$post['myaccount_old_password'])
         {
@@ -359,7 +361,7 @@ class Model_User extends Model {
         
         $new = $post['myaccount_new_password'];
         
-        $password = password_hash($new, PASSWORD_BCRYPT, $op);
+        $password = password_hash($new, PASSWORD_BCRYPT);
         
         $sql  = "UPDATE users SET users_password=:password WHERE users_id=:id";
         $stmt = $db->prepare($sql);
@@ -368,6 +370,7 @@ class Model_User extends Model {
         
         if($stmt->execute())
         {
+            Request::EraseFullSession('error_password');
             Request::SetSession('error_account_new_repassword_success', 'Пароль успешно изменен');
             return true;
         }
@@ -499,17 +502,24 @@ class Model_User extends Model {
         $sql  = "SELECT * FROM users WHERE users_id=?";
         $user = Getter::GetFreeData($sql, [$id]);
         
+        $tpl = file_get_contents(ROOT.'template/mail/invite_tpl.php');
+        
+        $tpl = str_replace("{{NAME}}", $user['users_name'].' '.$user['users_last_name'], $tpl);
+        $tpl = str_replace("{{SITE_NAME}}", Config::$config['site_name'], $tpl);
+        $tpl = str_replace("{{INVITE_LINK}}", ShopEngine::GetHost().'/user/signup?ref='.$user['users_referer_key'], $tpl);
+        $tpl = str_replace("{{TEXT}}", $post['invite_text'], $tpl);
+        
         $mailfrom = Config::$config['admin_email'];
         $mailto   = $post['invite_email'];
         $subject  = 'Приглашение на сайт "Потерпите, пожалуйста!"';
-        $body     = 'Добрый день, пользователь '.$user['users_name'].' '.$user['users_last_name'].' только что пригласил вас зарегистрироватьс на нашем сайте. Для регистрации перейдите по <a href="'.ShopEngine::GetHost().'/user/signup?ref='.$user['users_referer_key'].'">ссылке</a>';
 
-        if(ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body))
+        if(ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $tpl))
         {
             Request::SetSession('error_success_email', 'Мы отправили письмо по указанному адресу');
+            return true;
         }
         
-        return true;
+        return false;
     }
     
     public function Restore()
@@ -541,12 +551,16 @@ class Model_User extends Model {
             return true;
         }
         
-        $body     = "Для восстановления паролья перейдите по <a href='".ShopEngine::GetHost()."/user/restore/new_password?token={$token}'>ссылке</a>";
+        $tpl = file_get_contents(ROOT.'template/mail/restore_tpl.php');
+        
+        $tpl = str_replace("{{RESTORE_LINK}}", ShopEngine::GetHost()."/user/restore/new_password?token={$token}", $tpl);
+        
+        //$body     = "Для восстановления паролья перейдите по <a href='".ShopEngine::GetHost()."/user/restore/new_password?token={$token}'>ссылке</a>";
         $subject  = "Восстановление пароля на сайте \"".Config::$config['site_name']."\"";
         $mailto   = $post;
         $mailfrom = Config::$config['admin_email'];
         
-        if(ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body))
+        if(ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $tpl))
         {
             return false;
         }

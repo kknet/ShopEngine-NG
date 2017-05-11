@@ -5,7 +5,7 @@
 
       <div id="CustomerLoginForm" class="form-vertical">
           
-          <?php if($start) { ?>
+          <?php if($activate) { ?>
           
         <form method="post" action="" id="customer_login" accept-charset="UTF-8">
             <input type="hidden" name="activate" value="1" />

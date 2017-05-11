@@ -370,9 +370,9 @@
   <div class="index-section small--hide">
     
    <div class="grid grid--no-gutters grid--uniform">
-    <?php $array = GetProducts();
-    if($array) { 
-        foreach ($array as $cur) { ?>
+    <?php 
+    if($main_products) { 
+        foreach ($main_products as $cur) { ?>
         <div class="grid__item small--one-half medium-up--one-fifth">
             <!-- /snippets/product-card.liquid -->
         <a href="/products/<?=$cur['handle']?>" class="product-card">
@@ -386,7 +386,6 @@
                     <?=$cur['price']?>
                     <s class="product-card__regular-price"><?=$cur['old_price']?></s>
                 </div>
-                <span class="shopify-product-reviews-badge" data-id="7046352451"></span>
             </div>
             <?=$cur['sales']?>
             <div class="product-card__overlay">

@@ -3,7 +3,7 @@
  * перехватываемые ошибки (ловятся функцией set_error_handler())
  */
 // NONFATAL - E_NOTICE
-// echo $undefined_var;
+//echo $undefined_var;
 // NONFATAL - E_WARNING
 // array_key_exists('key', NULL);
 // NONFATAL - E_DEPRECATED

@@ -17,6 +17,14 @@ class Model_Checkout extends Model {
         if(!$post) {
             return true;
         }
+        
+        // First name
+        if(!$post['checkout_name']) {
+            $this->errors['name'] = [
+                'class'   => 'field--error',
+                'message' =>  '<p class="field__message field__message--error" id="error-for-last_name">Пожалуйста, введите Ваше имя</p>' 
+            ];
+        }
              
         // Last name
         if(!$post['checkout_last_name']) {
@@ -151,7 +159,7 @@ class Model_Checkout extends Model {
         Request::SetSession('shipper_id', $array['shipper_id']);
     }
     
-    public function FinishCheckout()
+    public function FinishCheckout($price, $products)
     {
         $db = database::getInstance();
         $ip   = ShopEngine::GetUserIp();
@@ -219,7 +227,7 @@ class Model_Checkout extends Model {
                 . ")";
         
                 //Calculate the price
-                $full    = $this->CalulateFullPrice();
+                $full    = $this->CalulateFullPrice($products);
                 $user_id = Request::GetSession("user_id");
         
                 $stmt = $db->prepare($sql);
@@ -321,7 +329,7 @@ class Model_Checkout extends Model {
                     $this->CreatePDF($this->id, $this->key);
                     
                     //Update Points
-                    $this->updatePoints();
+                    $this->updatePoints($products);
                     
                     //Erase session
                     Request::EraseFullSession();
@@ -350,14 +358,60 @@ class Model_Checkout extends Model {
         }
     }
     
-    public function CalulateFullPrice()
+    public function GetProducts()
+    {
+        $ip = ShopEngine::GetUserIp();
+        $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
+                . "RIGHT JOIN products p ON o.products_handle = p.handle AND p.title <> ''"
+                . "RIGHT JOIN category c ON p.category_id = c.category_id "
+                . "WHERE orders_ip=? AND orders_status='0'";
+        $array = Getter::GetFreeData($sql, [$ip], false);
+        if(!$array)
+        {
+            return false;
+        }
+        
+        return $array;
+    }
+    
+    public function GetOrderProducts($id)
+    {
+        $ip = ShopEngine::GetUserIp();
+        $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
+                . "RIGHT JOIN products p ON o.products_handle = p.handle AND p.title <> ''"
+                . "RIGHT JOIN category c ON p.category_id = c.category_id "
+                . "WHERE orders_final_id=?";
+        $order_pr = Getter::GetFreeData($sql, [$id], false);
+        if(!$order_pr) {
+            return Route::ErrorPage404();
+        }
+        
+        return $order_pr;
+    }
+    
+    public function GetProductsPrice($products, $setpoints = false)
+    {
+        $pre_price = null;
+        if($products) { 
+            foreach ($products as $cur) {
+                $pre_price = $pre_price + $cur['orders_price'];
+            }
+        }
+        if(Request::GetSession('checkout_points_enabled') AND $setpoints === true) { 
+            $pre_price = ShopEngine::Business()->UsePoints($pre_price);
+        }
+        
+        return $pre_price;
+    }
+    
+    public function CalulateFullPrice($products)
     {
         $shipper_id    = Request::GetSession('shipper_id');
         $sql_temp      = "SELECT shipper_type, shipper_price FROM shipper WHERE shipper_id=?";
         $temp          = Getter::GetFreeData($sql_temp, [$shipper_id]);
         $this->shipper_name  = $temp['shipper_type'];
         $this->shipper_price = $temp['shipper_price'];
-        $final = Controller_Checkout::GetPreFinalPrice();
+        $final = $this->GetProductsPrice($products);
         if(is_array($final))
         {
             $final = $final['final'];
@@ -365,14 +419,14 @@ class Model_Checkout extends Model {
         return $final + $this->shipper_price;
     }
     
-    public function updatePoints()
+    public function updatePoints($products)
     {
         //Update points
         if(Request::GetSession('checkout_points_enabled'))
         {
             $sql = "UPDATE users SET users_points=:points WHERE users_id=:id";
 
-            $points = Controller_Checkout::GetPreFinalPrice()['points'];
+            $points = $this->GetProductsPrice($products)['points'];
             $points = (int)$points;
             $id     = Request::GetSession('user_id');
 
@@ -397,7 +451,7 @@ class Model_Checkout extends Model {
             $mailto_ad  = Config::$config['admin_email'];
             $subject_ad = "[".Config::$config['site_email_name']."] Заказ #{$id} ".Request::GetSession('checkout_name').' '.Request::GetSession('checkout_last_name').' '.Request::GetSession('checkout_phone');
             
-            $this->array = Controller_Checkout::GetOrderProducts($id);
+            $this->array = $this->GetOrderProducts($id);
             
             $body    = $this->prepareEmail($id, $key, $this->array);
             $body_ad = $this->prepareEmailAdmin($id, $key, $this->array);
@@ -416,7 +470,7 @@ class Model_Checkout extends Model {
     public function prepareEmail($id, $key, $array)
     {
         $session = Request::GetSession();
-        $tpl = file_get_contents('widgets/ordermail_tpl.php');
+        $tpl = file_get_contents(ROOT.'template/mail/ordermail_tpl.php');
         
         $tpl = str_replace("{{ORDERID}}", 'ORDER #'.$id, $tpl);
         $tpl = str_replace("{{ORDER_NAME}}", $session['checkout_name'], $tpl);
@@ -472,7 +526,7 @@ class Model_Checkout extends Model {
     public function prepareEmailAdmin($id, $key, $array)
     {
         $session = Request::GetSession();
-        $tpl = file_get_contents('widgets/ordermail_tpl_admin.php');
+        $tpl = file_get_contents(ROOT.'template/mail/ordermail_tpl_admin.php');
         
         $tpl = str_replace("{{ORDERID}}", 'ORDER #'.$id, $tpl);
         $tpl = str_replace("{{ORDER_NAME}}", $session['checkout_name'], $tpl);

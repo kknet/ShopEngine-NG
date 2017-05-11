@@ -1,7 +1,7 @@
 <?php
 
 class Help 
-{
+{ 
     public function GenerateToken()
     {
         if(!isset($_SESSION['token'])) {
@@ -13,6 +13,21 @@ class Help
     public function ValidateToken($token) 
     {
         if($_SESSION['token'] === $token) {
+            return true;
+        }
+    }
+    
+    public function GenerateCheckoutToken()
+    {
+        if(!isset($_SESSION['checkout_token'])) {
+            $_SESSION['checkout_token'] = sha1(uniqid(rand(), true));
+        }
+        return $_SESSION['checkout_token'];
+    }
+    
+    public function ValidateCheckoutToken($token) 
+    {
+        if($_SESSION['checkout_token'] === $token) {
             return true;
         }
     }
@@ -111,6 +126,7 @@ class Help
     
     public function Count($sql, $params = NULL)
     {
+        
         $db = database::getInstance();
         
         if($params === NULL)
@@ -182,14 +198,20 @@ class Help
     {
         $sql    = ShopEngine::$sql;
         $params = ShopEngine::$params;
+        $num    = ShopEngine::$num;
         
-        $array = Paginator::PreparePagination($sql, $params);
+        if(!$sql)
+        {
+            return false;
+        }
+        
+        $array = Paginator::PreparePagination($sql, $params, $num);
         $page = $array[2];
         $sorting = $array[0];
         $total = $array[3];
         $main_page = $main;
         
-        require_once 'widgets/pagination.php';
+        require_once '../widgets/pagination.php';
     }
     
     function GetSorting() 
@@ -248,17 +270,11 @@ class Help
     }
 
     public function UpdateCount() {
-        if(!$_SESSION['count']) 
+        if(!Request::GetSession('viewed')) 
         {
             $db = database::getInstance();
-            
-            $c = $db->query("SELECT value FROM config WHERE param='views'")->fetch();
-            $int = $c['value'];
-
-            $res = $db->prepare("UPDATE config SET value=? WHERE param='views'");
-            $res->execute([++$int]);
-           
-            $_SESSION['count'] = true;
+            $db->query("UPDATE info SET val_int = val_int + 1 WHERE name='views'");
+            Request::SetSession('viewed', true);
         }										
     }
     
@@ -461,8 +477,6 @@ class Help
     
     public function SendMaill($mailto, $mailfrom, $subject, $body, $data = null)
     {
-        include_once 'plugins/PHPMailer/PHPMailerAutoload.php';
-
         $mail = new PHPMailer(); // create a new object
         $mail->IsSMTP(); // enable SMTP
         $mail->CharSet = "utf-8";
@@ -496,7 +510,7 @@ class Help
     
     public function MakeYML()
     {
-        require_once 'engine/components/ymlgenerator.php';
+        require_once ENGINE.'components/ymlgenerator.php';
         
         $yandex = new YandexYML;
         $text   = $yandex->generateYML();
@@ -558,7 +572,7 @@ class Help
     
     public function createPDF()
     {
-        include_once 'plugins/pdf/index.php';
+        include_once ROOT.'plugins/pdf/index.php';
     }
     
     //From Habrahabr
@@ -585,4 +599,5 @@ class Help
         readfile($file);
         exit;
     }
+   
 }

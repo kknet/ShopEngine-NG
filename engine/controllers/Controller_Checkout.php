@@ -14,7 +14,7 @@ class Controller_Checkout extends Controller{
     protected static $order_pr;
     protected static $price     = null;
     protected static $pre_price = null;
-    public    static $errors    = null;
+    public    $errors    = null;
     public    static $shippers;
     
     public function type()
@@ -22,8 +22,9 @@ class Controller_Checkout extends Controller{
         return 'act';
     }
 
-    public function step1()
+    public function Action_Step1()
     {
+        
         /*
          * 
          *    First step
@@ -32,29 +33,36 @@ class Controller_Checkout extends Controller{
          * 3. Entering all information into session;
          */
         
+        $token = Request::Get('token');
+        if(!ShopEngine::Help()->validateCheckoutToken($token))
+        {
+            return ShopEngine::Help()->RegularRedirect('catalog', 'all');  
+        }
+        
+        $this->title = "Оформление заказа. Шаг 1";
+        
+        $this->layout = "checkout";
+        
         $ip = ShopEngine::GetUserIp();
-        $sql = "SELECT * FROM order_products WHERE orders_ip=? AND orders_status='0'";
-        //If we have no products in cart
-        $array = Getter::GetFreeData($sql, [$ip]);
-        if(!$array)
+        
+        if(!$this->GetModel()->GetProducts($ip))
         {
             return ShopEngine::Help()->RegularRedirect('catalog', 'all');  
         }
         
         if(Request::Post('checkout_step1')) 
-        {
-            
+        {    
             $csrf = Request::Post('csrf');
             if(!ShopEngine::Help()->ValidateToken($csrf))
             {
                 return false;
             }
 
-            self::$errors = Controller::GetModel()->ValidateStep1();
+            $this->errors = Controller::GetModel()->ValidateStep1();
             
-            if(!self::$errors) {
+            if(!$this->errors) {
                 Request::SetSession('checkout_complete_step1', true);
-                return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
+                return ShopEngine::Help()->StrongRedirect('checkout', 'step2?token='.$token);
             }
         }
         
@@ -71,13 +79,22 @@ class Controller_Checkout extends Controller{
             $addresses = null;
         }
         
-        return [
-            'errors' => self::$errors,
-            'addresses' => $addresses
-        ];
+        $products = $this->GetModel()->GetProducts();
+        if(!$products)
+        {
+            //return false;
+        }
+        $price = $this->GetModel()->GetProductsPrice($products);
+        
+        return $this->view->render("View_Checkout_Step1", [
+            'error'          => $this->errors,
+            'addresses'      => $addresses,
+            'order_products' => $products,
+            'order_price'    => $price
+        ]);
     }
     
-    public function step2()
+    public function Action_Step2()
     {
         /* 
          * Second step
@@ -86,6 +103,27 @@ class Controller_Checkout extends Controller{
          * 3. Get new information from user;
          * 4. Recalculate price;
          */
+        
+        $token = Request::Get('token');
+        if(!ShopEngine::Help()->validateCheckoutToken($token))
+        {
+            //return ShopEngine::Help()->RegularRedirect('catalog', 'all');  
+        }
+        
+        $this->title = "Оформление заказа. Шаг 2";
+        
+        $this->layout = "checkout";
+        
+        $ip = ShopEngine::GetUserIp();
+        
+        if(!$products = $this->GetModel()->GetProducts($ip))
+        {
+            return ShopEngine::Help()->RegularRedirect('catalog', 'all');  
+        }
+        
+        // Full Price   
+        $full     = $this->GetModel()->GetProductsPrice($products);
+        
         if(Request::Post('checkout_step2')) 
         {
             $csrf = Request::Post('csrf');
@@ -96,15 +134,14 @@ class Controller_Checkout extends Controller{
             
             // Shipping price and type
             
-            Controller::GetModel()->SetShipper();
+            $this->GetModel()->SetShipper();
             
-            // Full Price
-            $full = self::GetCheckoutPrice();
+            // Set into session
             Request::SetSession('full_price', $full + Request::GetSession('shipper_price'));
             //
             
             Request::SetSession('checkout_complete_step2', true);
-            return ShopEngine::Help()->StrongRedirect('checkout', 'step3');
+            return ShopEngine::Help()->StrongRedirect('checkout', 'step3?token='.$token);
         }
         
         if(!Request::GetSession('checkout_complete_step1')) 
@@ -114,10 +151,16 @@ class Controller_Checkout extends Controller{
         $city = Request::GetSession('checkout_region');
         $sql = "SELECT r.region_shipper, s.shipper_id, r.region_name, s.shipper_type, s.shipper_price FROM region_ship r RIGHT JOIN shipper s ON r.region_shipper = s.shipper_id WHERE region_handle=?";
 
-        return Getter::GetFreeData($sql, [$city]);
+        $shipping = Getter::GetFreeData($sql, [$city]);
+        
+        return $this->view->render("View_Checkout_Step2", [
+            'shipping' => $shipping,
+            'checkout_products' => $products,
+            'checkout_price'    => $full
+        ]);
     }
     
-    public function step3()
+    public function ACtion_Step3()
     {
         /*
          * 
@@ -127,18 +170,39 @@ class Controller_Checkout extends Controller{
          * 3. If user wants to use his poits to pay, recalculate full price and amount of points;
          */
         
+        $token = Request::Get('token');
+        if(!ShopEngine::Help()->validateCheckoutToken($token))
+        {
+            return ShopEngine::Help()->RegularRedirect('catalog', 'all');  
+        }
+        
+        $this->title = "Оформление заказа. Шаг 3";
+        
+        $this->layout = "checkout";
+        
+        $ip = ShopEngine::GetUserIp();
+        
+        if(!$products = $this->GetModel()->GetProducts($ip))
+        {
+            return ShopEngine::Help()->RegularRedirect('catalog', 'all');  
+        }
+        
         if(!Request::GetSession('checkout_complete_step2')) 
         {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
         }
         
-        $price = self::GetPreFinalPrice();
+        $price = $this->GetModel()->GetProductsPrice($products, true);
         if(is_array($price))
         {   
             $price = $price['final'];
         } 
+        
         $shipp = Request::GetSession('shipper_price');
-        Request::SetSession('full_price', $price + $shipp);
+        $full_price = $price + $shipp;
+        Request::SetSession('full_price', $full_price);
+        
+        $errors = null;
         
         if(Request::Post('checkout_step3'))
         {
@@ -148,11 +212,11 @@ class Controller_Checkout extends Controller{
                 return false;
             }
             
-            self::$errors = Controller::GetModel()->ValidateStep3();
-            if(!self::$errors)
+            $errors = $this->GetModel()->ValidateStep3();
+            if(!$errors)
             {
-                $price = Self::GetCheckoutPrice();
-                if($key = Controller::GetModel()->FinishCheckout($price))
+                $price = $this->GetModel()->GetProductsPrice($products);
+                if($key = $this->GetModel()->FinishCheckout($price, $products))
                 {   
                     //Mailer returns strings
                     return ShopEngine::Help()->StrongRedirect('checkout', 'thank_you?orderid='.$key); 
@@ -162,12 +226,19 @@ class Controller_Checkout extends Controller{
                     return ShopEngine::Help()->StrongRedirect('errorpage', 'checkout?checkoutip='.ShopEngine::GetUserIp()); 
                 }
             }
-            return self::$errors;
         }
+        
+        return $this->view->render("View_Checkout_Step3", [
+            'full_price'        => $full_price,
+            'shipper_price'     => $shipp,
+            'checkout_price'    => $price,
+            'checkout_products' => $products,
+            'error'             => $errors
+        ]);
         
     }
     
-    public function thank_you()
+    public function Action_Thank_you()
     {
         /*
          * 
@@ -176,6 +247,7 @@ class Controller_Checkout extends Controller{
          * 2. Generate link to this page;
          * 3. Generate bill for payment;
          */
+        $this->layout = "checkout";
         $key = Request::Get('orderid');
         if(!$key) {
             return ShopEngine::Help()->RegularRedirect('checkout', 'step3'); 
@@ -186,17 +258,21 @@ class Controller_Checkout extends Controller{
         {
             return ShopEngine::Help()->StrongRedirect('checkout', 'step3'); 
         }
-        $products = Controller_Checkout::GetOrderProducts($array['orders_id']);
-        $final    = Controller_Checkout::GetFinalPrice($array['orders_id']);
-        return [
-            'info'     => $array,
-            'products' => $products,
-            'final'    => $final
-        ];
+        $products = $this->GetModel()->GetOrderProducts($array['orders_id']);
+        $final    = $this->GetModel()->GetProductsPrice($products);
+        
+        $this->title = "Заказ №{$array['orders_id']}";
+        
+        return $this->view->render("View_Checkout_Final", [
+            'info'              => $array,
+            'checkout_products' => $products,
+            'final'             => $final
+        ]);
     }
     
-    public function download()
+    public function Action_Download()
     {
+        $this->layout = "checkout";
         $key = Request::Get('orderid');
         if(!$key) {
             return ShopEngine::Help()->RegularRedirect('checkout', 'thank_you'); 
@@ -208,64 +284,12 @@ class Controller_Checkout extends Controller{
         {
             return ShopEngine::Help()->RegularRedirect('checkout', 'thank_you'); 
         }
-        return ShopEngine::Help()->ForcedDownload($array['document_file']);
+        return ShopEngine::Help()->ForcedDownload(ROOT.$array['document_file']);
     }
     
     public static function GetErrors()
     {
         return self::$errors;
-    }
-    
-    public static function GetOrderProducts($id)
-    {
-        if(self::$order_pr === null) {
-            $ip = ShopEngine::GetUserIp();
-            $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
-                    . "RIGHT JOIN products p ON o.products_handle = p.handle AND p.title <> ''"
-                    . "RIGHT JOIN category c ON p.category_id = c.category_id "
-                    . "WHERE orders_final_id=?";
-            self::$order_pr = Getter::GetFreeData($sql, [$id], false);
-            if(!self::$order_pr) {
-                return Route::ErrorPage404();
-            }
-        }
-        return self::$order_pr;
-    }
-    
-    public static function GetData()
-    {
-        if(self::$data === null) {
-            $ip = ShopEngine::GetUserIp();
-            $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
-                    . "RIGHT JOIN products p ON o.products_handle = p.handle AND p.title <> ''"
-                    . "RIGHT JOIN category c ON p.category_id = c.category_id "
-                    . "WHERE orders_ip=? AND orders_status='0'";
-            self::$data = Getter::GetFreeData($sql, [$ip], false);
-            if(!self::$data) {
-                //return Route::ErrorPage404();
-            }
-        }
-        return self::$data;
-    }
-    
-    public static function SetView() {
-        
-        $action = ShopEngine::GetAction();
-        switch ($action) {
-            case 'step1':
-                return 'View_Checkout_Step1';
-            case 'step2':
-                return 'View_Checkout_Step2';
-            case 'step3':
-                return 'View_Checkout_Step3';
-            case 'thank_you':
-                return 'View_Checkout_Final';
-            case 'download':
-                return 'View_Checkout_Download';
-            default:
-                return Route::ErrorPage404();
-        }
-        
     }
     
     public static function GetCountry()
@@ -280,54 +304,6 @@ class Controller_Checkout extends Controller{
         $region = Request::GetSession('checkout_region');
         $sql = "SELECT region_name FROM region WHERE region_handle=?";
         return Getter::GetFreeData($sql, [$region])['region_name'] !== NULL ? Getter::GetFreeData($sql, [$region])['region_name'] : $region;
-    }
-    
-    public static function SetLayout()
-    {
-        return 'checkout';
-    }
-    
-    public static function GetPreFinalPrice()
-    {
-        if(Self::$pre_price === null) {
-            $array = self::GetData();
-            if($array) { 
-                foreach ($array as $cur) {
-                    Self::$pre_price = Self::$pre_price + $cur['orders_price'];
-                }
-            }
-            if(Request::GetSession('checkout_points_enabled')) { 
-                Self::$pre_price = ShopEngine::Business()->UsePoints(Self::$pre_price);
-            }
-        }
-        return Self::$pre_price;
-    }
-    
-    public static function GetCheckoutPrice()
-    {
-        if(Self::$price === null) {
-            $array = self::GetData();
-            if($array) { 
-                foreach ($array as $cur) {
-                    Self::$price = Self::$price + $cur['orders_price'];
-                }
-            }
-        }
-        return Self::$price;
-    }
-    
-    public static function GetFinalPrice($id)
-    {
-        if(Self::$price === null) {
-            $array = self::GetOrderProducts($id);
-            foreach ($array as $cur) {
-                Self::$price = Self::$price + $cur['orders_price'];
-            }
-            if(Request::GetSession('checkout_points_enabled')) { 
-                Self::$price = ShopEngine::Business()->UsePoints(Self::$price);
-            }
-        }
-        return Self::$price;
     }
     
 }

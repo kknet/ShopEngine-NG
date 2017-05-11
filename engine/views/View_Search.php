@@ -1,11 +1,8 @@
-<?php 
-    $array = GetProducts();
-?>
 <header class="grid medium-up--grid--table section-header small--text-center">
     <div class="grid__item medium-up--two-thirds section-header__item">
       <h1 class="section-header__title">Результаты поиска</h1>
       
-      <p class="section-header__subtext"><?=ShopEngine::GetController()::$count?> соответствует <strong><?= Request::GetSession('query')?></strong></p>
+      <p class="section-header__subtext"><?=$search_count ? $search_count : "0"?> соответствует <strong><?= Request::GetSession('query')?></strong></p>
       
     </div>
     <div class="grid__item medium-up--one-third section-header__item">
@@ -24,8 +21,8 @@
   </header>
 
 <div class="grid grid--no-gutters grid--uniform">
-    <?php  if($array) { 
-        foreach ($array as $cur) { ?>
+    <?php  if($search_products) { 
+        foreach ($search_products as $cur) { ?>
         <div class="grid__item small--one-half medium-up--one-fifth">
             <!-- /snippets/product-card.liquid -->
         <a href="/products/<?=$cur['handle']?>" class="product-card">
@@ -54,6 +51,6 @@
     ?>
 </div>
 <div class="pagination">
-    <?= GetPagination()?>
+    <?= $this->controller->GetPagination()?>
 </div>
 

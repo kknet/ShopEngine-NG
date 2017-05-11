@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-        <?php if($start['filter']) { $array = $start['filter']; ?>
+        <?php if($filter) { $array = $filter; ?>
             <div class="filter_custom">
                     <?php for($i = 0; $i < count($array); $i++) { ?>
                         <?php if($i % 3 === 0 OR $i === 0) { ?>
@@ -96,7 +96,7 @@
                                 <ul style="margin-top:10px">
                                     <?php foreach ($array[$i]['values'] as $cur) {?>
                                     <li>
-                                        <input <?php echo in_array($cur['value_id'], Request::Get('custom')[$array[$i]['attribute_id']]) ? "checked='checked'" : ""?>style="width:auto" type="checkbox" name="custom[<?=$array[$i]['attribute_id']?>][]" value="<?=$cur['value_id']?>" id="<?=$cur['value_id']?>"/>
+                                        <input <?php echo in_array($cur['value_id'], (isset(Request::Get('custom')[$array[$i]['attribute_id']]) ? Request::Get('custom')[$array[$i]['attribute_id']] : [] )) ? "checked='checked'" : ""?>style="width:auto" type="checkbox" name="custom[<?=$array[$i]['attribute_id']?>][]" value="<?=$cur['value_id']?>" id="<?=$cur['value_id']?>"/>
                                         <label style="margin-left:15px;" for="<?=$cur['value_id']?>"><?=$cur['value_name']?></label>
                                     </li>  
                         
@@ -119,12 +119,12 @@
         <div class="filter_footer">
             <input type="submit" name="filter_submit" class="btn" value="Поиск" />
         </div> 
-            <input type="hidden" name="category_name" value="<?=$start['category_name']?>" />
+            <input type="hidden" name="category_name" value="<?=$category_name?>" />
             <input type="hidden" name="csrf" value="<?=ShopEngine::Help()->generateToken()?>" />
     </form>
 </div>
 <div class="grid grid--no-gutters grid--uniform">
-    <?php $array = $start['products'];
+    <?php $array = $filter_products;
     if($array) { 
         foreach ($array as $cur) { ?>
         <div class="grid__item small--one-half medium-up--one-fifth">
@@ -154,6 +154,6 @@
     <?php } ?>
 </div>
 <div class="pagination">
-    <?= GetPagination()?>
+    <?= $this->controller->GetPagination()?>
 </div>
 

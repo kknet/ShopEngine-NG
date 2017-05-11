@@ -1,6 +1,3 @@
-<?php 
-    $content = GetArticleText();
-?>
 <h1 class="small--text-center"><?=$content['pages_title']?></h1>
 
 <div class="grid">

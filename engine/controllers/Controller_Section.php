@@ -2,47 +2,33 @@
 
 class Controller_Section extends Controller
 {   
-    public static function GetData()
+    public function Action_Basic()
     {    
+        //Getting parameter
         $category = ShopEngine::GetAction();
         
-        $sql = "SELECT * FROM products WHERE avail='1' AND price <> 0.00 AND category_id IN (SELECT category_id FROM category WHERE section=?)";
-        $result = Getter::getProducts($sql, [$category]);
-        if(!$result) {
-            return Route::ErrorPage404();
-        }
-        return $result;         
-    }
-    
-    public static function SetView() {
-        return 'View_Catalog';
-    }
-    
-    public static function GetCategoryName()
-    {
-        $category = ShopEngine::GetAction();
+        //Getting products
+        $products = $this->GetModel()->GetProducts($category);
         
-        switch ($category) {
-            case 'children':
-                return 'Для детей';
-                break;
-            case 'dentist':
-                return 'Для стоматологов';
-                break;
-            default:
-                return 'Для красивой улыбки';
-                break;
-        }
+        //Getting Category_name
+        $category_name = $this->GetModel()->GetCategoryName($category);
+        
+        //Getting category_id
+        $sql         = "SELECT category_id FROM category WHERE category_handle = ?";
+        $category_id = Getter::GetFreeData($sql, [$category], true)['category_id'];
+        
+        $this->title = $category_name;
+        
+        return $this->view->render("View_Catalog", [
+            'cat_products'  => $products,
+            'category_name' => $category_name,
+            'category_id'   => $category_id
+        ]);
+          
     }
 
-    
-    public static function GetPagination() 
+    public function GetPagination() 
     {
-        return Self::GetModel()->GetPagination();
-    }
-    
-    public static function GetPageAddress()
-    {
-        //return "/".ShopEngine::GetRoute()[1]."/".ShopEngine::GetAction();
+        return $this->GetModel()->GetPagination();
     }
 }

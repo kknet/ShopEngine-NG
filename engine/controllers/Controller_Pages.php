@@ -4,7 +4,7 @@ class Controller_Pages extends Controller{
     
     public $errors;
     
-    public function start()
+    public function Action_Basic()
     {
         if(Request::Post('contact'))
         {
@@ -14,10 +14,10 @@ class Controller_Pages extends Controller{
                 return false;
             }
             
-            $this->errors = Controller::GetModel()->Validate();
+            $this->errors = $this->GetModel()->Validate();
             if(!$this->errors) {
                 
-                if(!Controller::GetModel()->Feedback()) 
+                if(!$this->GetModel()->Feedback()) 
                 {
                     return false;
                 }
@@ -28,9 +28,22 @@ class Controller_Pages extends Controller{
                 Request::SetSession('contact_message', 'error');
             }
             
-            return ShopEngine::Help()->StrongRedirect('pages', 'contact');
-            
         }
+        
+        $handle = ShopEngine::GetAction();
+        
+        $sql = "SELECT * FROM pages WHERE pages_handle=?";
+        $content = Getter::GetFreeData($sql, [$handle]);
+        if(count($content) < 1 OR !$handle) 
+        {
+            Route::ErrorPage404();
+        }
+        
+        $this->title = $content['pages_title'];
+        
+        return $this->view->render(ShopEngine::GetView(), [
+            'content' => $content
+        ]);
     }
         
     public static function GetData()

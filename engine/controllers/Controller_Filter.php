@@ -2,8 +2,10 @@
 
 class Controller_Filter extends Controller{
     
-    public function start()
+    public function Action_Basic()
     {
+        $this->title = "Фильтр";
+        
         if(!Request::Get())
         {
             return ShopEngine::Help()->StrongRedirect('catalog', 'all');
@@ -17,25 +19,28 @@ class Controller_Filter extends Controller{
         }
         
         //Getting products
-        $filter['products'] = Controller::GetModel()->Filter();
+        $products = $this->GetModel()->Filter();
         
         //Getting Category Name
         $category = Request::Get('category_name');
-        $filter['category_name'] = $category;
         
         //Getting Categories
-        $filter['filter'] = Controller::GetModel()->FilterCategories();
+        $filter = $this->GetModel()->FilterCategories();
         
-        return $filter;
+        return $this->view->render(ShopEngine::GetView(), [
+            'filter_products' => $products,
+            'category_name'   => $category,
+            'filter'          => $filter
+        ]);
             
             
     }
     
-    public static function GetPagination() 
+    public function GetPagination() 
     {
         if(Request::Get())
         {
-            return Self::GetModel()->GetPagination();
+            return $this->GetModel()->GetPagination();
         }
     }
     
