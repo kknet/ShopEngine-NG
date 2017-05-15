@@ -31,7 +31,7 @@ class ajaxsearch {
 
             $sql = "SELECT * FROM products WHERE {$string} AND avail='1' AND price <> 0.00 AND title <> ''";
 
-            $result = Getter::GetFreeData($sql, $array);
+            $result = Getter::GetFreeData($sql, $array, false);
             
             if($result AND count($result) > 0)
             {
