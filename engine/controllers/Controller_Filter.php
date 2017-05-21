@@ -18,6 +18,12 @@ class Controller_Filter extends Controller{
             return false;
         }
         
+        //Price
+        $price    = Request::Get('filter_price');
+        
+        //Keys
+        $keys     = Request::Get('filter_keys');
+        
         //Getting products
         $products = $this->GetModel()->Filter();
         
@@ -30,7 +36,9 @@ class Controller_Filter extends Controller{
         return $this->view->render(ShopEngine::GetView(), [
             'filter_products' => $products,
             'category_name'   => $category,
-            'filter'          => $filter
+            'filter'          => $filter,
+            'price'           => $price,
+            'keys'            => $keys
         ]);
             
             

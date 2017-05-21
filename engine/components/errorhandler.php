@@ -4,6 +4,8 @@ class ErrorHandler {
     
     public function __construct()
     {
+        session_start();
+        
         //track all errors
         ini_set('display_errors', 1);
         error_reporting(E_ALL | E_STRICT);
@@ -64,15 +66,15 @@ class ErrorHandler {
         $subject = 'Ошибка на сайте';
         $text     = "( ".date('Y-m-d H:i:s (T)')." ) Сработала функция ".$funcname."; Сбой в работе сайта. Код ошибки/Класс ошибки: ".$errno."; Информация об ошибке: ".$errstr."; Файл: ".$errfile."; Строка: ".$errline."\r\n";
         
-        $charset  = 'utf-8';
-        mb_language("ru");
-        $headers  = "MIME-version: 1.0 \n";
-        $headers .= "From: <".$from."> \n";
-        $headers .= "Reply-To: <".$from."> \n";
-        $headers .= "Content-Type: text/html; charset=$charset \n";
+//        $charset  = 'utf-8';
+//        mb_language("ru");
+//        $headers  = "MIME-version: 1.0 \n";
+//        $headers .= "From: <".$from."> \n";
+//        $headers .= "Reply-To: <".$from."> \n";
+//        $headers .= "Content-Type: text/html; charset=$charset \n";
+//
+//        $subject = '=?'.$charset.'?B?'.base64_encode($subject).'?=';
 
-        $subject = '=?'.$charset.'?B?'.base64_encode($subject).'?=';
-
-        mail($to,$subject,$text,$headers);
+        ShopEngine::Help()->SendMaill($to, $from, $subject, $text);
     }
 }

@@ -241,10 +241,13 @@
             <button onClick='payHandler();'>Оплатить картой</button>
         </div>    
     </div>-->
+    <div class="order_block">
+         
+    </div>
     <div class="blockPayment getOrderUr">
-        <div class="imgPaument">
+<!--        <div class="imgPaument">
             <img src="/style/assets/get_order_ur.png" alt="">
-        </div>
+        </div>-->
         <div class="textPayment">
             <p class="h1">Скачать счет</p>
             <p>Вы можете заполнить реквизиты и скачать счет для оплаты<br>
@@ -322,7 +325,7 @@
     <div class="section__content">
           <div class="section__content__column section__content__column--half">
               <h3>Адрес доставки</h3>
-              <p><?= $info['orders_name']?> <?= $info['orders_last_name']?><br><?= $info['orders_address']?><br><?= $info['orders_city']?><br><?= $info['orders_region']?><br><?= $info['orders_index']?><br><?= $info['orders_country']?><br><?= $info['orders_phone']?></p>
+              <p><?= $info['orders_name']?> <?= $info['orders_last_name']?><br><?= $info['orders_address']?><br><?= $info['orders_city']?><br><!--<?php /* echo $info['orders_region'] */?><br>--><?= $info['orders_index']?><br><?= $info['orders_country']?><br><?= $info['orders_phone']?></p>
               <h3>Способ доставки</h3>
               <p><?= $info['orders_shipping']?></p>
           </div>
@@ -330,9 +333,9 @@
               <h3>Платежный адрес</h3>
               <?php 
                 if($info['orders_billing_status'] === '0') { ?>
-              <p><?= $info['orders_name']?> <?= $info['orders_last_name']?><br><?= $info['orders_address']?><br><?= $info['orders_city']?><br><?= $info['orders_region']?><br><?= $info['orders_index']?><br><?= $info['orders_country']?><br><?= $info['orders_phone']?></p>
+              <p><?= $info['orders_name']?> <?= $info['orders_last_name']?><br><?= $info['orders_address']?><br><?= $info['orders_city']?><br><!--<?php /* echo $info['orders_region'] */?><br>--><?= $info['orders_index']?><br><?= $info['orders_country']?><br><?= $info['orders_phone']?></p>
                 <?php } else { ?>
-                    <p><?= $info['orders_billing_name']?> <?= $info['orders_billing_last_name']?><br><?= $info['orders_billing_address']?><br><?= $info['orders_billing_city']?><br><?= $info['orders_region']?><br><?= $info['orders_billing_index']?><br><?= $info['orders_billing_country']?><br><?= $info['orders_billing_phone']?></p>
+                    <p><?= $info['orders_billing_name']?> <?= $info['orders_billing_last_name']?><br><?= $info['orders_billing_address']?><br><?= $info['orders_billing_city']?><br><!--<?php /* echo $info['orders_region'] */?><br>--><?= $info['orders_billing_index']?><br><?= $info['orders_billing_country']?><br><?= $info['orders_billing_phone']?></p>
                <?php } ?>                        
                 <h3>Способ оплаты
               <ul class="payment-method-list">

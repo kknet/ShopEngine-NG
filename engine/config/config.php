@@ -37,6 +37,12 @@ class Config {
             'seo',
             'request'
         ],
+        'widgets' => [
+            'WidgetAdmin',
+            'WidgetMenu',
+            'WidgetStatistics',
+            'WidgetMainMenu'
+        ],
         'points' => 300,
         'orders_location' => 'files/orders/',
         'http_key' => 'asldjfgqwiuyrgoqw8fygsajdhfbos3iurtw0b389r7263b0rucgfalksjdfhacpbe498gydofijahsdofiuay409w8cyefoiasdhgfapw9384yrcbIFUHSDAIFUVYVBW0C498ABEFODISDHFAVPBI4WYBC09WRYbwoeituvayw08r97'

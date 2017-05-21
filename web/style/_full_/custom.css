@@ -203,3 +203,12 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
 .order-summary-toggle {
     height:auto;
 }
+
+.mainPayment {
+    width:100% !important;
+    margin-left:0 !important;
+}
+
+.textPayment {
+    width:100% !important;
+}

@@ -5,10 +5,9 @@
  * ShopEngine by Alexander Grachyov
  * github.com/Mateil
  */
-session_start();
 
 //Set error handler
-require(__DIR__ . '/../engine/components/ErrorHandler.php');
+require(__DIR__ . '/../engine/components/errorhandler.php');
 (new ErrorHandler);
 //require_once '../engine/core/error.php';
 

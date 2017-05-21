@@ -247,6 +247,7 @@ class Controller_Checkout extends Controller{
          * 2. Generate link to this page;
          * 3. Generate bill for payment;
          */
+        
         $this->layout = "checkout";
         $key = Request::Get('orderid');
         if(!$key) {

@@ -28,6 +28,7 @@ class ShopEngine {
     public static $sql;
     public static $params;
     public static $num;
+    public static $widgets;
     
     public static function GoHome()
     {
@@ -68,6 +69,10 @@ class ShopEngine {
     }
 
     // Получить контроллер
+    public static function GetControllerName()
+    {
+        return ShopEngine::Help()->Clear(ShopEngine::GetRoute()[1]);
+    }
     public static function GetController()
     {
         
@@ -186,6 +191,20 @@ class ShopEngine {
         }
     }
     
+    public static function LoadWidgets()
+    {
+        $array = Config::$config['widgets'];
+        foreach ($array as $widget) {
+            $widget_file = strtolower($widget.'.php');
+            require_once ENGINE.'/widgets/'.$widget_file;
+            if(Self::$widgets === null) {
+                Self::$widgets = new Widgets();
+            }
+            Self::$widgets->LoadWidgets($widget);
+        }
+        return self::$widgets;
+    }
+    
     // Вспомогательные методы
     public static function Help()
     {
@@ -258,7 +277,7 @@ class ShopEngine {
     {
         $sql = "SELECT * FROM orders WHERE orders_id=?";
         $info = Getter::GetFreeData($sql, [$id]);
-        $sql = "SELECT * FROM order_products o RIGHT JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=? AND p.title <> ''";
+        $sql = "SELECT * FROM order_products o LEFT JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=? AND p.title <> ''";
         $products = Getter::GetFreeData($sql, [$id], false);
         
         return [

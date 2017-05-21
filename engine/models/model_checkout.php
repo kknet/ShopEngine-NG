@@ -510,7 +510,7 @@ class Model_Checkout extends Model {
         $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billing_phone'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_billing_address'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_billing_city'], $tpl);
-        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);
+//        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_INDEX}}", $session['checkout_billing_index'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_COUNTRY}}", $session['checkout_billing_country'], $tpl);
         $tpl = str_replace("{{COMPANY_BILLING_NAME}}", $session['checkout_billing_company'], $tpl); 
@@ -566,7 +566,7 @@ class Model_Checkout extends Model {
         $tpl = str_replace("{{CHECKOUT_BILLING_PHONE}}", $session['checkout_billing_phone'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_ADDRESS}}", $session['checkout_billing_address'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_CITY}}", $session['checkout_billing_city'], $tpl);
-        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);
+//        $tpl = str_replace("{{CHECKOUT_BILLING_REGION}}", $session['checkout_billing_region'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_INDEX}}", $session['checkout_billing_index'], $tpl);
         $tpl = str_replace("{{CHECKOUT_BILLING_COUNTRY}}", $session['checkout_billing_country'], $tpl);
         $tpl = str_replace("{{COMPANY_BILLING_NAME}}", $session['checkout_billing_company'], $tpl); 

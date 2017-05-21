@@ -57,14 +57,14 @@
                 </div>
                 <div class="filter_item_block">
                     <label>Ключевые слова</label>
-                    <input name="filter_keys" type="text" placeholder="Слова через запятую"/>
+                    <input name="filter_keys" type="text" placeholder="Слова через запятую" value="<?=$keys?>"/>
                 </div>
             </div>
 
             <div class="filter_flex">
                 <div class="filter_item_block">
                     <label for="filter_price">Стоимость</label>
-                    <input type="text" name="filter_price" id="filte_price" placeholder="Цена до, &#8381;" >
+                    <input type="text" name="filter_price" id="filte_price" placeholder="Цена до, &#8381;" value="<?=$price?>">
     <!--                <div id="filter_slider"></div>
                     <script>
                         $("#filter_slider").rangeSlider();

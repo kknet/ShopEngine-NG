@@ -4,10 +4,11 @@
 class View {
     
     public $controller;
+    public $widgets;
     
     public function __construct($controller) {
         $this->controller = $controller;
-        ShopEngine::Help()->UpdateCount();
+        $this->widgets    = ShopEngine::LoadWidgets();
     }
 
     public function render($view_str, $data = array())
