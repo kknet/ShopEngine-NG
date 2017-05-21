@@ -24,7 +24,9 @@ class ErrorHandler {
     
     public function errorCatcher($errno, $errstr, $errfile, $errline)
     {
-        $this->errorToFile($errno, $errstr, $errfile, $errline, 'errorCatcher');
+        if(error_reporting()) { 
+            $this->errorToFile($errno, $errstr, $errfile, $errline, 'errorCatcher');
+        }
         
         return true;
     }
