@@ -12,9 +12,10 @@ class Help
     
     public function ValidateToken($token) 
     {
-        if($_SESSION['token'] === $token) {
+        if(isset($_SESSION['token']) AND $_SESSION['token']  === $token) {
             return true;
         }
+        return false;
     }
     
     public function GenerateCheckoutToken()

@@ -423,6 +423,8 @@ class Controller_User extends Controller{
             return ShopEngine::Help()->RegularRedirect('user', 'account');
         }
         
+        $start  = false;
+        
         if(Request::Post('restore')) { 
         
             $csrf = Request::Post('csrf');
@@ -432,7 +434,6 @@ class Controller_User extends Controller{
                 return ShopEngine::GoHome();
             }
             
-            $start  = false;
             $errors = false;
             
             if(!$errors = Controller::GetModel()->Restore())

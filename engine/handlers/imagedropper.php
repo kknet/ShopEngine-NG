@@ -14,15 +14,15 @@ class imagedropper {
             }
             
             $img_dir = Request::Post('img_name');
+            $thumb   = 'thumbnails/'.$img_dir;
             
             if(file_exists($img_dir))
             {
                 unlink($img_dir);
-                echo 200;
-                return;
+                unlink($thumb);
+                echo 200;return;
             }
-            echo 400;
-            return;
+            echo 400;return;
         }
         echo 500;
     }

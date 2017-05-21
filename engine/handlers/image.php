@@ -18,14 +18,19 @@ class Image {
             $dir      = Request::Post('img_path'); 
             $filename = Request::Post('img_name');
             
-            if(file_exists('products_img/'.$dir)) {
-                $path = 'products_img/'.$dir.'/';
+            if($dir) { 
+            
+                if(file_exists('products_img/'.$dir)) {
+                    $path = 'products_img/'.$dir.'/';
+                }
+                else {
+                    mkdir('products_img/'.$dir.'/');
+                    $path = 'products_img/'.$dir.'/';
+                }
+                
             }
             else {
-                mkdir('products_img/'.$dir.'/');
-                $path = 'products_img/'.$dir.'/';
-            }
-            if(!$dir) {
+                
                 if(file_exists('products_img/Uncategorized/')) {
                     $path = 'products_img/Uncategorized/';
                 }
@@ -33,12 +38,40 @@ class Image {
                     mkdir('products_img/Uncategorized/');
                     $path = 'products_img/Uncategorized/';
                 }
+                
             }
             
-            $path = $path.$filename;
+            $image = $path.$filename;
             
-            if(file_put_contents($path, base64_decode($img_str)))
+            if(file_put_contents($image, base64_decode($img_str)))
             {
+                
+                
+                $imagine = new \Imagine\Gd\Imagine;
+                
+                //Image Resize
+                $current = $imagine->open($image);
+                if($current->getSize()->getWidth() > 1920 OR $current->getSize()->getWidth() > 1920) {
+                    
+                    $new_size = new Imagine\Image\Box(1920, 1920);
+                    
+                    $current->thumbnail($new_size)->save($image);
+                    
+                }
+                
+                
+                //Thumbnail
+                $size    = new Imagine\Image\Box(250, 250);
+                
+                $thumb = 'thumbnails/'.$path;
+                if(!file_exists($thumb))
+                {
+                    mkdir($thumb, 0777, true);
+                }
+                
+                $imagine->open($image)->thumbnail($size)->save($thumb.$filename);
+                
+                
                 echo 200;
             } else {
                 echo 400;

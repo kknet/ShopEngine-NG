@@ -275,40 +275,40 @@
   
   <?php } ?>
 
-      <div class="field field--optional field--half <?=$error['name']['class']?>" data-address-field="first_name">
+      <div class="field field--optional field--half <?=$error['name']['class'] ?? ''?>" data-address-field="first_name">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_first_name">Имя</label>
     <input value="<?= Request::GetSession('checkout_name')?>" placeholder="Имя" autocomplete="shipping given-name" data-backup="first_name" class="field__input" size="30" type="text" name="checkout_name" id="checkout_shipping_address_first_name">
   </div>
-  <?=$error['name']['message']?>
-</div><div class="field field--required field--half <?=$error['last_name']['class']?>" data-address-field="last_name">
+  <?=$error['name']['message'] ?? ''?>
+</div><div class="field field--required field--half <?=$error['last_name']['class'] ?? ''?>" data-address-field="last_name">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_last_name">Фамилия</label>
     <input value="<?= Request::GetSession('checkout_last_name')?>" placeholder="Фамилия" autocomplete="shipping family-name" data-backup="last_name" class="field__input" size="30" type="text" name="checkout_last_name" id="checkout_shipping_address_last_name">
   </div>
-  <?=$error['last_name']['message']?>
+  <?=$error['last_name']['message'] ?? ''?>
 </div><div data-address-field="company" class="field field--optional">
     
     <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_company">Компания</label>
       <input value="<?= Request::GetSession('checkout_company')?>" placeholder="Компания" autocomplete="shipping organization" data-backup="company" class="field__input" size="30" type="text" name="checkout_company" id="checkout_shipping_address_company">
     </div>
-</div><div class="field field--required field--two-thirds <?=$error['address']['class']?>" data-address-field="address1">
+</div><div class="field field--required field--two-thirds <?=$error['address']['class'] ?? ''?>" data-address-field="address1">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_address1">Адрес</label>
     <input value="<?= Request::GetSession('checkout_address')?>" placeholder="Адрес" autocomplete="shipping address-line1" data-backup="address1" data-google-places="name" class="field__input" size="30" type="text" name="checkout_address" id="checkout_shipping_address_address1">
   </div>
-    <?=$error['address']['message']?>
+    <?=$error['address']['message'] ?? ''?>
 </div><div class="field field--optional field--third" data-address-field="address2">
     
     <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_address2">Квартира, корпус и тд</label>
       <input value="<?= Request::GetSession('checkout_flat')?>" placeholder="Квартира, корпус и тд" autocomplete="shipping address-line2" data-backup="address2" class="field__input" size="30" type="text" name="checkout_flat" id="checkout_shipping_address_address2">
     </div>
-</div><div data-address-field="city" class="field field--required <?=$error['city']['class']?>">
+</div><div data-address-field="city" class="field field--required <?=$error['city']['class'] ?? ''?>">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_city">Город</label>
     <input value="<?= Request::GetSession('checkout_city')?>" placeholder="Город" autocomplete="shipping address-level2" data-backup="city" data-google-places="locality" class="field__input" size="30" type="text" name="checkout_city" id="checkout_shipping_address_city">
   </div>
-    <?=$error['city']['message']?>
+    <?=$error['city']['message'] ?? ''?>
 </div><div data-address-field="country" class="field field--required field--show-floating-label field--three-eights">
   
   <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_country">Страна</label>
@@ -319,18 +319,18 @@
   <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_province">Регион</label>
     <select placeholder="Регион" autocomplete="shipping address-level1" data-backup="province" data-google-places="administrative_area_level_1" class="field__input field__input--select" name="checkout_region" id="checkout_shipping_address_province"><option value="" disabled="">Регион</option><option data-code="MOW" value="Moscow">Москва (г)</option></select>
   </div>
-</div><div data-address-field="zip" class="field field--required field--quarter <?=$error['index']['class']?>">
+</div><div data-address-field="zip" class="field field--required field--quarter <?=$error['index']['class'] ?? ''?>">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_zip">Почтовый индекс</label>
     <input value="<?= Request::GetSession('checkout_index')?>" placeholder="Индекс" autocomplete="shipping postal-code" data-backup="zip" data-google-places="postal_code" class="field__input field__input--zip" size="30" type="text" name="checkout_index" id="checkout_shipping_address_zip">
   </div>
-    <?=$error['index']['message']?>
-</div><div data-address-field="phone" class="field field--required <?=$error['phone']['class']?>">
+    <?=$error['index']['message'] ?? ''?>
+</div><div data-address-field="phone" class="field field--required <?=$error['phone']['class'] ?? ''?>">
     
     <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_phone">Тел.</label>
       <input value="<?= Request::GetSession('checkout_phone')?>" placeholder="Тел." autocomplete="shipping tel" data-backup="phone" data-phone-formatter="true" data-phone-formatter-country-select="[name='checkout[shipping_address][country]']" class="field__input field__input--numeric" size="30" type="tel" name="checkout_phone" id="checkout_shipping_address_phone" data-phone-formatter-country-code="7">
     </div>
-    <?=$error['phone']['message']?>
+    <?=$error['phone']['message'] ?? ''?>
 </div></div> 
     </div> 
   </div> 
