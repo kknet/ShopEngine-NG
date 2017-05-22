@@ -25,9 +25,9 @@ class Controller_Main extends Controller
     }
 
     
-    public static function GetPagination() 
+    public function GetPagination() 
     {
-        return Self::GetModel()->GetPagination();
+        return $this->GetModel()->GetPagination();
     }
     
     public static function GetPageAddress()

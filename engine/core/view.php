@@ -20,7 +20,8 @@ class View {
             }
         }
         
-        $view_path = ENGINE.'views/'.$view_str.'.php';
+        $view_path = ENGINE.'views/'.ShopEngine::GetControllerName(true).'/'.$view_str.'.php';
+        
         if(!file_exists($view_path))
         {
             return false;
@@ -28,8 +29,6 @@ class View {
         
         $layout    = $this->controller->layout;
         require_once '../template/layout/'.$layout.'.php';
-        
-        $view_path = ENGINE.'views/'.$view_path.'.php';
         
         Request::EraseErrorSession();
         

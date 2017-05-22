@@ -89,7 +89,7 @@ class Request extends ShopEngine{
     public static function GetSession($name = null) 
     {
         if($name) {
-            if(array_key_exists($name, $_SESSION)) { 
+            if(array_key_exists($name, ($_SESSION ?? []))) { 
                 return ShopEngine::Help()->Clear($_SESSION[$name]);
             } else {
                 return null;

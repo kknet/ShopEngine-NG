@@ -600,5 +600,15 @@ class Help
         readfile($file);
         exit;
     }
+    
+    public function CutString($str, $count) {
+        mb_internal_encoding('UTF-8');
+        
+        if(strlen($str) >= $count) {
+            return mb_substr($str, 0, $count).'...';
+        }
+        
+        return $str;
+    }
    
 }

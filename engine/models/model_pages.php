@@ -42,7 +42,7 @@ class Model_Pages extends Model{
         $stmt->bindParam(":name", $post['contact_name']);
         $stmt->bindParam(":email", $post['contact_email']);
         $stmt->bindParam(":phone", $post['contact_phone']);
-        $stmt->bindParam(":body", $post['contact_body']);
+        $stmt->bindParam(":body", $post['contact_body'], PDO::PARAM_STR);
         
         if($stmt->execute())
         {

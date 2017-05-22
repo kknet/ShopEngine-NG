@@ -6,3 +6,5 @@
 /templates/
 /engine/text.yml
 /vendor/
+
+/engine/errlog.txt

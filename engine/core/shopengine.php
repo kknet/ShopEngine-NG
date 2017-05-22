@@ -2,7 +2,7 @@
 
 /*
  * 
- * Все служебные функции здесь
+ * Service
  */
 
 
@@ -36,7 +36,7 @@ class ShopEngine {
         return ShopEngine::Help()->HomeRedirect();
     }
     
-    // Получить информацию
+    // Get information 
     public static function GetInformation()
     {
         $db = database::getInstance();
@@ -48,7 +48,7 @@ class ShopEngine {
         return Self::$info;
     }
     
-    // Получить маршрут
+    // Get route
     public static function GetRoute()
     {
         if(Self::$route === NULL)
@@ -68,10 +68,10 @@ class ShopEngine {
         return Config::$config['protocol'].$_SERVER['HTTP_HOST'];
     }
 
-    // Получить контроллер
-    public static function GetControllerName()
+    // Get Controller name
+    public static function GetControllerName($low = false)
     {
-        return ShopEngine::Help()->Clear(ShopEngine::GetRoute()[1]);
+        return $low === true ? strtolower(ShopEngine::Help()->Clear(ShopEngine::GetRoute()[1] ? ShopEngine::GetRoute()[1] : 'main')) : ShopEngine::Help()->Clear(ShopEngine::GetRoute()[1] ? ShopEngine::GetRoute()[1] : 'main');
     }
     public static function GetController()
     {
@@ -92,7 +92,7 @@ class ShopEngine {
         return Self::$controller;
     }
     
-    // Получить модель
+    // Get Full Model name
     public static function GetModel()
     {
         if(Self::$model === NULL)
@@ -111,7 +111,7 @@ class ShopEngine {
         return Self::$model;
     }
     
-    // Получить вид
+    // Get Full View name
     public static function GetView()
     {
         if(Self::$view === NULL)
@@ -205,7 +205,7 @@ class ShopEngine {
         return self::$widgets;
     }
     
-    // Вспомогательные методы
+    // Helper
     public static function Help()
     {
         if(Self::$help === NULL)
@@ -216,7 +216,7 @@ class ShopEngine {
         return Self::$help;
     }
     
-    // Бизнес-логика
+    // 
     public static function Business()
     {
         if(Self::$business === NULL)
@@ -277,7 +277,7 @@ class ShopEngine {
     {
         $sql = "SELECT * FROM orders WHERE orders_id=?";
         $info = Getter::GetFreeData($sql, [$id]);
-        $sql = "SELECT * FROM order_products o LEFT JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=? AND p.title <> ''";
+        $sql = "SELECT * FROM order_products o RIGHT OUTER JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=?";
         $products = Getter::GetFreeData($sql, [$id], false);
         
         return [

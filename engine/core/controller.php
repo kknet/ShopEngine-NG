@@ -91,4 +91,9 @@ class Controller
         ];
     }
     
+    public function GetPagination()
+    {
+        return $this->GetModel()->GetPagination();
+    }
+    
 }
