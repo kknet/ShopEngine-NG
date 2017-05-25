@@ -15,7 +15,7 @@ class Image {
                 return false;
             }
             
-            $dir      = Request::Post('img_path'); 
+            $dir      = ShopEngine::Help()->MakeHandle(Request::Post('img_path')); 
             $filename = Request::Post('img_name');
             
             if($dir) { 

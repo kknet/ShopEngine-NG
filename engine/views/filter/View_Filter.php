@@ -131,7 +131,7 @@
             <!-- /snippets/product-card.liquid -->
         <a href="/products/<?=$cur['handle']?>" class="product-card">
             <div class="product-card__image-wrapper">
-                <?=$cur['image']?>
+                <?=$cur['image_thumb']?>
             </div>
             <div class="product-card__info">
                 <div class="product-card__brand"><?=$cur['brand']?></div>

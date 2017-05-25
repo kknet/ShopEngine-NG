@@ -46,7 +46,9 @@ class Controller
     public function SEO()
     {
         return [
-            
+            'name' => [
+                'description' => 'Добро пожаловать в интернет-магазин &quot;Потерпите, пожалуйста!&quot;'
+            ]
         ];
     }
     

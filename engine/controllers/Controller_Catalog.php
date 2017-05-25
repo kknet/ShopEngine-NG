@@ -2,6 +2,9 @@
 
 class Controller_Catalog extends Controller
 {   
+    
+    public $category_name;
+    
     public function Action_Basic()
     {
         
@@ -15,7 +18,7 @@ class Controller_Catalog extends Controller
         $products = $this->GetModel()->GetProducts($category);
         
         //Getting category name
-        $category_name = $this->GetModel()->GetCategoryName($category);
+        $this->category_name = $this->GetModel()->GetCategoryName($category);
  
         //Getting category_id
         $sql         = "SELECT category_id FROM category WHERE category_handle = ?";
@@ -27,10 +30,18 @@ class Controller_Catalog extends Controller
         return $this->view->render(ShopEngine::GetView(), [
             'filter'        => $filter,
             'cat_products'  => $products,
-            'category_name' => $category_name,
+            'category_name' => $this->category_name,
             'category_id'   => $category_id
         ]);
 
+    }
+    
+    public function SEO() {
+        return [
+            'name' => [
+                'description' => 'Каталог товаров: '.$this->category_name
+            ]
+        ];
     }
     
     public function GetPagination() 

@@ -60,7 +60,8 @@ Class Products
                 else {
                     $sales_news_popular = '';
                 }
-                    $image = ShopEngine::Help()->ImageResize($row["image"], 177.2, 255, $row['title'], 'px');
+                    $image = ShopEngine::Help()->ImageResize($row["image"], null, null, $row['title'], 'px');
+                    $thumb = ShopEngine::Help()->ImageResize('thumbnails/'.$row["image"], null, null, $row['title'], 'px');
 
 //                    if ($row['availability'] == 1) {
 //                    $availability_vari = "Есть в наличии";
@@ -89,20 +90,23 @@ Class Products
                 //
 
                 $grid[] = array(
-                    'handle'         => $row['handle'], 
-                    'sales'          => $sales_news_popular, 
-                    'image'          => $image, 
-                    'image_lnk'      => $row['image'],
-                    'title'          => $row["title"], 
-                    'description'    => $row['description'],
-                    'count'          => $row['count'], 
-                    'old_price'      => $old_price, 
-                    'price'          => ShopEngine::Help()->AsPrice($row["price"]), 
-                    'price_int'      => round($row["price"]),
-                    'brand'          => $row['brand'],
-                    'category'       => $cat_name,
-                    'categ_lnk'      => $cat_hand,
-                    'viewed'         => $row['viewed']
+                    'handle'          => $row['handle'], 
+                    'sales'           => $sales_news_popular, 
+                    'image'           => $image, 
+                    'image_lnk'       => $row['image'],
+                    'image_thumb'     => $thumb,
+                    'image_thumb_lnk' => 'thumbnails/'.$row['image'],
+                    'title'           => $row["title"], 
+                    'description'     => $row['description'],
+                    'desc_clear'      => ShopEngine::Help()->Clear($row['description']),
+                    'count'           => $row['count'], 
+                    'old_price'       => $old_price, 
+                    'price'           => ShopEngine::Help()->AsPrice($row["price"]), 
+                    'price_int'       => round($row["price"]),
+                    'brand'           => $row['brand'],
+                    'category'        => $cat_name,
+                    'categ_lnk'       => $cat_hand,
+                    'viewed'          => $row['viewed']
                     );
 
                 $total_votes        = 0;

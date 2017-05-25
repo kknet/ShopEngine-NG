@@ -6,7 +6,8 @@
     	"php": "^7.0",
         "mpdf/mpdf": "^6.1",
         "phpmailer/phpmailer": "^5.2",
-        "imagine/imagine": "^0.7.1"
+        "imagine/imagine": "^0.7.1",
+        "mrclay/minify": "^3.0"
     },
     "license": "MIT",
     "authors": [

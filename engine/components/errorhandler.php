@@ -18,8 +18,6 @@ class ErrorHandler {
         
         //set fatal error handler
         register_shutdown_function([$this, 'fatalErrorCatcher']);
-        
-        ob_start();
     }    
     
     public function errorCatcher($errno, $errstr, $errfile, $errline)
@@ -39,9 +37,10 @@ class ErrorHandler {
     public function fatalErrorCatcher()
     {
         if ($error = error_get_last() AND $error['type'] & (E_ERROR | E_PARSE | E_COMPILE_ERROR | E_CORE_ERROR)) {
-            ob_end_clean();
+            //ob_end_clean();
             $this->errorToFile($error['type'], $error['message'], $error['file'], $error['line'], 'fatalErrorCatcher', 500);
             //$this->errorToEmail($errno, $errstr, $errfile, $errline, $funcname);
+            exit();
         }
     }
     

@@ -71,4 +71,12 @@ class Controller_Pages extends Controller{
         }
     }
     
+    public function SEO() {
+        return [
+            'name' => [
+                'description' => 'Информация для покупателей: '.$this->title
+            ]
+        ];
+    }
+    
 }

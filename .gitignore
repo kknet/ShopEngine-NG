@@ -8,3 +8,4 @@
 /vendor/
 
 /engine/errlog.txt
+/web/node_modules/

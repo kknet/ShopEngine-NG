@@ -36,12 +36,12 @@ class Help
     public function Clear($str)
     {
         // Simple and insecure
-        return strip_tags(trim($str));
+        return htmlspecialchars(strip_tags(trim($str)));
     }
     
     public function ImageResize($row, $oNwidth, $oNheight, $title, $e = "px", $class = "default_se_image")
     {
-        if ($row != "" && file_exists($row)) {
+        if ($row != "" && file_exists($row) && !is_dir($row)) {
             $img_path = $row;
         }
         else {
@@ -521,6 +521,14 @@ class Help
         fclose($file);
     }
     
+    public function MakeHandle($str)
+    {
+        $new_str = ShopEngine::Help()->rus2lat($str);
+        $new_str = str_replace(' ', '-', trim($new_str));
+        $new_str = str_replace('\'', '', $new_str);
+        return strtolower($new_str);
+    }
+    
     public function rus2lat($string) {
         $converter = array(
             'а' => 'a',   'б' => 'b',   'в' => 'v',
@@ -552,9 +560,8 @@ class Help
     
     public function ReplaceASCII($str)
     {   
-        $find = ['\"', '&', '>', '<', '\''];
-        $repl = ['&quot;', '&amp;', '&gt;', '&lt;', '&apos;'];
-        return str_replace($find, $repl, $str);
+        //
+        return htmlspecialchars($str);
     }
     
     public function ValidateUser()

@@ -30,6 +30,11 @@ class ShopEngine {
     public static $num;
     public static $widgets;
     
+    public static function GetURL()
+    {
+        return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    }
+    
     public static function GoHome()
     {
         //Temp

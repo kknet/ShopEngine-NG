@@ -26,6 +26,16 @@ class Controller_Section extends Controller
         ]);
           
     }
+    
+    public function SEO()
+    {
+        return [
+            'name' => [
+                'description' => 'Каталог товаров: '.$this->title
+            ]
+        ];
+    }
+    
 
     public function GetPagination() 
     {

@@ -27,11 +27,33 @@ class View {
             return false;
         }
         
+        ob_start([$this, "sanitize_output"]);
+        
         $layout    = $this->controller->layout;
         require_once '../template/layout/'.$layout.'.php';
         
         Request::EraseErrorSession();
         
+    }
+    
+    public function sanitize_output($buffer) {
+        
+        $search = array(
+            '/\>[^\S ]+/s',  
+            '/[^\S ]+\</s', 
+            '/(\s)+/s',
+            '/<!--(.*?)-->/'
+        );
+        $replace = array(
+            '>',
+            '<',
+            '\\1',
+            ''
+        );
+        $buffer = preg_replace($search, $replace, $buffer);
+
+        return $buffer;
+            
     }
     
 }

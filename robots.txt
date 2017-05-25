@@ -1,0 +1,50 @@
+User-agent: Yandex
+Disallow: /image
+Disallow: /engine
+Disallow: /vendor
+Disallow: /files
+Disallow: /template
+Disallow: /widgets
+Disallow: /plugins
+Disallow: /web/img
+Disallow: /web/js
+Disallow: /web/css
+Disallow: /web/plugins
+Disallow: /web/style
+Host: shop.poterpite.ru
+
+User-agent: Googlebot
+Disallow: /image
+Disallow: /engine
+Disallow: /vendor
+Disallow: /files
+Disallow: /template
+Disallow: /widgets
+Disallow: /plugins
+Disallow: /web/img
+Disallow: /web/js
+Disallow: /web/css
+Disallow: /web/plugins
+Disallow: /web/style
+
+User-agent: *
+Disallow: /image
+Disallow: /engine
+Disallow: /vendor
+Disallow: /files
+Disallow: /template
+Disallow: /widgets
+Disallow: /plugins
+Disallow: /web/img
+Disallow: /web/js
+Disallow: /web/css
+Disallow: /web/plugins
+Disallow: /web/style
+
+Disallow: /*/*.css
+Disallow: /*/*.js
+Disallow: /*/*.json
+
+Crawl-delay: 50
+
+Sitemap: http://shop.poterpite.ru/sitemap.xml

@@ -1,5 +1,5 @@
 <?php
 
-require_once ENGINE.'ajax/AjaxRouter.php';
+require_once ENGINE.'ajax/ajaxrouter.php';
 AjaxRouter::start();
 
