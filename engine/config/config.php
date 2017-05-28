@@ -24,8 +24,7 @@ class Config {
             'search',
             'user',
             'errorpage',
-            'filter',
-            '404'
+            'filter'
         ],
         'site_name' => 'Потерпите, пожалуйста!',
         'site_email_name' => 'Потерпите',
