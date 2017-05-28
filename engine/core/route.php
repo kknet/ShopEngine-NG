@@ -8,18 +8,18 @@
 class Route 
 {
     static function ErrorPage404() 
-    {   
-        // Ошибка 404, пока не работает
-        //$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
-        //ob_clean();
-        return ShopEngine::GoHome();
+    {        
+        header("HTTP/1.1 404 Not Found");
+        
+        require_once (ROOT.'template/layout/404.php');
+        exit();
     }
     
     
     static function start() 
     {   
         if(!ShopEngine::AllowControllers()) {
-            ShopEngine::GoHome();
+            Route::ErrorPage404();
         }
         // Redirect
             ShopEngine::Help()->IndexRedirect();

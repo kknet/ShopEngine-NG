@@ -19,12 +19,12 @@ class Controller_Catalog extends Controller
  
         //Getting category_id
         $sql         = "SELECT * FROM category WHERE category_handle = ?";
-        $category = Getter::GetFreeData($sql, [$category], true);
+        $category    = Getter::GetFreeData($sql, [$category], true);
         
         $category_id = $category['category_id'];
         
         //Getting category name
-        $this->category_name = $category['name'];
+        $this->category_name = $category['name'] ?? 'Каталог товаров';
         
         //Set title
         $this->title = $this->category_name;

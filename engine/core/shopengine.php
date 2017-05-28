@@ -282,7 +282,7 @@ class ShopEngine {
     {
         $sql = "SELECT * FROM orders WHERE orders_id=?";
         $info = Getter::GetFreeData($sql, [$id]);
-        $sql = "SELECT * FROM order_products o RIGHT OUTER JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=?";
+        $sql = "SELECT * FROM order_products o LEFT JOIN products p ON o.products_handle = p.handle WHERE o.orders_final_id=? AND p.title <> ''";
         $products = Getter::GetFreeData($sql, [$id], false);
         
         return [

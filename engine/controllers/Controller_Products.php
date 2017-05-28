@@ -35,7 +35,7 @@ class Controller_Products extends Controller{
         $product = $this->products;
         
         $widht  = null;
-        $height = hull;
+        $height = null;
         
         $imagine = new \Imagine\Gd\Imagine;
         

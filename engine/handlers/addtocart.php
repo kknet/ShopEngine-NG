@@ -53,6 +53,7 @@ class Addtocart
                 $stmt->bindParam(":id", $id);
                 
                 $result = $stmt->execute();
+                
                 if($result) {
                     return 1;
                 }

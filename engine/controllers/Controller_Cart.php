@@ -37,8 +37,11 @@ class Controller_Cart extends Controller
             return ShopEngine::Help()->RegularRedirect('catalog', 'all');
         }
         
+        $sum = $this->GetSum($array);
+        
         return $this->view->render(ShopEngine::GetView(), [
-            'cart' => $array
+            'cart' => $array,
+            'sum'  => $sum
         ]);
         
     }
@@ -54,11 +57,8 @@ class Controller_Cart extends Controller
 //        return $array;
     }
     
-    public static function GetSum()
+    public static function GetSum($array)
     {
-        $ip = ShopEngine::GetUserIp();
-        $sql = "SELECT cart_count, cart_price FROM cart WHERE cart_ip=?";
-        $array = Getter::GetFreeData($sql, [$ip], false);
         $sum = 0;
         if(!$array)
         {

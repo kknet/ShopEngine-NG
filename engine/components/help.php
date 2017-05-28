@@ -212,7 +212,7 @@ class Help
         $total = $array[3];
         $main_page = $main;
         
-        require_once '../widgets/pagination.php';
+        require_once '../template/widgets/pagination.php';
     }
     
     function GetSorting() 
@@ -293,9 +293,9 @@ class Help
         header( "Location: ".ShopEngine::GetHost(), true, 301 );
     }
     
-    public function RegularRedirect($controller, $action)
+    public function RegularRedirect($controller, $action, $code = 301)
     {
-        header( "Location: /$controller/$action", true, 301 );
+        header( "Location: /$controller/$action", true, $code );
     }
     
     public function Refresh()

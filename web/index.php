@@ -18,7 +18,8 @@ require(__DIR__ . '/../engine/startup.php');
 
 //print get_num_queries();
 
-
-echo '<span style="display:none" class="debug-info">Количество запросов: ' . Getter::$count . ' </span>';
-//echo '<span style="display:none" class="debug-info">Запросы: ' . Getter::$queries . ' </span>';
-echo '<span style="display:none" class="debug-info">Время генерации: ' . ( microtime(true) - $start ) . ' сек.</span>';
+if(ShopEngine::GetControllerName() !== 'ajax') { 
+    echo '<span style="display:none" class="debug-info">Количество запросов: ' . Getter::$count . ' </span>';
+    echo '<span style="display:none" class="debug-info">Запросы: <ul>' . Getter::$queries . ' </ul></span>';
+    echo '<span style="display:none" class="debug-info">Время генерации: ' . ( microtime(true) - $start ) . ' сек.</span>';
+}

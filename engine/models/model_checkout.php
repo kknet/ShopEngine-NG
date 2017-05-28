@@ -374,7 +374,7 @@ class Model_Checkout extends Model {
         return $array;
     }
     
-    public function GetOrderProducts($id)
+    public function GetOrderProducts($id, $thumb = false)
     {
         $ip = ShopEngine::GetUserIp();
         $sql = "SELECT o.products_handle, o.orders_price, o.orders_count, p.handle, p.title, p.image, p.category_id, p.price, c.name FROM order_products o "
@@ -384,6 +384,61 @@ class Model_Checkout extends Model {
         $order_pr = Getter::GetFreeData($sql, [$id], false);
         if(!$order_pr) {
             return Route::ErrorPage404();
+        }
+        
+        if(!$thumb)
+        {
+            return $order_pr;
+        }
+        
+        $imagine = new \Imagine\Gd\Imagine;
+        
+        for($i = 0; $i < count($order_pr); $i++)
+        {
+            $current = $imagine->open($order_pr[$i]['image']);
+            
+            $size    = $current->getSize();
+            
+            if($size->getWidth() > $size->getHeight())
+            {
+                $width  = $size->getHeight();
+                $height = $width;
+                
+                $orig   = $size->getWidth();
+                $offset = ($orig - $width) / 2;
+                
+                $new_size = new Imagine\Image\Box($width, $height);
+                $point    = new Imagine\Image\Point($offset, 0);
+                $thumb    = new Imagine\Image\Box(60, 60);
+            }
+            else {
+                $width  = $size->getWidth();
+                $height = $width;
+                
+                $orig   = $size->getHeight();
+                $offset = ($orig - $width) / 2;
+                
+                $new_size = new Imagine\Image\Box($width, $height);
+                $point    = new Imagine\Image\Point(0, $offset);
+                $thumb    = new Imagine\Image\Box(60, 60);
+            }
+            
+            $thumb_dir = 'thumbnails/temp';
+            if(!file_exists($thumb_dir))
+            {
+                mkdir($thumb_dir);
+            }
+            
+            $filename = $order_pr[$i]['image'];
+            
+            $ext = substr($filename, strrpos($filename, '.'));
+            
+            $thumb_name = $thumb_dir.'/temp_'.rand(0,777).$id.$i.$ext;
+            
+            $current->crop($point, $new_size)->thumbnail($thumb)->save($thumb_name);
+            
+            $order_pr[$i]['image'] = $thumb_name;
+            
         }
         
         return $order_pr;
@@ -451,19 +506,34 @@ class Model_Checkout extends Model {
             $mailto_ad  = Config::$config['admin_email'];
             $subject_ad = "[".Config::$config['site_email_name']."] Заказ #{$id} ".Request::GetSession('checkout_name').' '.Request::GetSession('checkout_last_name').' '.Request::GetSession('checkout_phone');
             
-            $this->array = $this->GetOrderProducts($id);
+            $this->array = $this->GetOrderProducts($id, true);
             
             $body    = $this->prepareEmail($id, $key, $this->array);
             $body_ad = $this->prepareEmailAdmin($id, $key, $this->array);
 
             ShopEngine::Help()->SendMaill($mailto, $mailfrom, $subject, $body, $this->array);
-            
+                    
             ShopEngine::Help()->SendMaill($mailto_ad, $mailfrom, $subject_ad, $body_ad, $this->array);
-            
+
+            $this->removeThumb($this->array);
+                
             return true;
+            
+            
         } Catch(Exception $e) {
+            
+            $this->removeThumb($this->array);
+            
             ShopEngine::ExceptionToFile($e);
             return false;
+        }
+    }
+    
+    public function removeThumb($array)
+    {
+        foreach($array as $current)
+        {
+            @unlink($current['image']);
         }
     }
     
@@ -589,11 +659,9 @@ class Model_Checkout extends Model {
                 $body .= '<tr class="m_-1216999618458073902order-list__item m_-1216999618458073902order-list__item" style="width:100%">'
                         . '<td class="m_-1216999618458073902order-list__item__cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Segoe UI'.'\',\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif">
                     <table style="border-collapse:collapse;border-spacing:0">
-                      <tbody><tr><td style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;">
-
-                        <div style=" width:50px; height:50px; border:1px solid #e5e5e5;border-radius:8px;margin-right:15px;" >
-                          <img src="cid:'.$cur['handle'].'" align="left" width="60" height="60" class="m_-1216999618458073902order-list__product-image CToWUd" style="width:100%; height:auto; max-width:100%; max-height:100%">
-                        </div>
+                      <tbody><tr>
+                      <td style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;">
+                          <img src="cid:'.$cur['handle'].'" align="left" width="60px" height="60px" class="m_-1216999618458073902order-list__product-image CToWUd" style="border:1px solid #e5e5e5;border-radius:8px;margin-right:15px;">
                       </td>
                       <td class="m_-1216999618458073902order-list__product-description-cell" style="font-family:-apple-system,BlinkMacSystemFont,\''.'Roboto'.'\',\''.'Oxygen'.'\',\''.'Ubuntu'.'\',\''.'Cantarell'.'\',\''.'Fira Sans'.'\',\''.'Droid Sans'.'\',\''.'Helvetica Neue'.'\',sans-serif;width:75%">
 

@@ -56,7 +56,7 @@
         </div>
       
       <div class="grid__item cart__buttons text-right small--text-center medium-up--one-half">
-          <p class="h3 cart__subtotal" id="CartSubtotal"><?= GetCartSum()?></p>
+          <p class="h3 cart__subtotal" id="CartSubtotal"><?= $sum?></p>
         <p id="cartDiscountTotal">
         
         </p>

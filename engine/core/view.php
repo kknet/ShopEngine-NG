@@ -31,7 +31,7 @@ class View {
         
         $layout    = $this->controller->layout;
         require_once '../template/layout/'.$layout.'.php';
-        
+
         Request::EraseErrorSession();
         
     }
@@ -52,8 +52,7 @@ class View {
         );
         $buffer = preg_replace($search, $replace, $buffer);
 
-        return $buffer;
-            
+        return $buffer;     
     }
     
 }

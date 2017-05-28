@@ -7,7 +7,7 @@ class Getter extends ShopEngine{
     
     public static function GetFreeData($sql, array $params = NULL, $type = true)
     {
-        self::$queries .= 'Выполнен запрос к БД: '.$sql.'\n\r';
+        self::$queries .= '<li>Выполнен запрос к БД: '.$sql.'</li>';
         self::$count++;
         
         $db = database::getInstance();
@@ -54,7 +54,7 @@ class Getter extends ShopEngine{
     
     public static function GetFreeProducts($sql, $params = NULL)
     { 
-        self::$queries .= 'Выполнен запрос к БД: '.$sql.'\n\r';
+        self::$queries .= '<li>Выполнен запрос к БД: '.$sql.'</li>';
         self::$count++;
         $db = database::getInstance();
         
@@ -91,7 +91,7 @@ class Getter extends ShopEngine{
     //
     public static function GetDataWithPagination($sql, $params = NULL, $num = 20)
     {
-        self::$queries .= 'Выполнен запрос к БД: '.$sql.'\n\r';
+        self::$queries .= '<li>Выполнен запрос к БД: '.$sql.'</li>';
         self::$count++;
         Self::$sql    = $sql;
         Self::$params = $params;
@@ -122,7 +122,7 @@ class Getter extends ShopEngine{
     // Получить товары
     public static function GetProducts($sql, $params = NULL, $num = 20)
     { 
-        self::$queries .= 'Выполнен запрос к БД: '.$sql.'\n\r';
+        self::$queries .= '<li>Выполнен запрос к БД: '.$sql.'</li>';
         self::$count++;
         Self::$sql    = $sql;
         Self::$params = $params;
@@ -156,7 +156,7 @@ class Getter extends ShopEngine{
     // Получить случайные товары по запросу
     public static function GetRandomData($sql, $count)
     {
-        self::$queries .= 'Выполнен запрос к БД: '.$sql.'\n\r';
+        self::$queries .= '<li>Выполнен запрос к БД: '.$sql.'</li>';
         self::$count++;
         $db = database::getInstance();
         
