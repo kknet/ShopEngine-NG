@@ -18,4 +18,7 @@ require(__DIR__ . '/../engine/startup.php');
 
 //print get_num_queries();
 
-//echo 'Время генерации: ' . ( microtime(true) - $start ) . ' сек.';
+
+echo '<span style="display:none" class="debug-info">Количество запросов: ' . Getter::$count . ' </span>';
+//echo '<span style="display:none" class="debug-info">Запросы: ' . Getter::$queries . ' </span>';
+echo '<span style="display:none" class="debug-info">Время генерации: ' . ( microtime(true) - $start ) . ' сек.</span>';

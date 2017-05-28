@@ -42,7 +42,7 @@
      <div class="grid__item meganav__list one-fifth">
 
         <?php 
-            $menu = GetMenu();
+            $menu = $this->widgets->WidgetMenu->GetMenu();
             for($i = 0; $i < 7; $i++) { ?>
             <li>
                 <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
@@ -52,7 +52,6 @@
         </div>
         <div class="grid__item meganav__list one-fifth">     
         <?php 
-            $menu = GetMenu();
             for($i = 7; $i < count($menu); $i++) { ?>
             <li>
                 <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>

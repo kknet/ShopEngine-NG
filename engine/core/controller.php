@@ -54,8 +54,7 @@ class Controller
     
     public static function GetMenu()
     {
-        $sql = "SELECT * FROM category WHERE main='1'";
-        return Getter::GetFreeData($sql);
+        return false;
     }
     
     public function start()

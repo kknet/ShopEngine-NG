@@ -41,7 +41,7 @@
                     <label for="filter_category">Категория</label>
                     <select name="filter_category" id="filter_category">
                         <option value="all">Все</option>
-                        <?php $cats = GetMenu();
+                        <?php $cats = $this->widgets->WidgetMenu->GetMenu();
                             foreach ($cats as $cur) { ?>
                                 <option <?php echo $cur['category_id'] === Request::Get('filter_category') ? "selected" : ""?> value="<?=$cur['category_id']?>"><?=$cur['name']?></option>
                             <?php } ?>

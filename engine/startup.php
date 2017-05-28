@@ -23,6 +23,4 @@ require_once ENGINE.'core/view.php';       // Main view's component
 require_once ENGINE.'core/controller.php'; // Main controllers's component
 require_once ENGINE.'core/route.php';      // Router
 
-require_once ENGINE.'core/SECore.php';     // Main app's component
-
 Route::start();

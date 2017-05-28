@@ -31,6 +31,28 @@ class Model_Catalog extends Model
             return $array;
             
         }
+        
+//        $sql = "SELECT a.attribute_id, a.attribute_name, v.value_name, av.value_id, c.category_id FROM category c "
+//                . "LEFT JOIN category_attributes a ON c.category_id = a.category_id "
+//                . "LEFT JOIN attribute_value av ON a.attribute_id = av.attribute_id "
+//                . "LEFT JOIN value_names v ON av.value_id = v.value_id "
+//                . "WHERE c.category_handle=?";
+//        $array = Getter::GetFreeData($sql, [$category], false);
+//        
+//        if($array) {
+//            
+//            $values = [];
+//            
+////            for($i = 0; $i < count($array); $i++) {
+////                $values[$array[$i]['attribute_id']]['category_id'] = $array[$i]['category_id'];
+////                $values[$array[$i]['attribute_id']]['attribute_name'] = $array[$i]['attribute_name'];
+////                $values[$array[$i]['attribute_id']]['values'][] = [$array[$i]['value_id'], $array[$i]['value_name']];
+////            }
+//            
+//            var_dump($values);
+//            
+//            return $values;
+//        }
     }
     
     public function GetProducts($category)

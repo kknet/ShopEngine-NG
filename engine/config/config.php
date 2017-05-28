@@ -38,10 +38,8 @@ class Config {
             'request'
         ],
         'widgets' => [
-            'WidgetAdmin',
             'WidgetMenu',
-            'WidgetStatistics',
-            'WidgetMainMenu'
+            'WidgetMenuProducts'
         ],
         'points' => 300,
         'orders_location' => 'files/orders/',

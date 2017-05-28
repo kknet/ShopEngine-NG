@@ -16,16 +16,18 @@ class Controller_Catalog extends Controller
         
         //Getting products
         $products = $this->GetModel()->GetProducts($category);
-        
-        //Getting category name
-        $this->category_name = $this->GetModel()->GetCategoryName($category);
  
         //Getting category_id
-        $sql         = "SELECT category_id FROM category WHERE category_handle = ?";
-        $category_id = Getter::GetFreeData($sql, [$category], true)['category_id'];
+        $sql         = "SELECT * FROM category WHERE category_handle = ?";
+        $category = Getter::GetFreeData($sql, [$category], true);
+        
+        $category_id = $category['category_id'];
+        
+        //Getting category name
+        $this->category_name = $category['name'];
         
         //Set title
-        $this->title = $category_name;
+        $this->title = $this->category_name;
        
         return $this->view->render(ShopEngine::GetView(), [
             'filter'        => $filter,

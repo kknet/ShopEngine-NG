@@ -72,7 +72,7 @@
         <div class="grid__item meganav__list one-fifth">
 
         <?php 
-            $menu = GetMenu();
+            $menu = $this->widgets->WidgetMenu->GetMenu();
             for($i = 0; $i < 7; $i++) { ?>
             <li>
                 <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
@@ -82,7 +82,6 @@
         </div>
         <div class="grid__item meganav__list one-fifth">     
         <?php 
-            $menu = GetMenu();
             for($i = 7; $i < count($menu); $i++) { ?>
             <li>
                 <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
@@ -217,7 +216,6 @@
 
         <h5 class="h1 meganav__title"> Взрослым</h5>
         <?php 
-            $menu = GetMenu();
             for($i = 0; $i < 6; $i++) { ?>
             <li>
                 <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
@@ -226,7 +224,6 @@
               </div>
               <div class="grid__item meganav__list one-fifth meganav__list--has-title">
         <?php 
-            $menu = GetMenu();
             for($i = 6; $i < count($menu); $i++) { ?>
             <li>
                 <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
@@ -238,7 +235,7 @@
     </div>
   
 <?php 
-    $products = GetMenuProducts();
+    $products = $this->widgets->WidgetMenuProducts->GetProducts();
     
     foreach ($products as $cur) { ?>
         <div class="grid__item one-fifth meganav__product">
