@@ -1241,6 +1241,10 @@ theme.initCache = function () {
     $heroPause: $('.hero__pause')
   };
   
+  
+    theme.settings = {
+        smallBreakpoint: 750 // copied from variables.scss
+    };   
 
 //  theme.settings = {
 //    ajaxEnabled: {{ settings.cart_enable_ajax }},

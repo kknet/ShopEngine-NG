@@ -9,7 +9,7 @@
           <div class="product-single__photo" id="ProductPhoto">
             
               <a href="<?=ShopEngine::GetHost().'/'.$product['image_lnk']?>" class="js-modal-open-product-modal image-link no-outline" id="MainImageLink">
-                <?=ShopEngine::Help()->ImageReSize($product['image_lnk'], null, null, $product['title'], null, null, "ProductPhotoImg")?>
+                 <?=ShopEngine::Help()->ImageReSize($product['image_lnk'], null, null, $product['title'], null, "ProductPhotoImg")?>
             </a>
           </div>
             <script>
@@ -21,7 +21,7 @@
                 });
             </script>
         </div>
-          <?php if(isset($gallery)) { ?>
+          <?php if(isset($gallery) AND $gallery) { ?>
         <div class="photos__item photos__item--thumbs">
             <div class="product-single__thumbnails" id="ProductThumbs">
                 
@@ -45,15 +45,6 @@
         </div>
           
           <?php } ?>
-        
-          <script>
-            var sliderArrows = {
-              left: "\u003csvg aria-hidden=\"true\" focusable=\"false\" role=\"presentation\" viewBox=\"0 0 32 32\" class=\"icon icon-arrow-left\"\u003e\u003cpath fill=\"#444\" d=\"M24.333 28.205l-1.797 1.684L7.666 16l14.87-13.889 1.797 1.675L11.269 16z\"\/\u003e\u003c\/svg\u003e",
-              right: "\u003csvg aria-hidden=\"true\" focusable=\"false\" role=\"presentation\" viewBox=\"0 0 32 32\" class=\"icon icon-arrow-right\"\u003e\u003cpath fill=\"#444\" d=\"M7.667 3.795l1.797-1.684L24.334 16 9.464 29.889l-1.797-1.675L20.731 16z\"\/\u003e\u003c\/svg\u003e",
-              up: "\u003csvg aria-hidden=\"true\" focusable=\"false\" role=\"presentation\" viewBox=\"0 0 32 32\" class=\"icon icon-arrow-up\"\u003e\u003cpath fill=\"#444\" d=\"M26.984 23.5l1.516-1.617L16 8.5 3.5 21.883 5.008 23.5 16 11.742z\"\/\u003e\u003c\/svg\u003e",
-              down: "\u003csvg aria-hidden=\"true\" focusable=\"false\" role=\"presentation\" viewBox=\"0 0 32 32\" class=\"icon icon-arrow-down\"\u003e\u003cpath fill=\"#444\" d=\"M26.984 8.5l1.516 1.617L16 23.5 3.5 10.117 5.008 8.5 16 20.258z\"\/\u003e\u003c\/svg\u003e"
-            }
-          </script>
         
       </div>
     </div>

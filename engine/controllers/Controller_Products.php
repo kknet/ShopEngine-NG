@@ -19,8 +19,11 @@ class Controller_Products extends Controller{
         
         $this->title = $this->products['title'];
         
+        $gallery = Getter::GetFreeData("SELECT * FROM additional_images WHERE products_id = ?", [$this->products['products_id']], false);
+        
         return $this->view->render(ShopEngine::GetView(), [
-            'product' => $this->products
+            'product' => $this->products,
+            'gallery' => $gallery
         ]);
     }
     

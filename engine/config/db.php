@@ -16,7 +16,7 @@ class database {
         {
             if (self::$_db === null) {
                 try { 
-                    self::$_db = new \PDO("mysql:host=localhost;dbname=".Config::$db['database'].";charset=utf8", Config::$db['username'], Config::$db['password'], self::$opt);
+                    self::$_db = new \PDO("mysql:host=".Config::$db['host'].";dbname=".Config::$db['database'].";charset=utf8", Config::$db['username'], Config::$db['password'], self::$opt);
                 } catch(Exception $e) {
                     die('Connect Error (' . self::$_db->connect_errno . ') ' . self::$_db->connect_error);
                 }

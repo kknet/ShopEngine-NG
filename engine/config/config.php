@@ -3,6 +3,7 @@
 class Config { 
     //Database
     public static $db = [
+        'host'     => 'localhost',
         'username' => 'root',
         'database' => 'shopify',
         'password' => ''

@@ -307,3 +307,18 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
   	font-size: 75%;
   }
 }
+
+#ProductPhoto {
+    position:relative;
+    width:410px;
+    height:410px;
+}
+
+#ProductPhoto img {
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    margin:auto;
+}

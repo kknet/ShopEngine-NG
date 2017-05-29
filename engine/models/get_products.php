@@ -90,6 +90,7 @@ Class Products
                 //
 
                 $grid[] = array(
+                    'products_id'     => $row['products_id'],
                     'handle'          => $row['handle'], 
                     'sales'           => $sales_news_popular, 
                     'image'           => $image, 

@@ -3,22 +3,23 @@ window.onload = function() {
     cartload();
     
     var metas =     document.getElementsByTagName("meta"),
-        btn_ac   =  document.getElementById("AddToCart"),
-        minus    =  document.querySelectorAll(".cart_minus"),
-        plus     =  document.querySelectorAll(".cart_plus"),
-        min_ac   =  document.querySelector(".add_to_cart_minus"), 
-        pls_ac   =  document.querySelector(".add_to_cart_plus"),
-        quant_ac =  document.getElementById("Quantity"),
-        quant    =  document.querySelectorAll(".cart_update"),
-        search   =  document.querySelector(".site-header__search-input"),
-        add_del  =  document.querySelectorAll(".delete_address"),
-        add_sel  =  document.getElementById("checkout_shipping_address_id"),
-        point_ch =  document.getElementById("checkout_buyer_accepts_marketing"),
-        del_0    =  document.getElementById("checkout_different_billing_address_false"),
-        del_1    =  document.getElementById("checkout_different_billing_address_true"),
-        del_bl   =  document.querySelector(".checkout_billing_block"),
-        show_fil =  document.getElementById("show_filter");
-
+        btn_ac    =  document.getElementById("AddToCart"),
+        minus     =  document.querySelectorAll(".cart_minus"),
+        plus      =  document.querySelectorAll(".cart_plus"),
+        min_ac    =  document.querySelector(".add_to_cart_minus"), 
+        pls_ac    =  document.querySelector(".add_to_cart_plus"),
+        quant_ac  =  document.getElementById("Quantity"),
+        quant     =  document.querySelectorAll(".cart_update"),
+        search    =  document.querySelector(".site-header__search-input"),
+        add_del   =  document.querySelectorAll(".delete_address"),
+        add_sel   =  document.getElementById("checkout_shipping_address_id"),
+        point_ch  =  document.getElementById("checkout_buyer_accepts_marketing"),
+        del_0     =  document.getElementById("checkout_different_billing_address_false"),
+        del_1     =  document.getElementById("checkout_different_billing_address_true"),
+        del_bl    =  document.querySelector(".checkout_billing_block"),
+        show_fil  =  document.getElementById("show_filter");
+        gallery   =  document.querySelectorAll(".gallery-item"),
+        s_country =  document.getElementById("checkout_shipping_address_country");
 
     document.body.addEventListener("click", function(e){
         var elem = e.target;
@@ -28,6 +29,35 @@ window.onload = function() {
             HideSearch();
         }
     });
+    
+    if(s_country) { 
+        var data = {
+            csrf   : s_country.getAttribute('data-csrf')
+        };
+
+        s_country.prototype = data;
+
+        s_country.addEventListener("change", function(e) {
+            SelectRegion(s_country.value, this.prototype.csrf);
+        });   
+    }
+    
+    if(gallery) { 
+        for(var i = 0; i < gallery.length; i++) {
+            
+            gallery[i].prototype = {
+                href : gallery[i].getAttribute("href")
+            }
+            
+            gallery[i].addEventListener("click", function(e){
+                var lnk  = document.getElementById("MainImageLink");
+                var img  = document.querySelector(".ProductPhotoImg");
+                
+                lnk.href = this.prototype.href;
+                img.src = this.prototype.href;
+            });
+        }
+    }
 
     if(show_fil) {
         show_fil.addEventListener("click", function(){
@@ -617,3 +647,37 @@ function AjaxSearch(value, csrf) {
         }
     });
 };
+
+function SelectRegion(id, csrf) {
+
+    $.ajax({
+        type:'POST',
+        url:'/ajax/selectregion',
+        data:{
+            'id':id,
+            'csrf':csrf
+        },
+        dataType: 'html',
+        cache:false,
+        beforeSend: function () {
+            //$('#pre_loading').fadeIn(50);
+        },
+        success: function(data) {
+            if(data !== '500') {
+                var select = document.getElementById("checkout_shipping_address_province");
+                select.innerHTML = data;
+                select.disabled = false;
+            }
+            else {
+                var select = document.getElementById("checkout_shipping_address_province");
+                select.innerHTML = null;
+                var option = document.createElement("option");
+                option.innerHTML = "Регион";
+                select.appendChild(option);
+                select.disabled = true;
+            }
+        }
+    });
+    
+}
+
