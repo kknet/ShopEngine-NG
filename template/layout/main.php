@@ -585,7 +585,6 @@
 <link rel="stylesheet" href="/plugins/owlcarousel/assets/owl.carousel.min.css">
 <link rel="stylesheet" href="/plugins/owlcarousel/assets/owl.theme.default.min.css">
 
-<script src="/js/shopengine.all.js" type="text/javascript"></script>
 <script src="/plugins/owlcarousel/owl.carousel.min.js"></script>
 
 <script type="text/javascript">
@@ -599,6 +598,8 @@
         autoplaySpeed : 750
     });
 </script>
+
+<script src="/js/shopengine.all.js" type="text/javascript"></script>
 
 <script>
     var sliderArrows = {

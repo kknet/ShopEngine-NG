@@ -5,6 +5,11 @@
 
 class Model_Catalog extends Model
 {		
+    
+    public $vari;
+    public $attributes;
+    public $start = 0;
+    
     public function GetPagination() 
     {
        $main = "/".ShopEngine::GetRoute()[1]."/".ShopEngine::GetAction().'?';
@@ -12,59 +17,53 @@ class Model_Catalog extends Model
     }
     
     public function GetFilter($category)
-    {
-//        $sql = "SELECT * FROM category c "
-//                . "LEFT OUTER JOIN category_attributes a ON c.category_id = a.category_id "
-//                . "WHERE c.category_handle=?";
-//        $array = Getter::GetFreeData($sql, [$category], false);
-//        
-//        if($array[0]['attribute_id']) {
-//            
-//            for($i = 0; $i < count($array); $i++) {
-//                $id = $array[$i]['attribute_id'];
-//                
-//                $sql = "SELECT * FROM attribute_value a RIGHT OUTER JOIN value_names n ON a.value_id = n.value_id WHERE attribute_id=?";
-//                
-//                $values = Getter::GetFreeData($sql, [$id], false);
-//                
-//                $array[$i]['values'] = $values;
-//            }
-//            
-//            return $array;
-//            
-//        }
-        
+    {   
         //Temporary
         
-        $sql = "SELECT a.attribute_id, a.attribute_name, v.value_name, av.value_id, c.category_id FROM category c "
+        $sql = "SELECT * FROM category c "
                 . "LEFT JOIN category_attributes a ON c.category_id = a.category_id "
-                . "LEFT JOIN attribute_value av ON a.attribute_id = av.attribute_id "
-                . "LEFT JOIN value_names v ON av.value_id = v.value_id "
-                . "WHERE c.category_handle=?";
+                . "WHERE c.category_handle=? ORDER BY a.attribute_id DESC";
         $array = Getter::GetFreeData($sql, [$category], false);
         
-        if($array) {
-            
-            $values = [];
-            
-            for($i = 0; $i < count($array); $i++) {
-                $values[$array[$i]['attribute_id']]['category_id'] = $array[$i]['category_id'];
-                $values[$array[$i]['attribute_id']]['attribute_id'] = $array[$i]['attribute_id'];
-                $values[$array[$i]['attribute_id']]['attribute_name'] = $array[$i]['attribute_name'];
-                $values[$array[$i]['attribute_id']]['values'][] = ['value_id' => $array[$i]['value_id'], 'value_name' => $array[$i]['value_name']];
-            }
-            
-            $i   = 0;
-            $new = [];
-            
-            foreach($values as $value)
-            {
-                $new[$i] = $value;
-                $i++;
-            }
-            
-           return $new;
+        if(!$array[0]['attribute_id']) {
+            return;
         }
+        
+        foreach($array as $current) $this->vari[] = $current['attribute_id'];
+        
+        $placeholders = implode(',', array_fill(0, count($array), '?'));
+        
+        $sql = "SELECT * FROM attribute_value av "
+                . "LEFT JOIN value_names v on av.value_id = v.value_id "
+                . "WHERE attribute_id IN ($placeholders) ORDER BY av.attribute_id DESC";
+        
+        $values = Getter::GetFreeData($sql, $this->vari, false);
+        
+        for($i = 0; $i < count($array); $i++) {
+            
+            $this->attributes[$i]['attribute_id']   = $array[$i]['attribute_id'];
+            $this->attributes[$i]['attribute_name'] = $array[$i]['attribute_name'];
+            
+            for($j = $this->start; $j < count($values); $j++) {
+                
+                if($values[$j]['attribute_id'] !== $array[$i]['attribute_id']) {
+                    continue(1);
+                }
+                
+                $this->attributes[$i]['values'][] = [
+                    'value_id'   => $values[$j]['value_id'],
+                    'name_id'    => $values[$j]['name_id'], 
+                    'value_name' => $values[$j]['value_name']
+                ];
+                
+                $this->start = $j;
+                
+            }
+            
+        }
+        
+        return $this->attributes;
+         
 
     }
     

@@ -5,6 +5,11 @@
 
 class Model_Filter extends Model
 {		
+    
+    public $vari;
+    public $attributes;
+    public $start = 0;
+    
     public function GetPagination() 
     {
        $main = "/".ShopEngine::GetRoute()[1]."/".ShopEngine::GetAction().'&';
@@ -137,23 +142,48 @@ class Model_Filter extends Model
             return false;
         }
         
-        $sql = "SELECT * FROM category c LEFT OUTER JOIN category_attributes a ON c.category_id = a.category_id WHERE c.category_handle=?";
+        $sql = "SELECT * FROM category c "
+                . "LEFT JOIN category_attributes a ON c.category_id = a.category_id "
+                . "WHERE c.category_handle=? ORDER BY a.attribute_id DESC";
         $array = Getter::GetFreeData($sql, [$category], false);
         
-        if($array[0]['attribute_id']) {
+        if(!$array[0]['attribute_id']) {
+            return;
+        }
+        
+        foreach($array as $current) $this->vari[] = $current['attribute_id'];
+        
+        $placeholders = implode(',', array_fill(0, count($array), '?'));
+        
+        $sql = "SELECT * FROM attribute_value av "
+                . "LEFT JOIN value_names v on av.value_id = v.value_id "
+                . "WHERE attribute_id IN ($placeholders) ORDER BY av.attribute_id DESC";
+        
+        $values = Getter::GetFreeData($sql, $this->vari, false);
+        
+        for($i = 0; $i < count($array); $i++) {
             
-            for($i = 0; $i < count($array); $i++) {
-                $id = $array[$i]['attribute_id'];
+            $this->attributes[$i]['attribute_id']   = $array[$i]['attribute_id'];
+            $this->attributes[$i]['attribute_name'] = $array[$i]['attribute_name'];
+            
+            for($j = $this->start; $j < count($values); $j++) {
                 
-                $sql = "SELECT * FROM attribute_value a RIGHT OUTER JOIN value_names n ON a.value_id = n.value_id WHERE attribute_id=?";
+                if($values[$j]['attribute_id'] !== $array[$i]['attribute_id']) {
+                    continue(1);
+                }
                 
-                $values = Getter::GetFreeData($sql, [$id], false);
+                $this->attributes[$i]['values'][] = [
+                    'value_id'   => $values[$j]['value_id'],
+                    'name_id'    => $values[$j]['name_id'], 
+                    'value_name' => $values[$j]['value_name']
+                ];
                 
-                $array[$i]['values'] = $values;
+                $this->start = $j;
+                
             }
             
-            return $array;
-            
         }
+        
+        return $this->attributes;
     }
 }
