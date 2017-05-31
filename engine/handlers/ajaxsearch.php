@@ -20,18 +20,22 @@ class ajaxsearch {
             $array  = explode(' ', trim($str));
             
             $string = null;
+            
+            $place = [];
+        
             foreach ($array as $key => $value)
             {
                 if(isset($array[$key - 1])) {
                     $string .= " OR ";
                 }
-                    $string .= "title LIKE ? ";
-                    $array[$key] = "%$value%";
+                    $string .= "title LIKE ? OR brand LIKE ?";
+                    $place[] = "%$value%";
+                    $place[] = "%$value%";
             }
 
             $sql = "SELECT * FROM products WHERE {$string} AND avail='1' AND price <> 0.00 AND title <> ''";
 
-            $result = Getter::GetFreeData($sql, $array, false);
+            $result = Getter::GetFreeData($sql, $place, false);
             
             if($result AND count($result) > 0)
             {

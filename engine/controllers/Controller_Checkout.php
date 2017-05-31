@@ -86,11 +86,26 @@ class Controller_Checkout extends Controller{
         }
         $price = $this->GetModel()->GetProductsPrice($products);
         
+        $regions = null;
+        
+        if($country_handle = Request::GetSession('checkout_country')) { 
+            $sql = "SELECT * FROM countries c "
+                    . "RIGHT JOIN region r ON c.country_id = r.country_id "
+                    . "WHERE c.country_handle = ? AND r.region_avail = '1'";
+            
+            $regions = Getter::GetFreeData($sql,[$country_handle],false);
+        }
+        
+        $sql = "SELECT * FROM countries";
+        $countries = Getter::GetFreeData($sql,null,false);
+        
         return $this->view->render("View_Checkout_Step1", [
             'error'          => $this->errors,
             'addresses'      => $addresses,
             'order_products' => $products,
-            'order_price'    => $price
+            'order_price'    => $price,
+            'regions'        => $regions,
+            'countries'      => $countries
         ]);
     }
     
@@ -151,7 +166,7 @@ class Controller_Checkout extends Controller{
         $city = Request::GetSession('checkout_region');
         $sql = "SELECT r.region_shipper, s.shipper_id, r.region_name, s.shipper_type, s.shipper_price FROM region_ship r RIGHT JOIN shipper s ON r.region_shipper = s.shipper_id WHERE region_handle=?";
 
-        $shipping = Getter::GetFreeData($sql, [$city]);
+        $shipping = Getter::GetFreeData($sql, [$city], false);
         
         return $this->view->render("View_Checkout_Step2", [
             'shipping' => $shipping,

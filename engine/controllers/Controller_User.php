@@ -345,7 +345,7 @@ class Controller_User extends Controller{
         $return['red'] = $red;
         
         return $this->view->render("View_Addresses", [
-            'start' => $return
+            'start'     => $return
         ]);
     }
     
@@ -357,8 +357,12 @@ class Controller_User extends Controller{
         
         $return['new'] = $new;
         
+        $sql = "SELECT * FROM countries WHERE country_avail = '1'";
+        $countries = Getter::GetFreeData($sql, null, false);
+        
         return $this->view->render("View_Addresses", [
-            'start' => $return
+            'start' => $return,
+            'countries' => $countries
         ]);
     }
     

@@ -534,7 +534,7 @@
         <div class="page-width">
           <div class="grid medium-up--grid--table">
             <div class="grid__item medium-up--one-half">
-                <small>© 2017, <a href="<?= ShopEngine::GetHost()?>" title="">Потерпите, пожалуйста!</a>. При поддержке Infinite ShopEngine</small>
+                <small>© 2017, <a href="<?= ShopEngine::GetHost()?>" title="">Потерпите, пожалуйста!</a></small>
             </div>
             <div class="grid__item medium-up--one-half medium-up--text-right">
 

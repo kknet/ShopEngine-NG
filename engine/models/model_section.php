@@ -25,13 +25,13 @@ class Model_Section extends Model
     {
         switch ($category) {
             case 'children':
-                return 'Для детей';
+                return 'Детям';
                 break;
             case 'dentist':
-                return 'Для стоматологов';
+                return 'Врачам';
                 break;
             default:
-                return 'Для красивой улыбки';
+                return 'Каталог товаров';
                 break;
         }
     }

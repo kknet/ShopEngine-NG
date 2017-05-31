@@ -58,6 +58,14 @@ class Model_Checkout extends Model {
             ];
         }
         
+        // Region
+        if(!$post['checkout_region']) {
+            $this->errors['region'] = [
+                'class'   => 'field--error',
+                'message' =>  '<p class="field__message field__message--error" id="error-for-city">Пожалуйста, введите Ваш регион</p>' 
+            ];
+        }
+        
         // Index
         if(!$post['checkout_index']) {
             $this->errors['index'] = [
@@ -154,6 +162,7 @@ class Model_Checkout extends Model {
         $ship_id = Request::Post('checkout_ship_id');
         $sql = "SELECT shipper_id, shipper_type, shipper_price FROM shipper WHERE shipper_id=?";
         $array = Getter::GetFreeData($sql, [$ship_id]);
+        
         Request::SetSession('shipper_name', $array['shipper_type']);
         Request::SetSession('shipper_price', $array['shipper_price']);
         Request::SetSession('shipper_id', $array['shipper_id']);
@@ -341,7 +350,7 @@ class Model_Checkout extends Model {
     public function CreatePDF($id, $key)
     {
         //CreatePDF
-        ShopEngine::Help()->createPDF();
+        @ShopEngine::Help()->createPDF();
         
         //Create Link
         $db  = database::getInstance();

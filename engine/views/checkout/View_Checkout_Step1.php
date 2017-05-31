@@ -198,12 +198,12 @@
   </div>
   <div class="section__content">
         <div class="fieldset">
-          <div class="field field--required <?=$error['email']['class']?>">
+          <div class="field field--required <?=$error['email']['class'] ?? ''?>">
             
             <div class="field__input-wrapper field__input-wrapper--with-loader"><label class="field__label" for="checkout_email">Email</label>
                 <input value="<?= Request::GetSession('user_is_logged') ?  Request::GetSession('user_email') : Request::GetSession('checkout_email')?>" placeholder="Email" autocapitalize="off" spellcheck="false" autocomplete="shipping email" data-autofocus="true" data-email-input="true" data-backup="customer_email" class="field__input" size="30" type="email" name="checkout_email" id="checkout_email">
             </div>
-              <?=$error['email']['message']?>
+              <?=$error['email']['message'] ?? '' ?>
 </div>        </div> 
 
 <!--        <div class="section section--half-spacing-top section--optional section--fade-in" data-buyer-accepts-marketing="">
@@ -312,13 +312,28 @@
 </div><div data-address-field="country" class="field field--required field--show-floating-label field--three-eights">
   
   <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_country">Страна</label>
-    <select size="1" autocomplete="shipping country" data-backup="country" class="field__input field__input--select" name="checkout_country" id="checkout_shipping_address_country"><option data-code="RU" value="Russia">Россия</option></select>
+    <select data-csrf="<?=ShopEngine::Help()->generateToken()?>" data-id="" size="1" autocomplete="shipping country" data-backup="country" class="field__input field__input--select" name="checkout_country" id="checkout_shipping_address_country">
+        <option disabled selected value="">Страна</option>
+        <?php if(isset($countries) AND $countries) { ?>
+            <?php foreach($countries as $country) { ?>
+                <option <?= Request::GetSession('checkout_country') === $country['country_handle'] ? 'selected' : ''?> class="select_country" value="<?=$country['country_handle']?>"><?=$country['country_name']?></option>
+            <?php } ?>
+        <?php } ?>
+    </select>
   </div>
-</div><div data-address-field="province" class="field field--required field--three-eights field--show-floating-label">
+</div><div data-address-field="province" class="field field--required field--three-eights field--show-floating-label <?=$error['region']['class'] ?? ''?>">
   
   <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_province">Регион</label>
-    <select placeholder="Регион" autocomplete="shipping address-level1" data-backup="province" data-google-places="administrative_area_level_1" class="field__input field__input--select" name="checkout_region" id="checkout_shipping_address_province"><option value="" disabled="">Регион</option><option data-code="MOW" value="Moscow">Москва (г)</option></select>
+      <select <?=Request::GetSession('checkout_country') ? '' : 'disabled'?> placeholder="Регион" autocomplete="shipping address-level1" data-backup="province" data-google-places="administrative_area_level_1" class="field__input field__input--select" name="checkout_region" id="checkout_shipping_address_province">
+        <option selected value="" disabled="">Регион</option>
+        <?php if(isset($regions) AND $regions) { ?>
+            <?php foreach($regions as $region) { ?>
+                <option <?= Request::GetSession('checkout_region') === $region['region_handle'] ? 'selected' : ''?> value="<?=$region['region_handle']?>" ><?=$region['region_name']?></option>
+            <?php } ?>
+        <?php } ?>
+    </select>
   </div>
+    <?=$error['region']['message'] ?? ''?>
 </div><div data-address-field="zip" class="field field--required field--quarter <?=$error['index']['class'] ?? ''?>">
   
   <div class="field__input-wrapper"><label class="field__label" for="checkout_shipping_address_zip">Почтовый индекс</label>
