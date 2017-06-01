@@ -314,7 +314,7 @@
 
                 <div class="site-header__search-inner">
                   <label for="SiteNavSearch" class="visually-hidden">Поиск</label>
-                  <input type="search" name="q" id="SiteNavSearch" placeholder="Поиск" aria-label="Поиск" data-csrf="<?=ShopEngine::Help()->generateToken()?>" class="site-header__search-input" autocomplete="off">
+                  <input type="search" name="q" id="SiteNavSearch" placeholder="Поиск" aria-label="Поиск" data-csrf="<?=ShopEngine::Help()->generateToken()?>" class="site-header__search-input stick_search-header" autocomplete="off">
                 </div>
 
                 <button type="submit" class="text-link site-header__link site-header__search-submit">

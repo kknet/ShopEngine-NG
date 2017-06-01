@@ -23,7 +23,7 @@
         </div>
           <?php if(isset($gallery) AND $gallery) { ?>
         <div class="photos__item photos__item--thumbs">
-            <div class="product-single__thumbnails" id="ProductThumbs">
+            <div class="product-single__thumbnails" style="display:block" id="ProductThumbs">
                 
                 <div class="product-single__thumbnail-item  is-active ">
                     <a href="<?=ShopEngine::GetHost()?>/<?=$product['image_lnk']?>" data-zoom="" class="product-single__thumbnail gallery-item">
@@ -183,7 +183,10 @@
   </div>
   <hr>
 
-        <div class="rte product-single__description" itemprop="description">
+        <div data-spy="affix" class="left-side-block" id="summary_block">
+            <span class="summary_title">Содержание</span>
+        </div>
+        <div class="article rte product-single__description" itemprop="description">
           <?=$product['description']?>
           <div class='einstein_helper'>Нашли ошибку в тексте? Выделите ее и нажмите SHIFT+ENTER</div>
         </div>
@@ -200,5 +203,8 @@
       <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-arrow-thin-left"><path fill="#444" d="M10.253 24.134c.27-.27.26-.694 0-.98l-5.764-6.46h24.704c.382 0 .694-.312.694-.693s-.313-.693-.694-.693H4.49l5.754-6.458c.252-.296.278-.704.01-.973s-.74-.286-.99-.01c0 0-6.876 7.553-6.945 7.64s-.21.243-.21.495.14.425.21.495 6.943 7.64 6.943 7.64a.716.716 0 0 0 .99 0z"/></svg>
         Вернуться назад
     </a>
+      
+      <script src="/plugins/gist-toc.js"></script>
+      
   </div>
 

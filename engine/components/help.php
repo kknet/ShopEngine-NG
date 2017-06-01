@@ -81,7 +81,7 @@ class Help
             return '0.00 р.';
         }
         
-        return number_format($num, 2, '.', ',').' р.';
+        return @number_format($num, 2, '.', ',').' р.';
     }
     
     public function SendMail($from,$to,$subject,$body)

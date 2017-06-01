@@ -11,7 +11,7 @@ class Controller_Search extends Controller
         $array = explode(' ', $query);
         
         //Getting products
-        $products = $this->GetModel()->GetProducts($array);
+        $products = $this->GetModel()->GetProducts($array, $query);
         
         //Entering into session
         Request::SetSession('query', $query);

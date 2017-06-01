@@ -1551,6 +1551,13 @@ theme.stickNav = function () {
   theme.stickNav.isActive = true;
 
   $sticky.addClass(theme.stickyNav.navClass);
+  
+  if(document.querySelector(".search_results_li")) {
+      console.log(document.querySelector(".search_results_li"));
+      $("#search-results2").show();
+  }
+  
+  $("#search-results1").hide();
 
   // Add open transition class after element is set to fixed
   // so CSS animation is applied correctly
@@ -1563,6 +1570,13 @@ theme.unstickNav = function () {
   if (!theme.stickNav.isActive) {
     return;
   }
+  
+  if(document.querySelector(".search_results_li")) {
+      console.log(document.querySelector(".search_results_li"));
+      $("#search-results1").show();
+  }
+  
+  $("#search-results2").hide();
 
   theme.cache.$stickyBar.removeClass(theme.stickyNav.openTransitionClass).removeClass(theme.stickyNav.navClass);
 

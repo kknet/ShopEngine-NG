@@ -11,6 +11,7 @@ window.onload = function() {
         quant_ac  =  document.getElementById("Quantity"),
         quant     =  document.querySelectorAll(".cart_update"),
         search    =  document.querySelector(".site-header__search-input"),
+        search2   =  document.querySelector(".stick_search-header"),
         add_del   =  document.querySelectorAll(".delete_address"),
         add_sel   =  document.getElementById("checkout_shipping_address_id"),
         point_ch  =  document.getElementById("checkout_buyer_accepts_marketing"),
@@ -19,7 +20,12 @@ window.onload = function() {
         del_bl    =  document.querySelector(".checkout_billing_block"),
         show_fil  =  document.getElementById("show_filter");
         gallery   =  document.querySelectorAll(".gallery-item"),
-        s_country =  document.getElementById("checkout_shipping_address_country");
+        s_country =  document.getElementById("checkout_shipping_address_country"),
+        sticky_st =  document.querySelector('.sticky--active');
+
+    if(sticky_st) {
+        $("#search-results1").hide();
+    }
 
     document.body.addEventListener("click", function(e){
         var elem = e.target;
@@ -147,9 +153,29 @@ window.onload = function() {
     
     if(search) {
         search.oninput = function(){
+            if(!search2.classList.contains("site-header__search-input--visible"))
+            {
+                search2.classList.add("site-header__search-input--visible");
+            }
+            search2.value = search.value;
             AjaxSearch(search.value, search.getAttribute('data-csrf'));
         };
         search.onblur = function(e){
+            console.log(e);
+            //HideSearch();
+        };
+    }
+    
+    if(search2) {
+        search2.oninput = function(){
+            if(!search.classList.contains("site-header__search-input--visible"))
+            {
+                search.classList.add("site-header__search-input--visible");
+            }
+            search.value = search2.value;
+            AjaxSearch(search2.value, search2.getAttribute('data-csrf'));
+        };
+        search2.onblur = function(e){
             console.log(e);
             //HideSearch();
         };
@@ -641,8 +667,12 @@ function AjaxSearch(value, csrf) {
                 HideSearch();
             }
             else {
+                if(!document.querySelector('.sticky--active'))
+                {
+                    $("#search-results1").show().html(data);
+                }
+                $("#search-results1").html(data);
                 $("#search-results2").show().html(data);
-                $("#search-results1").show().html(data);
             }
         }
     });

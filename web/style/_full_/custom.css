@@ -1,4 +1,12 @@
 /* Basic styles */
+.image-absolute {
+    position:absolute;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    margin:auto;
+}
 
 .myaccount_body .hidden {
     display: none;
@@ -310,8 +318,9 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
 
 #ProductPhoto {
     position:relative;
-    width:410px;
+    max-width:410px;
     height:410px;
+    max-height:410px;
 }
 
 #ProductPhoto img {
@@ -321,4 +330,42 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
     bottom:0;
     left:0;
     margin:auto;
+}
+
+#summary_block {
+    float:left;
+    width:24%;
+}
+
+#summary_block ul {
+    list-style: square;
+}
+
+#summary_block li a{
+    font-weight: 300;
+    margin-bottom:4px;
+    text-decoration: underline;
+    display: block;
+}
+
+#summary_block > ul > li > ul {
+    margin-left:10px;
+}
+
+#summary_block span {
+    display:block;
+    margin-bottom:10px;
+}
+
+.product-single__description {
+    float:right;
+    width:75%;
+}
+
+.sticky--active #search-results1 {
+    display: none;
+}
+
+#search-results2 {
+    top:35px !important; 
 }

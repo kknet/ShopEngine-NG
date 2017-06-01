@@ -18,6 +18,7 @@ gulp.task('js-libs', function() {
     return gulp.src([
         'js/jquery-1.9.1.min.js',
         'js/jquery.magnific-popup.js',
+        'node_modules/bootstrap/dist/js/bootstrap.min.js'
     ])
     .pipe(concat('shopengine.libs.js'))
     .pipe(uglify())

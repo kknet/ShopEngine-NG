@@ -3,7 +3,7 @@
 
         <li class="drawer__nav-item">
           <div class="drawer__nav-has-sublist">
-            <a href="/catalog/all" class="drawer__nav-link" id="DrawerLabel-a-o"> Для крaсивoй улыбки</a>
+            <a href="/catalog/all" class="drawer__nav-link" id="DrawerLabel-a-o"> Каталог</a>
               <div class="drawer__nav-toggle">
                 <button type="button" data-aria-controls="IndexLinklist-a-o" class="text-link drawer__nav-toggle-btn index__meganav-toggle meganav--active" aria-expanded="false" aria-controls="IndexLinklist-a-o">
                   <span class="drawer__nav-toggle--open">
@@ -272,12 +272,12 @@
             <div class="grid__item medium-up--one-quarter">
               <a href="/catalog/all" title="Посмотреть нашу Для красивой улыбки коллекцию" class="featured-card">
                 <div class="featured-card__header">
-                  <p class="h1 featured-card__title">Для красивой улыбки</p>
+                  <p class="h1 featured-card__title">Каталог</p>
                   <span class="featured-card__action">Показать все</span>
                 </div>
                 
                   <div class="featured-card__image-wrapper">
-                      <img src="/style/assets/catalog_all.jpg" alt="" class="featured-card__image">
+                      <img src="/style/assets/catalog_all.jpg" alt="" class="image-absolute featured-card__image">
                   </div>
                 
               </a>
@@ -292,12 +292,12 @@
             <div class="grid__item medium-up--one-quarter">
               <a href="/section/children" title="Посмотреть нашу Для детей коллекцию" class="featured-card">
                 <div class="featured-card__header">
-                  <p class="h1 featured-card__title">Для детей</p>
+                  <p class="h1 featured-card__title">Детям</p>
                   <span class="featured-card__action">Показать все</span>
                 </div>
                 
                   <div class="featured-card__image-wrapper">
-                      <img src="/style/assets/section_children.jpg" alt="" class="featured-card__image">
+                      <img src="/style/assets/section_children.jpg" alt="" class="image-absolute featured-card__image">
                   </div>
                 
               </a>
@@ -312,12 +312,12 @@
             <div class="grid__item medium-up--one-quarter">
               <a href="/section/dentist" title="Посмотреть нашу Для стоматологов коллекцию" class="featured-card">
                 <div class="featured-card__header">
-                  <p class="h1 featured-card__title">Для стоматологов</p>
+                  <p class="h1 featured-card__title">Врачам</p>
                   <span class="featured-card__action">Показать все</span>
                 </div>
                 
                   <div class="featured-card__image-wrapper">
-                      <img src="/style/assets/section_dentist.jpg" alt="" class="featured-card__image">
+                      <img src="/style/assets/section_dentist.jpg" alt="" class="image-absolute featured-card__image">
                   </div>
                 
               </a>

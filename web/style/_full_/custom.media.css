@@ -33,4 +33,9 @@
     .small--one-half {
         width:100% !important;
     }
+    
+    #ProductPhoto {
+        margin-left:auto;
+        margin-right:auto;
+    }
 }
