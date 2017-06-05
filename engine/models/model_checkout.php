@@ -453,7 +453,7 @@ class Model_Checkout extends Model {
         return $order_pr;
     }
     
-    public function GetProductsPrice($products, $setpoints = false)
+    public function GetProductsPrice($products, bool $setpoints = false)
     {
         $pre_price = null;
         if($products) { 
@@ -461,7 +461,7 @@ class Model_Checkout extends Model {
                 $pre_price = $pre_price + $cur['orders_price'];
             }
         }
-        if(Request::GetSession('checkout_points_enabled') AND $setpoints === true) { 
+        if(Request::GetSession('checkout_points_enabled') AND $setpoints === false) { 
             $pre_price = ShopEngine::Business()->UsePoints($pre_price);
         }
         

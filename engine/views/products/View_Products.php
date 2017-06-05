@@ -177,12 +177,17 @@
         
       </div>
       <hr>
+      
+        <div class="grid medium-up--grid--table">
+            <span style="font-size:14px;font-weight:400">Возможность доставки и самовывоза: <span style="font-weight:600"><?=$product['count'] > 0 ? 'сегодня.' : 'в течение 7 дней.'?></span></span>
+        </div>
+      
       <span class="shopify-product-reviews-badge" data-id="9249056259"></span>
     </div>
     
   </div>
   <hr>
-
+  
 <!--        <div data-spy="affix" class="left-side-block" id="summary_block">
             <span class="summary_title">Содержание</span>
         </div>-->

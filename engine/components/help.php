@@ -36,7 +36,7 @@ class Help
     public function Clear($str)
     {
         // Simple and insecure
-        return htmlspecialchars(strip_tags(trim($str)));
+        return strip_tags(trim($str));
     }
     
     public function ImageResize($row, $oNwidth, $oNheight, $title, $e = "px", $class = "default_se_image")
@@ -562,6 +562,12 @@ class Help
     {   
         //
         return htmlspecialchars($str);
+    }
+    
+    public function ReplaceSpecSymbols($str)
+    {   
+        //
+        return htmlspecialchars_decode($str);
     }
     
     public function ValidateUser()

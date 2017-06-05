@@ -1,3 +1,11 @@
+//Settings 
+var engine = {
+        
+    stockPrice : null
+
+};
+
+
 window.onload = function() {
     
     var gallery_blocks = document.querySelectorAll(".product-single__thumbnail-item");
@@ -532,7 +540,9 @@ function AddressChange(id, csrf) {
         nodeFlat     = document.getElementById("checkout_shipping_address_address2"),
         nodeCity     = document.getElementById("checkout_shipping_address_city"),
         nodeIndex    = document.getElementById("checkout_shipping_address_zip"),
-        nodePhone    = document.getElementById("checkout_shipping_address_phone");
+        nodePhone    = document.getElementById("checkout_shipping_address_phone"),
+        nodeCountry  = document.getElementById("checkout_shipping_address_country"),
+        nodeRegion   = document.getElementById("checkout_shipping_address_province");
     
     if(id === '0')
     {
@@ -574,6 +584,10 @@ function AddressChange(id, csrf) {
                     if(decoded.address_city) nodeCity.value = decoded.address_city;
                     if(decoded.address_index) nodeIndex.value = decoded.address_index;
                     if(decoded.address_phone) nodePhone.value = decoded.address_phone;
+                    
+                    if(decoded.countries_html) nodeCountry.innerHTML = decoded.countries_html;
+                    if(decoded.regions_html) nodeRegion.innerHTML = decoded.regions_html;
+                    
    
                 } catch(e) {
                     throw Error(e);
@@ -599,8 +613,63 @@ function StartPoint(csrf) {
             //$('#pre_loading').fadeIn(50);
         },
         success: function(data) {
-            if(data === '1') {
-                window.location.reload();
+            if(data !== '500') {
+                
+                decoded =JSON.parse(data);
+                
+                var table = document.querySelector(".total-line-table");
+                var tr    = document.createElement('tr');
+                
+                var td_f  = document.createElement("td");
+                var td_s  = document.createElement("td");
+                
+                tr.classList.add("total-line");
+                td_f.classList.add("total-line__name");
+                td_s.classList.add("total-line__price");
+                
+                tr.id = "points_after";
+                
+                if(document.getElementById("points_after")) {
+                    tr = document.getElementById("points_after");
+                }
+                
+                td_f.innerHTML = "Баллы после покупки";
+                td_s.innerHTML = decoded.points;
+                
+                tr.appendChild(td_f);
+                tr.appendChild(td_s);
+                
+                var tr2    = document.createElement('tr');
+                
+                tr2.id = "price_delta";
+                
+                if(document.getElementById("price_delta")) {
+                    tr2 = document.getElementById("price_delta");
+                }
+                
+                var td_f2  = document.createElement("td");
+                var td_s2  = document.createElement("td");
+                
+                tr2.classList.add("total-line");
+                td_f2.classList.add("total-line__name");
+                td_s2.classList.add("total-line__price");
+                
+                td_f2.innerHTML = "Скидка";
+                td_s2.innerHTML = decoded.delta;
+                
+                tr2.appendChild(td_f2);
+                tr2.appendChild(td_s2);
+                
+                table.appendChild(tr2);
+                table.appendChild(tr);
+                
+                engine.stockPrice = document.querySelector(".payment-due__price").innerHTML;
+                
+                document.querySelector(".payment-due__price").innerHTML = decoded.final; 
+                
+                
+                
+                //window.location.reload();
             }
             else {
                 throw Error("Произошла ошибка " + data);
@@ -622,8 +691,16 @@ function ErasePoint(csrf) {
             //$('#pre_loading').fadeIn(50);
         },
         success: function(data) {
-            if(data === '1') {
-                window.location.reload();
+            if(data !== '500') {
+                
+                var tr = document.getElementById("points_after");
+                tr.parentNode.removeChild(tr);
+                
+                var tr2 = document.getElementById("price_delta");
+                tr2.parentNode.removeChild(tr2);
+                
+                document.querySelector(".payment-due__price").innerHTML = data; 
+                
             }
             else {
                 throw Error("Произошла ошибка " + data);

@@ -313,7 +313,7 @@
   
   <div class="field__input-wrapper field__input-wrapper--select"><label class="field__label" for="checkout_shipping_address_country">Страна</label>
     <select data-csrf="<?=ShopEngine::Help()->generateToken()?>" data-id="" size="1" autocomplete="shipping country" data-backup="country" class="field__input field__input--select" name="checkout_country" id="checkout_shipping_address_country">
-        <option disabled selected value="">Страна</option>
+        <option class="disabled_label" disabled selected value="">Страна</option>
         <?php if(isset($countries) AND $countries) { ?>
             <?php foreach($countries as $country) { ?>
                 <option <?= Request::GetSession('checkout_country') === $country['country_handle'] ? 'selected' : ''?> class="select_country" value="<?=$country['country_handle']?>"><?=$country['country_name']?></option>

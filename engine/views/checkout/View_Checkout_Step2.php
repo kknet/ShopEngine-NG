@@ -157,7 +157,7 @@
     </li>
 
     <li class="breadcrumb__item breadcrumb__item--completed">
-      <a class="breadcrumb__link" href="/checkout/step1">Информация о покупателе</a>
+      <a class="breadcrumb__link" href="/checkout/step1?token=<?=$token?>">Информация о покупателе</a>
         <svg class="icon-svg icon-svg--size-10 breadcrumb__chevron-icon rtl-flip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path d="M2 1l1-1 4 4 1 1-1 1-4 4-1-1 4-4"></path></svg>
     </li>
     <li class="breadcrumb__item breadcrumb__item--current">
@@ -194,7 +194,7 @@
           </div>
         </div>
         <div class="review-block__link">
-          <a class="link--small" href="/checkout/step1">
+          <a class="link--small" href="/checkout/step1?token=<?=$token?>">
             <span aria-hidden="">Редактировать</span>
             <span class="visually-hidden">Редактировать адрес доставки</span>
 </a>        </div>
@@ -235,6 +235,10 @@
                     </div> <!-- /radio-wrapper-->
              </div>
             <?php } ?>
+        <?php } else {?>
+                
+                <div class="notice">К сожалению, в Ваш регион доставка не производится</div>
+                
         <?php } ?>
 
       </div> 
@@ -249,7 +253,7 @@
   <span class="btn__content">Продолжить с оформлением оплаты</span>
   <i class="btn__spinner icon icon--button-spinner"></i>
 </button>
-  <a class="step__footer__previous-link" href="/checkout/step1"><svg class="icon-svg icon-svg--color-accent icon-svg--size-10 previous-link__icon rtl-flip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path d="M8 1L7 0 3 4 2 5l1 1 4 4 1-1-4-4"></path></svg><span class="step__footer__previous-link-content">Вернуться к контактной информации</span></a>
+  <a class="step__footer__previous-link" href="/checkout/step1?token=<?=$token?>"><svg class="icon-svg icon-svg--color-accent icon-svg--size-10 previous-link__icon rtl-flip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path d="M8 1L7 0 3 4 2 5l1 1 4 4 1-1-4-4"></path></svg><span class="step__footer__previous-link-content">Вернуться к контактной информации</span></a>
 </div>
 
 <input type="hidden" name="checkout_step2" value="1" />

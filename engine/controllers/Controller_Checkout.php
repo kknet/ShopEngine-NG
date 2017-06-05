@@ -105,7 +105,8 @@ class Controller_Checkout extends Controller{
             'order_products' => $products,
             'order_price'    => $price,
             'regions'        => $regions,
-            'countries'      => $countries
+            'countries'      => $countries,
+            'token'          => $token
         ]);
     }
     
@@ -137,7 +138,7 @@ class Controller_Checkout extends Controller{
         }
         
         // Full Price   
-        $full     = $this->GetModel()->GetProductsPrice($products);
+        $full     = $this->GetModel()->GetProductsPrice($products, true);
         
         if(Request::Post('checkout_step2')) 
         {
@@ -169,9 +170,10 @@ class Controller_Checkout extends Controller{
         $shipping = Getter::GetFreeData($sql, [$city], false);
         
         return $this->view->render("View_Checkout_Step2", [
-            'shipping' => $shipping,
+            'shipping'          => $shipping,
             'checkout_products' => $products,
-            'checkout_price'    => $full
+            'checkout_price'    => $full,
+            'token'             => $token
         ]);
     }
     
@@ -207,7 +209,8 @@ class Controller_Checkout extends Controller{
             return ShopEngine::Help()->StrongRedirect('checkout', 'step2');
         }
         
-        $price = $this->GetModel()->GetProductsPrice($products, true);
+        $pre   = $this->GetModel()->GetProductsPrice($products, true);
+        $price = $this->GetModel()->GetProductsPrice($products, false);
         if(is_array($price))
         {   
             $price = $price['final'];
@@ -246,9 +249,10 @@ class Controller_Checkout extends Controller{
         return $this->view->render("View_Checkout_Step3", [
             'full_price'        => $full_price,
             'shipper_price'     => $shipp,
-            'checkout_price'    => $price,
+            'checkout_price'    => $pre,
             'checkout_products' => $products,
-            'error'             => $errors
+            'error'             => $errors,
+            'token'             => $token
         ]);
         
     }

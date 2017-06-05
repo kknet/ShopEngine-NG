@@ -10,7 +10,7 @@ class Config {
     ];
     //Other
     public static $config = [
-        'admin_email' => 'info@poterpite.ru',
+        'admin_email' => 'alexandergrachyov@gmail.com',
         'developer_email' => 'alexandergrachyov@gmail.com',
         'allowed_controllers' => [
             '',

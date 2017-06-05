@@ -30,11 +30,15 @@ class Business {
             $points = $points - ceil($p60);
         }
         
+        $delta = $price - $final;
+        
         Request::SetSession('checkout_new_points', $points);
+        Request::SetSession('checkout_price_delta', $delta);
         
         return [
             'final'  => $final,
-            'points' => $points
+            'points' => $points,
+            'delta'  => $delta
         ];
         
     }
