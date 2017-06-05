@@ -12,6 +12,7 @@
         <link rel="shortcut icon" href="/style/assets/favicon.png" type="image/png">
         <link rel="canonical" href="<?= ShopEngine::GetURL()?>">
         <link href="/css/shopengine.all.css" rel="stylesheet" type="text/css" media="all">
+        <link href="/css/shopengine.libs.css" rel="stylesheet" type="text/css" media="all">
         <title><?=$this->controller->title?></title>
         <?=SEO::GetSEO($this->controller)?>
         <script type="text/javascript" src="/js/shopengine.libs.js"></script>
@@ -581,14 +582,8 @@
   });
 </script>-->
 
-<link rel="stylesheet" type="test/css" href="/style/assets/font-awesome.min.css">
-<link rel="stylesheet" href="/plugins/owlcarousel/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="/plugins/owlcarousel/assets/owl.theme.default.min.css">
-
-<script src="/plugins/owlcarousel/owl.carousel.min.js"></script>
-
 <script type="text/javascript">
-    $(".owl-carousel").owlCarousel({
+    jQuery(".owl-carousel").owlCarousel({
         items : 1,
         autoHeight : true,
         center: true,

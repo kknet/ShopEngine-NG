@@ -1,4 +1,6 @@
 window.onload = function() {
+    
+    var gallery_blocks = document.querySelectorAll(".product-single__thumbnail-item");
    
     cartload();
     
@@ -46,6 +48,12 @@ window.onload = function() {
         s_country.addEventListener("change", function(e) {
             SelectRegion(s_country.value, this.prototype.csrf);
         });   
+    }
+    
+    if(gallery_blocks) {
+        for(var i = 0; i < gallery_blocks.length; i++) {
+            gallery_blocks[i].style.display = "block";
+        }
     }
     
     if(gallery) { 

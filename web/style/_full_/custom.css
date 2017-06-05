@@ -369,3 +369,7 @@ div.myaccount_first_left select, div.myaccount_first_left select option {
 #search-results2 {
     top:35px !important; 
 }
+
+.product-single__thumbnail-item {
+    display:none; 
+}
