@@ -10,7 +10,7 @@ class ajaxsearch {
         
         if($_SERVER['REQUEST_METHOD'] == 'POST') 
         {
-            // Здесь должен проверяться токен, но пока этого нет
+            // Token
             $csrf = Request::Post('csrf');
 
             $csrf = Request::Post('csrf');

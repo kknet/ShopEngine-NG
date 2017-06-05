@@ -221,7 +221,7 @@ class Controller_User extends Controller{
         }
         
         $id     = Request::GetSession('user_id');
-        $sql    = "SELECT * FROM orders WHERE orders_users_id=? AND orders_status <> 0";
+        $sql    = "SELECT * FROM orders WHERE orders_users_id=? AND orders_status <> 0 ORDER BY orders_id DESC";
         $orders = Getter::GetFreeData($sql, [$id], false);
         
         if(count($orders) < 1)
@@ -295,6 +295,9 @@ class Controller_User extends Controller{
                 return ShopEngine::GoHome();
             }
             
+            //var_dump(Request::Post());
+            //return;
+            
             if($this->GetModel()->NewAddress())
             {
                 return ShopEngine::Help()->RegularRedirect('user', 'addresses');
@@ -344,8 +347,19 @@ class Controller_User extends Controller{
         
         $return['red'] = $red;
         
+        $sql = "SELECT * FROM countries WHERE country_avail = '1'";
+        $contries = Getter::GetFreeData($sql,null,false);
+        
+        if(isset($return['red']['address_country'])) {
+            $sql     = "SELECT * FROM region WHERE country_id IN ("
+                     . "SELECT country_id FROM countries WHERE country_handle = ?) AND region_avail = '1'";
+            $regions = Getter::GetFreeData($sql, [$return['red']['address_country']],false);
+        }
+        
         return $this->view->render("View_Addresses", [
-            'start'     => $return
+            'start'     => $return,
+            'countries' => $contries,
+            'regions'   => $regions
         ]);
     }
     

@@ -183,13 +183,15 @@
   </div>
   <hr>
 
-        <div data-spy="affix" class="left-side-block" id="summary_block">
+<!--        <div data-spy="affix" class="left-side-block" id="summary_block">
             <span class="summary_title">Содержание</span>
-        </div>
-        <div class="article rte product-single__description" itemprop="description">
+        </div>-->
+    <div class="row">
+        <div class="textForAffixMenu article rte product-single__description" itemprop="description">
           <?=$product['description']?>
           <div class='einstein_helper'>Нашли ошибку в тексте? Выделите ее и нажмите SHIFT+ENTER</div>
         </div>
+    </div>
   <hr>
   <div id="shopify-product-reviews" data-id="9249056259"></div>
 </div>
@@ -204,7 +206,7 @@
         Вернуться назад
     </a>
       
-      <script src="/plugins/gist-toc.js"></script>
+<!--      <script src="/plugins/gist-toc.js"></script>-->
       
   </div>
 

@@ -39,9 +39,7 @@
                   </td>
                   <td data-label="Всего"><?=ShopEngine::Help()->AsPrice($order['orders_price'])?></td>
                   <td>
-                    <a target="_blank" href="http://order.blackberryrussia.com/pdf/index.php?id=4802676291&amp;site=poterpite">Cчет</a>
-                    &nbsp;/&nbsp;
-                    <a target="_blank" href="http://order.blackberryrussia.com/pdf/index.php?id=4802676291&amp;site=poterpite&amp;ur=1">Cчет юр.лиц</a>
+                    <a target="_blank" href="<?=ShopEngine::GetHost()?>/checkout/download?orderid=<?=$order['orders_key']?>">Скачать счет</a>
                     
                     <span class="paymentLink_old" data-id="<?=$order['orders_id']?>"></span>
                   </td>

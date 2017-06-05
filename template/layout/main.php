@@ -17,7 +17,7 @@
         <?=SEO::GetSEO($this->controller)?>
         <script type="text/javascript" src="/js/shopengine.libs.js"></script>
     </head>
-    <body id="" class="template-collection">
+    <body  data-spy="scroll" data-target="#menuScrollSpy" data-offset="150" id="" class="template-collection">
 
     <a class="in-page-link visually-hidden skip-link" href="<?=ShopEngine::GetHost()?>/catalog/all">Перейти к содержанию</a>
     <div id="NavDrawer" class="drawer drawer--left">
@@ -574,13 +574,15 @@
 </script>-->
 
 
-<!--<script>
+<script src="/style/assets/einstein.js" type="text/javascript"></script>
+
+<script>
   $(document).ready(function() {
     var page = location.href;
     if(page == "https://poterpite.ru/")
       $(".einstein_helper").remove();
   });
-</script>-->
+</script>
 
 <script type="text/javascript">
     jQuery(".owl-carousel").owlCarousel({

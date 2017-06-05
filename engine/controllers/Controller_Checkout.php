@@ -96,7 +96,7 @@ class Controller_Checkout extends Controller{
             $regions = Getter::GetFreeData($sql,[$country_handle],false);
         }
         
-        $sql = "SELECT * FROM countries";
+        $sql = "SELECT * FROM countries WHERE country_avail = '1'";
         $countries = Getter::GetFreeData($sql,null,false);
         
         return $this->view->render("View_Checkout_Step1", [

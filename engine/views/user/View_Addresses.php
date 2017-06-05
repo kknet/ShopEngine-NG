@@ -44,7 +44,7 @@
 
           <div class="grid__item medium-up--one-half">
             <label for="AddressCountryNew">Страна</label>
-            <select id="AddressCountryNew" name="address_country" data-default="">
+            <select id="checkout_shipping_address_country" name="address_country" data-csrf="<?=ShopEngine::Help()->generateToken()?>" data-default="" >
                 <option selected disabled value="" data-provinces="">Страна</option>
                 <?php if(isset($countries)) { ?>
                     <?php foreach ($countries as $country) { ?>
@@ -56,7 +56,7 @@
 
           <div class="grid__item" id="AddressProvinceContainerNew">
             <label for="AddressProvinceNew">Область</label>
-            <select selected disabled id="AddressProvinceNew" name="address_new_region" data-default="">
+            <select selected disabled id="checkout_shipping_address_province" name="address_new_region" data-default="">
                 <option value="">Область</option></select>
           </div>
 
@@ -130,13 +130,24 @@
           <div class="grid__item medium-up--one-half">
             <label for="AddressCountryNew">Страна</label>
             <select id="AddressCountryNew" name="address_country" data-default="">
-                <option value="Russia" data-provinces="">Россия</option>
+                <?php if(isset($countries) AND $countries) { ?>
+                    <?php foreach($countries as $country) { ?>
+                        <option <?= $start['red']['address_country'] === $country['country_handle'] ? 'selected' : ''?> class="select_country" value="<?=$country['country_handle']?>"><?=$country['country_name']?></option>
+                    <?php } ?>
+                <?php } ?>
             </select>
           </div>
 
           <div class="grid__item" id="AddressProvinceContainerNew">
             <label for="AddressProvinceNew">Область</label>
-            <select id="AddressProvinceNew" name="address_region" data-default=""><option value="Moscow">Москва</option></select></div>
+            <select id="AddressProvinceNew" name="address_region" data-default="">
+                <?php if(isset($regions) AND $regions) { ?>
+                    <?php foreach($regions as $region) { ?>
+                        <option <?= $start['red']['address_region'] === $region['region_handle'] ? 'selected' : ''?> value="<?=$region['region_handle']?>" ><?=$region['region_name']?></option>
+                    <?php } ?>
+                <?php } ?>
+            </select>
+          </div>
 
           <div class="grid__item medium-up--one-half">
             <label for="AddressZipNew">Почтовый индекс*</label>

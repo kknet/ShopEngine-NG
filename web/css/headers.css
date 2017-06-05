@@ -1,0 +1,36 @@
+/* menuScrollSpy */ 
+.row { 
+  position: relative; 
+} 
+.affix { 
+  position: fixed; 
+  top: 70px; 
+} 
+.affix-bottom { 
+  position: absolute; 
+  bottom: 0; 
+} 
+
+iframe { max-width: 100%; } 
+
+#menuScrollSpy{ z-index: 100; } 
+#menuScrollSpy .nav{ background: #fff; margin-left: 10px; z-index: 9999; } 
+#menuScrollSpy .nav li a{ display: inline-block; color: #000; border-radius: 0; border-left: 2px solid transparent; background: transparent; } 
+#menuScrollSpy>.nav>li>a{ padding-left: 15px !important; } 
+#menuScrollSpy li>ul li a{ padding-left: 30px !important; } 
+#menuScrollSpy .nav li.active>a{ border-left: 2px solid #000; background: transparent; color: #000; font-weight: bold; } 
+#menuScrollSpy .nav li a:hover { background: transparent; border-left: 1px solid #000; margin-left: 1px !important; } 
+#menuScrollSpy .nav>li>a{ padding: 0; } 
+#menuScrollSpy li>ul{ margin-left: 0 !important; display: none; } 
+#menuScrollSpy li.active>ul{ display: block; } 
+#menuScrollSpy button.collapsButton { display: none; } 
+
+.textForAffixMenu a { color: #000; text-decoration: none; border-bottom: 1px solid #fa2800; } 
+.textForAffixMenu a:hover { color: #fa2800; text-decoration: none; border-bottom: 1px solid #fa2800; } 
+
+@media(max-width: 768px){ 
+  #menuScrollSpy {  } 
+  #menuScrollSpy>ul.nav { z-index: 110; position: fixed; top: 0; right: 0; overflow: hidden; padding-right: 20px; } 
+  #menuScrollSpy button.collapsButton { z-index: 120; border: 1px solid #ccc; position: fixed; top: 0; right: 0; background: #fff; display: inline-block; color: #000; padding: 10px; line-height: 1; } 
+} 
+/* END menuScrollSpy */

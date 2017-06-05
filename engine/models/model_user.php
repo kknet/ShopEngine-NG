@@ -437,6 +437,9 @@ class Model_User extends Model {
             return false;
         }
         
+        //Some corrections
+        $index = (int)$post['address_new_index'];
+        
         $sql = "INSERT INTO user_addresses ("
                 . "address_user, "
                 . "address_name, "
@@ -470,10 +473,10 @@ class Model_User extends Model {
         $stmt->bindParam(":company", $post['address_new_company']);
         $stmt->bindParam(":optional", $post['address_new_optional']);
         $stmt->bindParam(":address", $post['address_new_address']);
-        $stmt->bindParam(":country", $post['address_new_country']);
+        $stmt->bindParam(":country", $post['address_country']);
         $stmt->bindParam(":region", $post['address_new_region']);
         $stmt->bindParam(":city", $post['address_new_city']);
-        $stmt->bindParam(":index", $post['address_new_index']);
+        $stmt->bindParam(":index", $index);
         $stmt->bindParam(":phone", $post['address_new_phone']);
         
         if($stmt->execute())

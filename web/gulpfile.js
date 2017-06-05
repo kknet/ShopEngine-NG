@@ -7,7 +7,8 @@ var gulp  = require('gulp'),
 gulp.task('js', function() {
     return gulp.src([
         'js/main_scripts.js',
-        'js/theme.js'
+        'js/theme.js',
+        'js/headers.js'
     ])
     .pipe(concat('shopengine.all.js'))
     .pipe(uglify())
@@ -30,7 +31,8 @@ gulp.task('css', function() {
     return gulp.src([
         'style/_full_/theme.scss.css',
         'style/_full_/custom.css',
-        'style/_full_/custom.media.css'
+        'style/_full_/custom.media.css',
+        'css/headers.css'
     ])
     .pipe(concat('shopengine.all.css'))
     .pipe(cssnano())
@@ -39,6 +41,7 @@ gulp.task('css', function() {
 
 gulp.task('css-libs', function() {
     return gulp.src([
+        'css/bootstrap.min.css',
         'css/magnific-popup.css',
         'plugins/owlcarousel/assets/owl.carousel.min.css',
         'plugins/owlcarousel/assets/owl.theme.default.min.css'
