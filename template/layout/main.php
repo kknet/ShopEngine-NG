@@ -23,7 +23,7 @@
     <div id="NavDrawer" class="drawer drawer--left">
     <div class="drawer__inner">
     <div style="padding: 11px;">
-    <img src="/style/assets/poterpite-logo-mobile.png" alt="Потерпите" style="
+    <img src="/style/assets/poterpite-logo-mobile.png" alt="<?=Config::$config['site_email_name']?>" style="
         float: left;
         margin-right: 10px;
         width: 60px;
@@ -451,7 +451,7 @@
               <ul class="list--inline social-icons">
 
                   <li>
-                    <a href="https://www.facebook.com/poterpite" title="Потерпите, пожалуйста! на Facebook">
+                    <a href="https://www.facebook.com/poterpite" title="<?=Config::$config['site_name']?> на Facebook">
                       <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-facebook"><path fill="#444" d="M18.222 11.556V8.91c0-1.194.264-1.8 2.118-1.8h2.326V2.668h-3.882c-4.757 0-6.326 2.18-6.326 5.924v2.966H9.333V16h3.125v13.333h5.764V16h3.917l.527-4.444h-4.444z"></path></svg>
                       <span class="icon__fallback-text">Facebook</span>
                     </a>
@@ -459,7 +459,7 @@
 
 
                   <li>
-                    <a href="https://twitter.com/poterpite" title="Потерпите, пожалуйста! на Twitter">
+                    <a href="https://twitter.com/poterpite" title="<?=Config::$config['site_name']?> на Twitter">
                       <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-twitter"><path fill="#444" d="M30.75 6.844c-1.087.48-2.25.806-3.475.956a6.08 6.08 0 0 0 2.663-3.35 12.02 12.02 0 0 1-3.844 1.47A6.044 6.044 0 0 0 21.674 4a6.052 6.052 0 0 0-6.05 6.056c0 .475.05.938.157 1.38a17.147 17.147 0 0 1-12.474-6.33 6.068 6.068 0 0 0 1.88 8.088 5.91 5.91 0 0 1-2.75-.756v.075a6.056 6.056 0 0 0 4.857 5.937 6.113 6.113 0 0 1-1.594.212c-.39 0-.77-.038-1.14-.113a6.06 6.06 0 0 0 5.657 4.205 12.132 12.132 0 0 1-8.963 2.507A16.91 16.91 0 0 0 10.516 28c11.144 0 17.23-9.23 17.23-17.238 0-.262-.005-.525-.018-.78a12.325 12.325 0 0 0 3.02-3.14z"></path></svg>
                       <span class="icon__fallback-text">Twitter</span>
                     </a>
@@ -468,7 +468,7 @@
 
 
                   <li>
-                    <a href="https://www.instagram.com/poterpite/" title="Потерпите, пожалуйста! на Instagram">
+                    <a href="https://www.instagram.com/poterpite/" title="<?=Config::$config['site_name']?> на Instagram">
                       <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 512 512" class="icon icon-instagram"><path d="M256 49.5c67.3 0 75.2.3 101.8 1.5 24.6 1.1 37.9 5.2 46.8 8.7 11.8 4.6 20.2 10 29 18.8s14.3 17.2 18.8 29c3.4 8.9 7.6 22.2 8.7 46.8 1.2 26.6 1.5 34.5 1.5 101.8s-.3 75.2-1.5 101.8c-1.1 24.6-5.2 37.9-8.7 46.8-4.6 11.8-10 20.2-18.8 29s-17.2 14.3-29 18.8c-8.9 3.4-22.2 7.6-46.8 8.7-26.6 1.2-34.5 1.5-101.8 1.5s-75.2-.3-101.8-1.5c-24.6-1.1-37.9-5.2-46.8-8.7-11.8-4.6-20.2-10-29-18.8s-14.3-17.2-18.8-29c-3.4-8.9-7.6-22.2-8.7-46.8-1.2-26.6-1.5-34.5-1.5-101.8s.3-75.2 1.5-101.8c1.1-24.6 5.2-37.9 8.7-46.8 4.6-11.8 10-20.2 18.8-29s17.2-14.3 29-18.8c8.9-3.4 22.2-7.6 46.8-8.7 26.6-1.3 34.5-1.5 101.8-1.5m0-45.4c-68.4 0-77 .3-103.9 1.5C125.3 6.8 107 11.1 91 17.3c-16.6 6.4-30.6 15.1-44.6 29.1-14 14-22.6 28.1-29.1 44.6-6.2 16-10.5 34.3-11.7 61.2C4.4 179 4.1 187.6 4.1 256s.3 77 1.5 103.9c1.2 26.8 5.5 45.1 11.7 61.2 6.4 16.6 15.1 30.6 29.1 44.6 14 14 28.1 22.6 44.6 29.1 16 6.2 34.3 10.5 61.2 11.7 26.9 1.2 35.4 1.5 103.9 1.5s77-.3 103.9-1.5c26.8-1.2 45.1-5.5 61.2-11.7 16.6-6.4 30.6-15.1 44.6-29.1 14-14 22.6-28.1 29.1-44.6 6.2-16 10.5-34.3 11.7-61.2 1.2-26.9 1.5-35.4 1.5-103.9s-.3-77-1.5-103.9c-1.2-26.8-5.5-45.1-11.7-61.2-6.4-16.6-15.1-30.6-29.1-44.6-14-14-28.1-22.6-44.6-29.1-16-6.2-34.3-10.5-61.2-11.7-27-1.1-35.6-1.4-104-1.4z"></path><path d="M256 126.6c-71.4 0-129.4 57.9-129.4 129.4s58 129.4 129.4 129.4 129.4-58 129.4-129.4-58-129.4-129.4-129.4zm0 213.4c-46.4 0-84-37.6-84-84s37.6-84 84-84 84 37.6 84 84-37.6 84-84 84z"></path><circle cx="390.5" cy="121.5" r="30.2"></circle></svg>
                       <span class="icon__fallback-text">Instagram</span>
                     </a>
@@ -479,7 +479,7 @@
 
 
                   <li>
-                    <a href="https://vk.com/poterpite" title="Потерпите, пожалуйста! на Vimeo">
+                    <a href="https://vk.com/poterpite" title="<?=Config::$config['site_name']?> на Vimeo">
                       <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 32 32" class="icon icon-vimeo"><path fill="#444" d="M.343 10.902l1.438 1.926q2-1.487 2.414-1.487 1.584 0 2.95 5.047.365 1.39 1.193 4.52t1.292 4.815q1.803 5.046 4.533 5.046 4.34 0 10.53-8.336 6.07-7.922 6.288-12.528v-.536q0-5.606-4.484-5.752h-.34q-6.02 0-8.288 7.385 1.316-.56 2.29-.56 2.073 0 2.073 2.145 0 .268-.023.56-.146 1.732-2.047 4.73-1.95 3.144-2.9 3.144-1.268 0-2.243-4.778-.293-1.12-1.243-7.24-.414-2.63-1.536-3.9-.975-1.096-2.437-1.12-.194 0-.413.024Q7.85 4.152 4.83 6.81 3.27 8.27.343 10.903z"></path></svg>
                       <span class="icon__fallback-text">Vimeo</span>
                     </a>
@@ -535,7 +535,7 @@
         <div class="page-width">
           <div class="grid medium-up--grid--table">
             <div class="grid__item medium-up--one-half">
-                <small>© 2017, <a href="<?= ShopEngine::GetHost()?>" title="">Потерпите, пожалуйста!</a></small>
+                <small>© 2017, <a href="<?= ShopEngine::GetHost()?>" title=""><?=Config::$config['site_name']?></a></small>
             </div>
             <div class="grid__item medium-up--one-half medium-up--text-right">
 
@@ -579,7 +579,7 @@
 <script>
   $(document).ready(function() {
     var page = location.href;
-    if(page == "https://poterpite.ru/")
+    if(page === "<?= ShopEngine::GetHost()?>")
       $(".einstein_helper").remove();
   });
 </script>

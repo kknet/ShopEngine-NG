@@ -8,6 +8,13 @@
 
 $start = microtime(true);
 
+$version = phpversion();
+
+if((int)$version < 7) {
+    echo 'Version required: 7.0, but installed: '.$version;
+    exit();
+}
+
 //Set error handler
 require(__DIR__ . '/../engine/components/errorhandler.php');
 (new ErrorHandler);

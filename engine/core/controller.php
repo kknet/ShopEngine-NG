@@ -47,7 +47,7 @@ class Controller
     {
         return [
             'name' => [
-                'description' => 'Добро пожаловать в интернет-магазин &quot;Потерпите, пожалуйста!&quot;'
+                'description' => 'Добро пожаловать в интернет-магазин &quot;'.Config::$config['site_name'].'&quot;'
             ]
         ];
     }

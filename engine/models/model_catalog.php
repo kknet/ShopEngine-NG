@@ -77,7 +77,7 @@ class Model_Catalog extends Model
             $sql = "SELECT * FROM products WHERE avail='1' AND price <> 0.00 AND category_id = (SELECT category_id FROM category WHERE category_handle=?)";
             $products = Getter::getProducts($sql, [$category]);
             if(!$products) {
-                return Route::ErrorPage404();
+                return false;
             }
         }
         

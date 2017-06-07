@@ -7,7 +7,7 @@ class WidgetMenu {
     public function __construct()
     {
         $sql = "SELECT * FROM category WHERE main='1'";
-        $this->menu = Getter::GetFreeData($sql);
+        $this->menu = Getter::GetFreeData($sql,null,false);
     }
     
     public function GetMenu()
