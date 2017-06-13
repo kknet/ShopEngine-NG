@@ -45,9 +45,23 @@ class Controller
     
     public function SEO()
     {
-        return [
-            'name' => [
-                'description' => 'Добро пожаловать в интернет-магазин &quot;'.Config::$config['site_name'].'&quot;'
+
+        //Default
+        
+        return ['property' => [
+                'og:type'  => 'website',
+                'og:title' => Config::$config['site_name'],
+                'og:description' => 'Магазин-клиника. Ежедневно: с 10:00 до 22:00. Телефон: 8-495-740-66-09',
+                'og:url' => ShopEngine::GetHost(),
+                'og:site_name' => Config::$config['site_name'],
+                'fb:app_id' => 220746618429343
+            ],
+            'name'     => [
+                'keywords' => 'none',
+                'description' => 'Магазин-клиника. Ежедневно: с 10:00 до 22:00. Телефон: 8-495-740-66-09',
+                'twitter:site' => '@poterpite',
+                'twitter:title' => Config::$config['site_name'],
+                'twitter:description' => 'Магазин-клиника. Ежедневно: с 10:00 до 22:00. Телефон: 8-495-740-66-09'
             ]
         ];
     }

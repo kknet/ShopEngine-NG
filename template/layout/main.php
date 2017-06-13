@@ -74,6 +74,7 @@
 
         <?php 
             $menu = $this->widgets->WidgetMenu->GetMenu();
+            
             for($i = 0; $i < 7; $i++) { ?>
             <li>
                 <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
@@ -82,12 +83,11 @@
 
         </div>
         <div class="grid__item meganav__list one-fifth">     
-        <?php 
-            for($i = 7; $i < count($menu); $i++) { ?>
-            <li>
-                <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
-            </li>    
-        <?php   }   ?>
+            <?php for($i = 7; $i < count($menu); $i++) { ?>
+                <li>
+                    <a href="<?=ShopEngine::GetHost().'/catalog/'.$menu[$i]['category_handle']?>" class="meganav__link"><?=$menu[$i]['name']?></a>
+                </li>  
+            <?php   }  ?> 
         </div>
         </div>
         </ul>
@@ -157,7 +157,7 @@
 
                   <a href="<?= ShopEngine::GetHost()?>" itemprop="url" class="site-header__logo-link">
                     <img src="/style/assets/logo.png" alt="<?= Config::$config['site_name']?>" itemprop="logo">
-                </a>
+                  </a>
 
 
               </div>
