@@ -2,50 +2,128 @@
 
 class update_manager {
     
+    public $hash;
+    public $dirs;
+    
     public function start()
-    {   
+    {
         if($_SERVER['REQUEST_METHOD'] !== "POST")
         {
             return false;
         }
         
-        $http_key = Request::Post('http_key');
-        if($http_key !== Config::$config['http_key'])
+        $key = Request::Post('http_key');
+        if($key !== Config::$config['http_key'])
         {
             return false;
         }
         
-        if(!$_FILES['file'])
+        //Using SSH
+        //$conn = ssh2_connect("alexanpm.beget.tech");
+        //ssh2_auth_password($conn, "alexanpm", "3Qum3r5z");
+        //...
+        
+        
+        //Using cURL
+        //@chmod(ENGINE."updates/", 777);
+        
+        if(!file_exists(ENGINE.'updates/'))
         {
-            return false;
+            mkdir(ENGINE.'updates/');
         }
         
-        //if smth
-        
-        if(!file_exists('../engine/updates/'))
+        if(file_exists(ENGINE.'updates/last_update.zip'))
         {
-            mkdir('../engine/updates/');
+            unlink(ENGINE.'updates/last_update.zip');
         }
         
-        if(file_exists('../engine/updates/last_update.zip'))
+        //$zip = new ZipArchive();
+        $filename = "../engine/updates/temp/";
+        
+        if(!file_exists($filename))
         {
-            unlink('../engine/updates/last_update.zip');
+            mkdir($filename);
         }
         
-        //Put file
-        $new_file = '../engine/updates/'.$_FILES['file']['name'];
+//        if($zip->open($filename, ZipArchive::CREATE) !== true) {
+//            exit("Unagle to open $filename \n");
+//        }
         
-        copy($_FILES['file']['tmp_name'], $new_file);
+        //We update 4 dirs
+        $this->dirs['models']      = scandir("../engine/models/");
+        $this->dirs['core']        = scandir("../engine/core/");
+        $this->dirs['components']  = scandir("../engine/components/");
+        $this->dirs['controllers'] = scandir("../engine/controllers/");
+        $this->dirs['handlers']    = scandir("../engine/handlers/");
+        $this->dirs['javascript']  = scandir("../engine/javascript/");
         
-        //Unzip
-        $password = Config::$dev['zip_config'];
+        //Add files
+        $this->addFile($this->dirs['models'] , 'models');
+        $this->addFile($this->dirs['core'] , 'core');
+        $this->addFile($this->dirs['components'] , 'components');
+        $this->addFile($this->dirs['controllers'] , 'controllers');
+        $this->addFile($this->dirs['handlers'] , 'handlers');
+        $this->addFile($this->dirs['javascript'] , 'javascript');
         
-        if(file_exists('../engine/updates/'))
+        $newfilename = "../engine/updates/last_update.zip";
+        
+        //Set Password
+        @system("zip -r ".$newfilename." ".$filename."*");
+        
+        if(file_exists($filename))
         {
-            $this->deleteDir('../engine/updates/');
+            $this->deleteDir($filename);
         }
         
-        system("unzip -P $password $new_file");
+        //Send files
+        for($i = 0, $c = count(Config::$sites); $i < $c; $i++)
+        {
+            
+            $trans_key = $this->makeHash(Config::$sites[$i], $this->dirs);
+            
+            $query = [
+                'http_key'   => Config::$config['http_key'],
+                'file'       => new CURLFile($newfilename,null,'last_update.zip'),
+                'trans_key'  => $trans_key
+            ];
+
+            $ch  = curl_init();
+            $url = Config::$sites[$i]['app_name'].'/connect/update';
+
+            //Add HTTPS!
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);  
+
+            $result = curl_exec($ch);
+            
+            var_dump($result);
+
+            curl_close($ch);
+            
+        }
+        
+        return true;
+        
+        //@chmod(ENGINE."updates/", 700);
+        
+        
+    }
+    
+    public function addFile($array, $dir)
+    {
+        for($i = 2, $c = count($array); $i < $c; $i++) {
+            
+            if(!file_exists('../engine/updates/temp/'.$dir.'/'))
+            {
+                mkdir('../engine/updates/temp/'.$dir.'/');
+            }
+            copy('../engine/'.$dir.'/'.$array[$i], '../engine/updates/temp/'.$dir.'/'.$array[$i]);
+
+        }
+       
     }
     
     public function deleteDir($dirPath)
@@ -65,6 +143,27 @@ class update_manager {
             }
         }
         rmdir($dirPath);
+    }
+    
+    public function makeHash($site, $dirs)
+    {
+        
+        asort($dirs);
+        
+        foreach($dirs as $key => $value)
+        {
+            
+            for($i = 2, $c = count($value); $i < $c; $i++) {
+                
+                $content = $this->hash.file_get_contents('../engine/'.$key.'/'.$value[$i]).$site['app_key'];
+                
+                $this->hash = hash("sha256", $content);
+                
+            }
+            
+        }
+        
+        return $this->hash;
     }
     
 }

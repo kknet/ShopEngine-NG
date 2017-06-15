@@ -8,6 +8,9 @@
 
 $start = microtime(true);
 
+//External connection
+require(__DIR__ . '/../engine/connect/connect.php');
+
 $version = phpversion();
 
 if((int)$version < 7) {
