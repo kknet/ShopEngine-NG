@@ -6,10 +6,9 @@
 /additional_img/
 /templates/
 /files/
-/vendor/
 /engine/text.yml
 /vendor/
 /engine/config/config.php
-
+/engine/updates/
 /engine/errlog.txt
 /web/node_modules/
