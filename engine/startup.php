@@ -15,7 +15,7 @@ require_once ENGINE.'config/db.php';       // Connect to database
 
 require_once ENGINE.'core/widgets.php';    // Widget's component
 
-require_once ENGINE.'core/shopengine.php'; // Служебные функции
+require_once ENGINE.'core/shopengine.php'; // System
 ShopEngine::LoadComponents();              // Loading components
 
 require_once ENGINE.'core/model.php';      // Main model's component

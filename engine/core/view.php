@@ -20,7 +20,10 @@ class View {
             }
         }
         
-        $view_path = '../templates/views/'.ShopEngine::GetControllerName(true).'/'.$view_str.'.php';
+        //Module check
+        define(VIEWS_PATH, ShopEngine::ModuleCheck() !== ENGINE ? MVC_PATH : "../templates/");
+        
+        $view_path = VIEWS_PATH . 'views/'.ShopEngine::GetControllerName(true).'/'.$view_str.'.php';
         
         if(!file_exists($view_path))
         {

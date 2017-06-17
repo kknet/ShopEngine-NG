@@ -78,6 +78,7 @@ class ShopEngine {
     {
         return $low === true ? strtolower(ShopEngine::Help()->Clear(ShopEngine::GetRoute()[1] ? ShopEngine::GetRoute()[1] : 'main')) : ShopEngine::Help()->Clear(ShopEngine::GetRoute()[1] ? ShopEngine::GetRoute()[1] : 'main');
     }
+    
     public static function GetController()
     {
         
@@ -185,6 +186,20 @@ class ShopEngine {
             Self::$ip = ShopEngine::Help()->Clear($_SERVER['REMOTE_ADDR']);
         }
         return Self::$ip;
+    }
+    
+    //Creation of MVC_PATH constant
+    public static function ModuleCheck()
+    {
+        $controller_name = ShopEngine::GetController();
+        $controller_file = '../modules/controllers/' . $controller_name.'.php';
+        
+        return file_exists($controller_file) ? '../modules/' : ENGINE;
+    }
+    
+    public static function UpdateCheck()
+    {
+        //
     }
     
     public static function LoadComponents()

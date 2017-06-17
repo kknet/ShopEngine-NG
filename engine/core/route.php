@@ -22,8 +22,10 @@ class Route
             Route::ErrorPage404();
         }
         // Redirect
-            ShopEngine::Help()->IndexRedirect();
-        //
+        ShopEngine::Help()->IndexRedirect();
+            
+        //Modules have priority
+        define(MVC_PATH, ShopEngine::ModuleCheck());
         
         // Getting names of model, controller, action
         $controller_name = ShopEngine::GetController();
@@ -31,45 +33,52 @@ class Route
         $action          = ShopEngine::GetAction(true);
         $option          = ShopEngine::GetOption();
         
-        // Это не очень изящное решение, но я придумаю позже что-нибудь
+        // AJAX handlers
         if($controller_name === 'Controller_Ajax') {
             return require_once ENGINE.'ajax/ajax.php';
         }
-        //
 
         //files
         $model_file = strtolower($model_name.'.php');
-        $model_path = ENGINE.'models/'.$model_file;
+        $model_path = MVC_PATH . 'models/'.$model_file;
         if (file_exists($model_path)) {
             require_once($model_path);
         }
         $controller_file = $controller_name.'.php';
-        $controller_path = ENGINE.'controllers/'.$controller_file;
+        $controller_path = MVC_PATH . 'controllers/'.$controller_file;
         
         file_exists($controller_path) ? require_once($controller_path) : Route::ErrorPage404();
          
         $controller = new $controller_name;
         
+        //Basic type of controller. Starting basic action...
         if($controller->type() === 'gen' AND method_exists($controller, 'Action_Basic')) 
         {
                 
             return $controller->Action_Basic();
   
         }
+        
+        //Extended type of controller. You can create actions
         elseif($controller->type() === 'act' AND method_exists($controller, $action)) 
         {
                 
             return $controller->$action();
             
         }
+        
+        //Extended+. You can create actions and options
         elseif($controller->type() === 'act+') 
         {
+            //If option exsists
             if(method_exists($controller, $option)) 
             {
                 
                 return $controller->$option();
                 
             }
+            
+            //Standart procedure
             elseif(method_exists($controller, $action)) 
             {
 
